@@ -1,13 +1,15 @@
-# Appling Automation Testing In Web Pentest
+# Web Application Reconnaissance Flow Analysis
 
-Reporter: VDT 2024 - Tran Duc Tuan
+Reporter: Tran Duc Tuan - B3 CS - BI12-467
 
 
 ## Table of Content
-### 1. Definition
-### 2. Research Web Pentest Processing
-### 3. Applying Acunetix in Automatic Pentesting
-### 4. Propose a new auto Recon & Scan Vuln tool or Burp extension
+### 1. Executive Summary
+### 2. Methodology 
+#### 2.1 Research Web Domain Reconnaissance Stages
+### 3. Implementation
+#### 3.1 Applying Reconnaissance Idea & Technology in Automation 
+### 3. Propose a new auto Recon tool
 	- method
 		- analyze: in & out
 	- implement
