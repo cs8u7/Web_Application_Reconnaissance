@@ -1,15 +1,43 @@
+# UNIVERSITY OF SCIENCE AND TECHNOLOGY OF HANOI
+# DEPARTMENT OF INFORMATION COMMUNICATION TECHNOLOGY
+![](USTH%20logo/Logo-Truong-Dai-hoc-Khoa-hoc-va-Cong-nghe-Ha-Noi.png)
+
+# INTERNSHIP PROJECT REPORT
 # Web Application Reconnaissance Flow Analysis
-
-Reporter: Tran Duc Tuan - B3 CS - BI12-467
-
-
+**Supervisor**: Dr. Nguyen Minh Huong, ICT Department, USTH
+**Student/Reporter**: Tran Duc Tuan, BI12-467, B3 CS, USTH
+ICT Lab, May 15, 2024
 ## Table of Content
 ### 1. Executive Summary
-### 2. Methodology 
-#### 2.1 Research Web Domain Reconnaissance Stages
-### 3. Implementation
-#### 3.1 Applying Reconnaissance Idea & Technology in Automation 
-### 3. Propose a new auto Recon tool
+### 2. Introduction
+- #### 2.1 Project Context
+	- ##### 2.1.1 Web Application
+	- ##### 2.1.2 Web Application Domain
+	- ##### 2.1.3 Offensive Security - Red Teaming
+	- ##### 2.1.4 Penetration Testing
+	- ##### 2.1.5 Reconnaissance
+- #### 2.2 Project Objective
+- #### 2.3 Project Scopes
+	- ##### 2.3.1 Inclusion
+	- ##### 2.3.2 Exclusion
+- #### 2.4 Beneficiaries Of The Project
+### 3. Methodology 
+- #### 3.1 Introduce Open-Source Reconnaissance Tool - reNginx
+- #### 3.2 Define Web Domain Reconnaissance Stages
+- #### 3.3 Passive Reconnaissance
+	- ##### 3.3.1 OSINT - Open Source Intelligence
+	- ##### 3.3.1 Screenshot Gathering
+- #### 3.4 Active Reconnaissance
+	- ##### 3.4.1 Domain Enumeration
+	- ##### 3.4.2 Port Scanning
+	- ##### 3.4.3 Virtual Host Fuzzing
+	- ##### 3.4.4 Endpoint Fuzzing
+	- ##### 3.4.5 Vulnerability Scanning
+### 4. Implementation
+- #### 4.1 Applying Reconnaissance Idea & Technology and Customizing Open-Source Reconnaissance For Automatic Purpose 
+### 5. Result
+- #### 5.1 Testing Customized Tools and Comparing Result With Using Specific Tools For Each Stage
+
 	- method
 		- analyze: in & out
 	- implement
@@ -19,12 +47,16 @@ Reporter: Tran Duc Tuan - B3 CS - BI12-467
 		- analyze : %CVE CWE
 		- category & vitalize
 
-# Research and Report
+## 1. Executive Summary
 
-## 1. Definition
+- My project aims to separate, research and analyze a standard reconnaissance workflow. I focus on research protocol, service and stored information of a web application and analyze the output's value stage of each stage in the workflow.
+- In each stage, I demonstrate research and analyze the idea of reconnaissance\
+  techniques and introduced some specific tools in that stage.
+- After finish analyzing process, i would like to custom an open-source recon reconnaissance tool to center all reconnaissance technique with automatic purpose.
+## 2. Introduction
 
 - `Web Application Domain`: Input for Reconnaissance and Pentest Processing,a web application is an application program stored on a remote server and delivered over the internet through a browser interface.
-	![](Pasted%20image%2020240528154451.png)
+	![](capture/Pasted%20image%2020240528154451.png)
 	
 	- Structure of a Website:
 	![](capture/Pasted%20image%2020240531102715.png)
@@ -59,7 +91,7 @@ Reporter: Tran Duc Tuan - B3 CS - BI12-467
 </VirtualHost>
 ```
 
-- Ip-base example:
+- IP-base example:
 ```PHP
 <VirtualHost 192.168.1.1:80>
     ServerName example.com
@@ -102,10 +134,13 @@ Reporter: Tran Duc Tuan - B3 CS - BI12-467
 - `Reconnaissance`: the process of gathering information about a target system, network, or organization before attempting an attack or security assessment. The Reconnaissance process involves collecting extensive information about the potential targets, their vulnerabilities, and possible attack vectors. In this report, I would focus on web reconnaissance, demonstate on analyze workflows and clarify logic of mentioned tools in reconnaissance process
 	
 	![](capture/Pasted%20image%2020240528155015.png)
-https://github.com/yogeshojha/rengine
-- `Penestration Testing`:  or pentesting, is the process of actively evaluating the security of a target system, network, or organization by simulating an attack. This process involves identifying vulnerabilities, exploiting them to determine their impact, and providing actionable recommendations to mitigate the discovered weaknesses. Pentesting typically includes a comprehensive examination of various aspects of the target environment, such as network infrastructure, web applications, and internal systems. In this report, I will focus on web application pentesting, demonstrate detailed methodologies for identifying and exploiting vulnerabilities, and clarify the logical workflows and tools used in the pentesting process.
+
+- `Penetration Testing`:  or pentesting, is the process of actively evaluating the security of a target system, network, or organization by simulating an attack. This process involves identifying vulnerabilities, exploiting them to determine their impact, and providing actionable recommendations to mitigate the discovered weaknesses. Pentesting typically includes a comprehensive examination of various aspects of the target environment, such as network infrastructure, web applications, and internal systems. In this report, I will focus on web application pentesting, demonstrate detailed methodologies for identifying and exploiting vulnerabilities, and clarify the logical workflows and tools used in the pentesting process.
 
 ## 2. Research Web Pentest Processing
+
+
+![[capture/Pasted image 20240702154349.png]]
 ### 2.1 Passive Reconnaissance
 - Passive reconnaissance involves gathering information without directly interacting with the target. This helps in remaining undetected
 

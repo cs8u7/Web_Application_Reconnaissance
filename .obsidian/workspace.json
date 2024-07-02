@@ -18,6 +18,16 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "f01b702c565bae11",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "capture/Pasted image 20240702154349.png"
+              }
+            }
           }
         ]
       }
@@ -69,7 +79,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 200
   },
   "right": {
     "id": "8fdf54943c194f16",
@@ -147,5 +157,31 @@
     }
   },
   "active": "a2502e2b258ecbf7",
-  "lastOpenFiles": []
+  "lastOpenFiles": [
+    "capture/Pasted image 20240702154349.png",
+    "README.md",
+    "Untitled.md",
+    "USTH logo/Logo-Truong-Dai-hoc-Khoa-hoc-va-Cong-nghe-Ha-Noi.png",
+    "USTH logo",
+    "rengine/web/tests/test_scan.py",
+    "rengine/web/tests/test_nmap.py",
+    "rengine/web/tests/__init__.py",
+    "rengine/web/tests",
+    "rengine/web/templates/base/_items/widgets/vulnerability_highlights.html",
+    "rengine/web/templates/base/_items/widgets/vulnerability_breakdown_by_severity_chart.html",
+    "rengine/web/templates/base/_items/xl_scrollable_modal.html",
+    "rengine/web/templates/base/_items/widgets",
+    "rengine/web/templates/base/_items/vulnerability_tab_content.html",
+    "rengine/web/templates/report/table-content.svg",
+    "rengine/web/templates/report/style.svg",
+    "rengine/web/templates/report/heading.svg",
+    "rengine/web/static/plugins/lightbox/images/prev.png",
+    "rengine/web/static/plugins/lightbox/images/next.png",
+    "rengine/web/static/plugins/lightbox/images/loading.gif",
+    "rengine/web/static/plugins/lightbox/images/close.png",
+    "rengine/web/static/plugins/select2/select2x2.png",
+    "rengine/README.md",
+    "rengine/CONTRIBUTORS.md",
+    "rengine/CHANGELOG.md"
+  ]
 }
