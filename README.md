@@ -166,7 +166,7 @@ My project doesn’t include the following features:
 - 
 ## 2. Research Web Reconnaissance Processing
 
-![[capture/Pasted image 20240702154349.png]]
+![[capture/Pasted%20image%2020240702154349.png]]
 ### 2.1 Passive Reconnaissance
 - Passive reconnaissance involves gathering information without directly interacting with the target. This helps in remaining undetected
 
