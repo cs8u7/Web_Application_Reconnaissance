@@ -4,9 +4,13 @@
 
 # INTERNSHIP PROJECT REPORT
 # Web Application Reconnaissance Flow Analysis
+
 **Supervisor**: Dr. Nguyen Minh Huong, ICT Department, USTH
+
 **Student/Reporter**: Tran Duc Tuan, BI12-467, B3 CS, USTH
+
 ICT Lab, May 15, 2024
+
 ## Table of Content
 ### 1. Executive Summary
 ### 2. Introduction
@@ -14,13 +18,12 @@ ICT Lab, May 15, 2024
 	- ##### 2.1.1 Web Application
 	- ##### 2.1.2 Web Application Domain
 	- ##### 2.1.3 Offensive Security - Red Teaming
-	- ##### 2.1.4 Penetration Testing
-	- ##### 2.1.5 Reconnaissance
+	- ##### 2.1.4 Reconnaissance
+	- ##### 2.1.5 Penetration Testing
 - #### 2.2 Project Objective
 - #### 2.3 Project Scopes
 	- ##### 2.3.1 Inclusion
 	- ##### 2.3.2 Exclusion
-- #### 2.4 Beneficiaries Of The Project
 ### 3. Methodology 
 - #### 3.1 Introduce Open-Source Reconnaissance Tool - reNginx
 - #### 3.2 Define Web Domain Reconnaissance Stages
@@ -37,6 +40,8 @@ ICT Lab, May 15, 2024
 - #### 4.1 Applying Reconnaissance Idea & Technology and Customizing Open-Source Reconnaissance For Automatic Purpose 
 ### 5. Result
 - #### 5.1 Testing Customized Tools and Comparing Result With Using Specific Tools For Each Stage
+- #### 5.2 Conclusion
+
 
 	- method
 		- analyze: in & out
@@ -54,22 +59,26 @@ ICT Lab, May 15, 2024
   techniques and introduced some specific tools in that stage.
 - After finish analyzing process, i would like to custom an open-source recon reconnaissance tool to center all reconnaissance technique with automatic purpose.
 ## 2. Introduction
+### 2.1 Project Context
+#### 2.1.1 Web Application
+
+- A web application is an application program that is stored on a remote server and delivered over the internet through a browser interface.
+- Structure of a Website:
+![](capture/Pasted%20image%2020240531102715.png)
+
+- Include: 
+	- `Web Client`: is user's device, has role is render and display data received from server.
+	- `Firewall`:A firewall is a network security device that monitors incoming and outgoing network traffic and decides whether to allow or block specific traffic based on a defined set of security rules.
+	- Web Server:
+		- On the hardware side, a web server is a computer that stores web server software and a website's component files. A web server connects to the Internet and supports physical data interchange with other devices connected to the web.
+		- On the software side, a web server includes several parts that control how web users access hosted files. At a minimum, this is an _HTTP server_. An HTTP server is software that understands URL (web addresses) and HTTP. An HTTP server can be accessed through the domain names of the websites it stores, and it delivers the content of these hosted websites to the end user's device.
+	- WebApp (Web Application): is application run on a corresponding web engine which is install inside web server, resolve incomming request from client, execute logic and response to client.
+	- Database: is a service play role store and provide data for resove logic process in web applications.
+
+#### 2.1.2 Web Application Domain
 
 - `Web Application Domain`: Input for Reconnaissance and Pentest Processing,a web application is an application program stored on a remote server and delivered over the internet through a browser interface.
 	![](capture/Pasted%20image%2020240528154451.png)
-	
-	- Structure of a Website:
-	![](capture/Pasted%20image%2020240531102715.png)
-	
-	- Include: 
-		- `Web Client`: is user's device, has role is render and display data received from server.
-		- `Firewall`:A firewall is a network security device that monitors incoming and outgoing network traffic and decides whether to allow or block specific traffic based on a defined set of security rules.
-		- Web Server:
-			- On the hardware side, a web server is a computer that stores web server software and a website's component files. A web server connects to the Internet and supports physical data interchange with other devices connected to the web.
-			- On the software side, a web server includes several parts that control how web users access hosted files. At a minimum, this is an _HTTP server_. An HTTP server is software that understands URL (web addresses) and HTTP. An HTTP server can be accessed through the domain names of the websites it stores, and it delivers the content of these hosted websites to the end user's device.
-		- WebApp (Web Application): is application run on a corresponding web engine which is install inside web server, resolve incomming request from client, execute logic and response to client
-		- Database: is a service play role store and provide data for resove logic process in web applications.
-	
 
 - Vitual Host: There are many websites are hosted in a same web server
 	- Reduce cost & utilize resource
@@ -117,28 +126,45 @@ ICT Lab, May 15, 2024
     DocumentRoot /var/www/shop
 </VirtualHost>
 ```
+#### 2.1.3 Offensive Security - Red Teaming
 
-- `Red teaming` is a structured process used to simulate an attack on an organization to identify vulnerabilities and improve security.
-	1. Testing specific systems, processes, or overall security posture.
-	2. Involves gathering information about the target organization to understand its structure, technology stack, and potential vulnerabilities.
-	3. Using the information gathered during reconnaissance, the red team attempts to exploit vulnerabilities to gain initial access to the target environment.
-	4. The red team seeks to establish a stable and persistent presence within the target environment.
-	5. Escalate their privileges within the target environment to gain higher levels of access and control.
-	6. Moving through the network to access other systems, data, and resources, expanding the red team’s control over the environment.
-	7. Simulating the extraction of sensitive data from the target environment to test the effectiveness of data protection and monitoring mechanisms.
-	8. Ensuring that no traces of the red team’s activities remain within the target environment, simulating what a real attacker might do to avoid detection.
-	9. Documenting the findings, detailing the vulnerabilities discovered, and providing recommendations for remediation.
-	10. Working with the target organization to address the identified vulnerabilities.
-	![](capture/Pasted%20image%2020240602155807.png)
+`Red teaming` is a structured process used to simulate an attack on an organization to identify vulnerabilities and improve security.
+- Testing specific systems, processes, or overall security posture.
+- Involves gathering information about the target organization to understand its structure, technology stack, and potential vulnerabilities.
+- Using the information gathered during reconnaissance, the red team attempts to exploit vulnerabilities to gain initial access to the target environment.
+-  The red team seeks to establish a stable and persistent presence within the target environment.
+- Escalate their privileges within the target environment to gain higher levels of access and control.
+- Moving through the network to access other systems, data, and resources, expanding the red team’s control over the environment.
+-  Simulating the extraction of sensitive data from the target environment to test the effectiveness of data protection and monitoring mechanisms.
+- Ensuring that no traces of the red team’s activities remain within the target environment, simulating what a real attacker might do to avoid detection.
+- Documenting the findings, detailing the vulnerabilities discovered, and providing recommendations for remediation.
+- Working with the target organization to address the identified vulnerabilities.
 
-- `Reconnaissance`: the process of gathering information about a target system, network, or organization before attempting an attack or security assessment. The Reconnaissance process involves collecting extensive information about the potential targets, their vulnerabilities, and possible attack vectors. In this report, I would focus on web reconnaissance, demonstate on analyze workflows and clarify logic of mentioned tools in reconnaissance process
-	
-	![](capture/Pasted%20image%2020240528155015.png)
+![[capture/Pasted image 20240702222455.png]]
+#### 2.1.4 Reconnaissance
 
-- `Penetration Testing`:  or pentesting, is the process of actively evaluating the security of a target system, network, or organization by simulating an attack. This process involves identifying vulnerabilities, exploiting them to determine their impact, and providing actionable recommendations to mitigate the discovered weaknesses. Pentesting typically includes a comprehensive examination of various aspects of the target environment, such as network infrastructure, web applications, and internal systems. In this report, I will focus on web application pentesting, demonstrate detailed methodologies for identifying and exploiting vulnerabilities, and clarify the logical workflows and tools used in the pentesting process.
+-  Its regular name is recon for short. It is the process of gathering information about a target system, network, or organization before attempting an attack or security assessment. 
+- The Reconnaissance process involves collecting extensive information about the potential targets, their vulnerabilities, and possible attack vectors. 
+- In this report, I would focus on web reconnaissance, demonstrate analyze workflows and clarify analyzing of the mentioned tools in the reconnaissance process.
+#### 2.1.5 Penetration Testing
 
-## 2. Research Web Pentest Processing
+- Its regular name is pentest. It is the process of actively evaluating the security of a target system, network, or organization by simulating an attack. This process involves identifying vulnerabilities, exploiting them to determine their impact, and providing actionable recommendations to mitigate the discovered weaknesses.
+- Pentest typically includes a comprehensive examination of various aspects of the target environment, such as network infrastructure, web applications, and internal systems. 
+- In this report, I will focus on web application testing, demonstrate detailed methodologies for identifying and exploiting vulnerabilities, and clarify the logical workflows and tools used in the pentest process.
+### 2.2 Project Objective
 
+- My project leads to clarifying protocol and techniques which are used to searching for structure and information related to the input target domain. In each technology or protocol or some kind of researched information, I would like to determine if it is a critical data related web application target or evidence for the next stage of gathering data.
+- Based on current knowledge after ending the research process, I would like to custom an open-source recon tool with automatic recon purpose, then equip some recon modules which are mentioned in the research part but i consider it is missing in the tool.
+### 2.3 Project Scopes
+#### 2.3.1 Inclusion
+
+My project includes the following features:
+- Breakdown and 
+#### 2.3.2 Exclusion
+
+My project doesn’t include the following features:
+- 
+## 2. Research Web Reconnaissance Processing
 
 ![[capture/Pasted image 20240702154349.png]]
 ### 2.1 Passive Reconnaissance
