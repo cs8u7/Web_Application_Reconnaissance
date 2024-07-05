@@ -140,7 +140,7 @@ ICT Lab, May 15, 2024
 - Documenting the findings, detailing the vulnerabilities discovered, and providing recommendations for remediation.
 - Working with the target organization to address the identified vulnerabilities.
 
-![[capture/Pasted image 20240702222455.png]]
+![[Pasted-image-20240702222455.png]]
 #### 2.1.4 Reconnaissance
 
 -  Its regular name is recon for short. It is the process of gathering information about a target system, network, or organization before attempting an attack or security assessment. 
@@ -166,7 +166,7 @@ My project doesn’t include the following features:
 - 
 ## 2. Research Web Reconnaissance Processing
 
-![[capture/Pasted%20image%2020240702154349.png]]
+![[Pasted-image-20240702154349.png]]
 ### 2.1 Passive Reconnaissance
 - Passive reconnaissance involves gathering information without directly interacting with the target. This helps in remaining undetected
 
