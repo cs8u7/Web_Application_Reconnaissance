@@ -128,7 +128,7 @@ ICT Lab, May 15, 2024
 ```
 #### 2.1.3 Offensive Security - Red Teaming
 
-`Red teaming` is a structured process used to simulate an attack on an organization to identify vulnerabilities and improve security.
+Red teaming is a structured process used to simulate an attack on an organization to identify vulnerabilities and improve security.
 - Testing specific systems, processes, or overall security posture.
 - Involves gathering information about the target organization to understand its structure, technology stack, and potential vulnerabilities.
 - Using the information gathered during reconnaissance, the red team attempts to exploit vulnerabilities to gain initial access to the target environment.
@@ -140,7 +140,8 @@ ICT Lab, May 15, 2024
 - Documenting the findings, detailing the vulnerabilities discovered, and providing recommendations for remediation.
 - Working with the target organization to address the identified vulnerabilities.
 
-![[capture/Pasted-image-20240702222455.png]]
+![[capture/Pasted image 20240707171822.png]]
+
 #### 2.1.4 Reconnaissance
 
 -  Its regular name is recon for short. It is the process of gathering information about a target system, network, or organization before attempting an attack or security assessment. 
@@ -159,17 +160,21 @@ ICT Lab, May 15, 2024
 #### 2.3.1 Inclusion
 
 My project includes the following features:
-- Breakdown and 
+- Breakdown the whole recon process into individual stages.
+- Searching and analyze technique, protocol and workflow of each stages.
+- Provide and introduce some tools specified for each stage.
+- Customize an open-source recon tool for automatic purpose.
 #### 2.3.2 Exclusion
 
 My project doesn’t include the following features:
-- 
+- Reserve some close-course tool to extract recon work flow.
+- Define red team technique in custom recon flow
+- Research and Analyze others stage in red team work flow.
 ## 2. Research Web Reconnaissance Processing
 
-![[capture/Pasted-image-20240702154349.png]]
 ### 2.1 Passive Reconnaissance
-- Passive reconnaissance involves gathering information without directly interacting with the target. This helps in remaining undetected
 
+- Passive reconnaissance involves gathering information without directly interacting with the target. This helps in remaining undetected
 #### 2.1.1 Open Source Intelligence (OSINT)
 ##### 2.1.1.1 OSINT Definition and Work Flow
 
