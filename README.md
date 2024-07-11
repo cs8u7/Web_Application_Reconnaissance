@@ -26,7 +26,7 @@ ICT Lab, May 15, 2024
 	- ##### 2.3.2 Exclusion
 ### 3. Methodology 
 - #### 3.1 Introduce Open-Source Reconnaissance Tool - reNginx
-- #### 3.2 Define Web Domain Reconnaissance Stages
+- #### 3.2 Breakdown Web Domain Reconnaissance Workflow Into Stages
 - #### 3.3 Passive Reconnaissance
 	- ##### 3.3.1 OSINT - Open Source Intelligence
 	- ##### 3.3.1 Screenshot Gathering
@@ -170,13 +170,30 @@ My project doesn’t include the following features:
 - Reserve some close-course tool to extract recon work flow.
 - Define red team technique in custom recon flow
 - Research and Analyze others stage in red team work flow.
-## 2. Research Web Reconnaissance Processing
+## 3. Methodology
+### 3.1 Introduce Open-Source Reconnaissance Tool - reNginx
+#### 3.1.1 Introduction\
 
-### 2.1 Passive Reconnaissance
+ - reNginx is a web application reconnaissance suite was created with security experts, penetration testers, and bug bounty hunters. Its purpose is to make the reconnaissance process easier and more efficient. 
+ - ReNgine redefines how pentester gatthering critical information about online web applications target with its highly configurable engines, data correlation capabilities, constant monitoring, database-backed reconnaissance data, and user-friendly interface.
+#### 3.1.2 Why reNginx is the chosen one
 
-- Passive reconnaissance involves gathering information without directly interacting with the target. This helps in remaining undetected
-#### 2.1.1 Open Source Intelligence (OSINT)
-##### 2.1.1.1 OSINT Definition and Work Flow
+ - An important reason that makes reNginx in my choice list is that reNginx is an open-source tool with a clarity design that is able to cover most category in the long term.
+ - While traditional reconnaissance tools often fall short in terms of configurability and efficiency. reNgine addresses these shortcomings and emerges as an excellent alternative to existing tools.
+ - reNginx provides the opportunity to ourselves deploy tools in local or VPS, a user-friendly interface in a browser to list the recon's results and visualize data.
+#### 3.1.3 Overview about reNginx workflow
+
+![[capture/Pasted image 20240710094028.png]]
+
+- reNginx also require a Web Domain or URL which point to web application to trigger the recon process. Base on the graph's work flow, I consider that OSINT process (passive recon) run parallel with active recon process. The aim of osint process is gathering several kind of information related to target such as domain whois data, register email, and employees emails and sensitive data. reNginx would collect list subdomain and active port data in active recon stage then the result's list would become input of vulnerability scanning stage.
+### 3.2 Breakdown Web Domain Reconnaissance Workflow Into Stages
+
+- I would like to separate the recon work flow into stages by techniques before digging into analysis. A recon process regularly divided into two main stages, which are passive recon and active recon. While passive recon involves gathering information without directly interacting with the target, the other one involves interacting with the target system. This can be more detectable by the target but often capture more detailed information.
+- In the passive recon stage, I would like to demonstrate analyzing workflows and tactics for searching for information related to the target. This stage also has another name and is open source intelligence (OSINT). This technique focuses on searching for critical data of targets in several public databases, leaked databases, protocols and sensitive credentials.
+- In the active recon stage, pentesters directly interact with the web application to extract information based on requests to and responses from the server. This process involves using protocols to transmit data. It provides pentesters with an overview of the web application's structure, including endpoints, subdomains, and parameters. At the end of the workflow, pentesters scan for potential vulnerabilities in the target using various vulnerability scanning templates.
+### 3.3 Passive Reconnaissance
+#### 3.1.1 Open Source Intelligence (OSINT)
+##### 3.1.1.1 OSINT Definition and Work Flow
 
 - `OSINT` is an abbreviation of Open Source Intelligence, it is any information can legaling garthering form the internet. Belows is an explaination of a `OSINT` work flow apply for `Web Domain`.
 
@@ -424,7 +441,9 @@ Disallow: /tmp/ # Access to the admin section is restricted.
 	- `Article Rewriter`: Helps to rewrite articles to make them unique.
 	- `Backlink Checker`: Analyzes backlinks to your website.
 	- `Keyword Position Checker`: Monitors the position of specific keywords in search engine results.
-##### 2.1.1.2 Preventing Missing Important Information
+
+##### 3.1.1.2 
+##### 3.1.1.3 Preventing Missing Important Information
 
 - In order to not missing important information, we should fllow those steps
 
@@ -484,9 +503,7 @@ Disallow: /tmp/ # Access to the admin section is restricted.
 
 - `HTML Source Code`: Inspect the website’s HTML source code for comments, hidden fields, and other clues.
 
-### 2.2 Active Reconnaissance
-
-Active reconnaissance involves interacting with the target system to gather information. This can be more detectable but often yields more detailed information.
+### 3.4. Active Reconnaissance
 
 https://pentester.land/blog/compilation-of-recon-workflows/
 - Recon flow 1:
@@ -494,41 +511,38 @@ https://pentester.land/blog/compilation-of-recon-workflows/
 
 - Recon 2:
 ![](capture/Pasted%20image%2020240607113203.png)
-#### 2.2.1 DNS Enumeration
+#### 3.4.1 DNS Enumeration
 
 - `Subdomain Enumeration`: Identify subdomains using `Amass enum` in both active mode and passive mode
 - 
 
-#### 2.2.2 Network Scanning
+#### 3.4.2 Network Scanning
 
 - `Port Scanning`: Use tools like Nmap to identify open ports and running services on the target.
     - Example: `nmap -sS -sV example.com`
 - `Service Fingerprinting`: Determine the versions of the services running on the open ports.
 
-#### 2.2.3 Web Application Analysis
+#### 3.4.3 Web Application Analysis
 
 - `Content Discovery`: Use tools like `DirBuster`, `Gobuster`, or `Burp Suite` (Intruder) to find hidden directories and files.
 - `Web Server Information`: Identify the web server and its version (`Apache`, `Nginx`, `IIS`, etc.) with tools like [`Wappalyzer`](https://github.com/tunetheweb/wappalyzer)
 - `Application Frameworks`: Detect the frameworks and technologies used by the application (`PHP`, `ASP.NET`, `Django`, ...).
 
-#### 2.2.4. Spidering and Crawling
+#### 3.4.4. Spidering and Crawling
 
 - `Web Crawlers`: Use tools like `Burp Suite`, `OWASP ZAP`, or custom scripts to crawl the website and map its structure.
 - `Identify Input Fields`: Locate all forms and input fields for potential injection points. Scan params with `arjun`. 
 
-### 2.3 Vulnerability Identification
+#### 3.4.5 Vulnerability Identification
 
 - `Automated Scanners`: Use tools like `Nuclei`, `Acunetix`, `Nessus`, `OpenVAS`, or `Burp Suite's scanner` to identify known vulnerabilities.
 	- https://blog.projectdiscovery.io/secret-token-scanning-with-nuclei/
 - `Manual Testing`: Manually test for common web vulnerabilities such as SQL injection (`sqlmap`), XSS (`fuzzing`), LFI (`lfimap`), and others.
 
-## 3. Applying Acunetix in Automatic Pentesting
-### 3.1 Acunetrix introduction and usage
+### 4. Implementation
+- #### 4.1 Applying Reconnaissance Idea & Technology and Customizing Open-Source Reconnaissance For Automatic Purpose
+- 
+### 5. Result
+- #### 5.1 Testing Customized Tools and Comparing Result With Using Specific Tools For Each Stage
+- #### 5.2 Conclusion
 
-https://viblo.asia/p/gioi-thieu-cong-cu-do-quet-lo-hong-acunetix-ORNZqjDbl0n
-### 3.2 Practice with Acunetix
-
-## 4. Propose a new auto Recon & Scan Vuln tool or Burp extension
-### 4.1 Tool's design and logic
-https://github.com/yogeshojha/rengine
-### 4.2 Comparing to Current Acunetrix 

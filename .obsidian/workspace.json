@@ -18,6 +18,16 @@
                 "source": false
               }
             }
+          },
+          {
+            "id": "ea4a44152709d94f",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "capture/Pasted image 20240710094028.png"
+              }
+            }
           }
         ]
       }
@@ -148,31 +158,30 @@
   },
   "active": "ac44e8327e06591f",
   "lastOpenFiles": [
-    "capture/Pasted image 20240707171822.png",
-    "rengine/README.md",
+    "capture/Pasted image 20240710094028.png",
     "README.md",
-    "capture/Pasted-image-20240702154349.png",
-    "capture/Pasted-image-20240702222455.png",
-    "capture/Pasted image 20240528154451.png",
-    "capture/Pasted image 20240528155015.png",
-    "capture/Pasted image 20240530113115.png",
-    "Untitled.md",
-    "USTH logo/Logo-Truong-Dai-hoc-Khoa-hoc-va-Cong-nghe-Ha-Noi.png",
-    "USTH logo",
-    "rengine/web/tests/test_scan.py",
-    "rengine/web/tests/test_nmap.py",
-    "rengine/web/tests/__init__.py",
-    "rengine/web/tests",
-    "rengine/web/templates/base/_items/widgets/vulnerability_highlights.html",
-    "rengine/web/templates/base/_items/widgets/vulnerability_breakdown_by_severity_chart.html",
-    "rengine/web/templates/base/_items/xl_scrollable_modal.html",
-    "rengine/web/templates/base/_items/widgets",
-    "rengine/web/templates/base/_items/vulnerability_tab_content.html",
-    "rengine/web/templates/report/table-content.svg",
-    "rengine/web/templates/report/style.svg",
-    "rengine/web/templates/report/heading.svg",
+    "Pasted image 20240710093922.png",
+    "rengine/web/staticfiles",
+    "rengine/web",
+    "rengine",
+    "rengine/web/errors.log",
+    "rengine/web/db.log",
+    "rengine/web/celery.log",
+    "rengine/web/secret",
+    "rengine/secrets/certs/rengine_rsa.key",
+    "rengine/secrets/certs/rengine_chain.pem",
+    "rengine/secrets/certs/rengine.pem",
     "rengine/web/static/plugins/lightbox/images/prev.png",
+    "rengine/web/static/plugins/lightbox/images/next.png",
+    "rengine/web/static/plugins/lightbox/images/loading.gif",
+    "rengine/web/static/plugins/lightbox/images/close.png",
+    "rengine/web/static/plugins/select2/select2x2.png",
+    "rengine/web/static/plugins/select2/select2.png",
+    "rengine/web/static/plugins/select2/select2-spinner.gif",
+    "rengine/web/templates/report/table-content.svg",
+    "rengine/README.md",
     "rengine/CONTRIBUTORS.md",
-    "rengine/CHANGELOG.md"
+    "rengine/CHANGELOG.md",
+    "Untitled.md"
   ]
 }
