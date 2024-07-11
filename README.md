@@ -140,7 +140,7 @@ Red teaming is a structured process used to simulate an attack on an organizatio
 - Documenting the findings, detailing the vulnerabilities discovered, and providing recommendations for remediation.
 - Working with the target organization to address the identified vulnerabilities.
 
-![[capture/Pasted image 20240707171822.png]]
+![](capture/Pasted%20image%2020240707171822.png)
 
 #### 2.1.4 Reconnaissance
 
@@ -183,7 +183,7 @@ My project doesn’t include the following features:
  - reNginx provides the opportunity to ourselves deploy tools in local or VPS, a user-friendly interface in a browser to list the recon's results and visualize data.
 #### 3.1.3 Overview about reNginx workflow
 
-![[capture/Pasted image 20240710094028.png]]
+![](capture/Pasted%20image%2020240710094028.png)
 
 - reNginx also require a Web Domain or URL which point to web application to trigger the recon process. Base on the graph's work flow, I consider that OSINT process (passive recon) run parallel with active recon process. The aim of osint process is gathering several kind of information related to target such as domain whois data, register email, and employees emails and sensitive data. reNginx would collect list subdomain and active port data in active recon stage then the result's list would become input of vulnerability scanning stage.
 ### 3.2 Breakdown Web Domain Reconnaissance Workflow Into Stages
