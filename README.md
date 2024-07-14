@@ -37,9 +37,9 @@ ICT Lab, May 15, 2024
 	- ##### 3.4.4 Endpoint Fuzzing
 	- ##### 3.4.5 Vulnerability Scanning
 ### 4. Implementation
-- #### 4.1 Applying Reconnaissance Idea & Technology and Customizing Open-Source Reconnaissance For Automatic Purpose 
+- #### 4.1 Applying Reconnaissance Idea & Technology To Develop Reconnaissance Tool With Narrowed Purpose
 ### 5. Result
-- #### 5.1 Testing Customized Tools and Comparing Result With Using Specific Tools For Each Stage
+- #### 5.1 Testing Tools and Comparing Result With Using Specific Tools For Each Stage
 - #### 5.2 Conclusion
 
 
@@ -155,7 +155,7 @@ Red teaming is a structured process used to simulate an attack on an organizatio
 ### 2.2 Project Objective
 
 - My project leads to clarifying protocol and techniques which are used to searching for structure and information related to the input target domain. In each technology or protocol or some kind of researched information, I would like to determine if it is a critical data related web application target or evidence for the next stage of gathering data.
-- Based on current knowledge after ending the research process, I would like to custom an open-source recon tool with automatic recon purpose, then equip some recon modules which are mentioned in the research part but i consider it is missing in the tool.
+- Based on current knowledge after ending the research process, I would like to develop a recon tool to equip recon modules which are mentioned in the research part. My purpose is to actualization all the proof of concept of techniques and protocols in the research part in a use-able tool. This tool would use a domain name of a web application as into the tool's automated recon process and return raw data of the web application.
 ### 2.3 Project Scopes
 #### 2.3.1 Inclusion
 
@@ -163,10 +163,11 @@ My project includes the following features:
 - Breakdown the whole recon process into individual stages.
 - Searching and analyze technique, protocol and workflow of each stages.
 - Provide and introduce some tools specified for each stage.
-- Customize an open-source recon tool for automatic purpose.
+- Develop a new recon tool.
 #### 2.3.2 Exclusion
 
 My project doesn’t include the following features:
+- Customize an open-source recon tool for automatic purpose.
 - Reserve some close-course tool to extract recon work flow.
 - Define red team technique in custom recon flow
 - Research and Analyze others stage in red team work flow.
@@ -174,13 +175,13 @@ My project doesn’t include the following features:
 ### 3.1 Introduce Open-Source Reconnaissance Tool - reNginx
 #### 3.1.1 Introduction\
 
- - reNginx is a web application reconnaissance suite was created with security experts, penetration testers, and bug bounty hunters. Its purpose is to make the reconnaissance process easier and more efficient. 
- - ReNgine redefines how pentester gatthering critical information about online web applications target with its highly configurable engines, data correlation capabilities, constant monitoring, database-backed reconnaissance data, and user-friendly interface.
+- reNginx is a web application reconnaissance suite was created with security experts, penetration testers, and bug bounty hunters. Its purpose is to make the reconnaissance process easier and more efficient. 
+- ReNgine redefines how pentester gathering critical information about online web applications target with its highly configurable engines, data correlation capabilities, constant monitoring, database-backed reconnaissance data, and user-friendly interface.
 #### 3.1.2 Why reNginx is the chosen one
 
- - An important reason that makes reNginx in my choice list is that reNginx is an open-source tool with a clarity design that is able to cover most category in the long term.
- - While traditional reconnaissance tools often fall short in terms of configurability and efficiency. reNgine addresses these shortcomings and emerges as an excellent alternative to existing tools.
- - reNginx provides the opportunity to ourselves deploy tools in local or VPS, a user-friendly interface in a browser to list the recon's results and visualize data.
+- In the modern life, tools are design to calculate and execute works and tasks by centralize all the steps in a process. It make modern works easier to approach and automate. Narrow in pentester works, if I consider the target is a web application, there are a number of things have to check and test and tools centralize all the steps in protocols or works and automate it.
+- While traditional reconnaissance tools often fall short in terms of configurability and efficiency. reNgine addresses these shortcomings and emerges as an excellent alternative to existing tools.
+- An important reason that makes reNginx in my choice list is that reNginx is an open-source tool with a clarity design that is able to cover most category in recon process. This tool also provide a fully recon's workflow which i would like to focus on searching and analyze technique in each stages.
 #### 3.1.3 Overview about reNginx workflow
 
 ![](capture/Pasted%20image%2020240710094028.png)

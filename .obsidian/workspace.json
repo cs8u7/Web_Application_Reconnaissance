@@ -158,6 +158,8 @@
   },
   "active": "ac44e8327e06591f",
   "lastOpenFiles": [
+    "popdom/exploit_db.py",
+    "popdom",
     "capture/Pasted image 20240710094028.png",
     "README.md",
     "Pasted image 20240710093922.png",
@@ -170,7 +172,6 @@
     "rengine/web/secret",
     "rengine/secrets/certs/rengine_rsa.key",
     "rengine/secrets/certs/rengine_chain.pem",
-    "rengine/secrets/certs/rengine.pem",
     "rengine/web/static/plugins/lightbox/images/prev.png",
     "rengine/web/static/plugins/lightbox/images/next.png",
     "rengine/web/static/plugins/lightbox/images/loading.gif",
