@@ -28,15 +28,17 @@ ICT Lab, May 15, 2024
 - #### 3.1 Introduce Open-Source Reconnaissance Tool - reNginx
 - #### 3.2 Breakdown Web Domain Reconnaissance Workflow Into Stages
 - #### 3.3 Passive Reconnaissance
-	- ##### 3.3.1 OSINT - Open Source Intelligence
-	- ##### 3.3.1 Screenshot Gathering
+	- ##### 3.3.1 OSINT (Open Source Intelligence) Definition and Work Flow
+	- ##### 3.3.2 Result Enrich & Extraction
+	- ##### 3.3.3 Preventing Missing Important Information
 - #### 3.4 Active Reconnaissance
 	- ##### 3.4.1 Verify Alive Target
 	- ##### 3.4.2 Server's Technology Detection
-	- ##### 3.4.3 Domain Enumeration
+	- ##### 3.4.3 Domain Discovery
 	- ##### 3.4.4 Port Scanning
 	- ##### 3.4.5 Endpoint Fuzzing
-	- ##### 3.4.6 Vulnerability Scanning
+	- ##### 3.4.6 Parameter Fuzzing
+	- ##### 3.4.7 Vulnerability Scanning
 ### 4. Implementation
 - #### 4.1 Applying Reconnaissance Idea & Technology To Develop Reconnaissance Tool With Narrowed Purpose
 ### 5. Result
@@ -149,8 +151,7 @@ My project doesn’t include the following features:
 - In the passive recon stage, I would like to demonstrate analyzing workflows and tactics for searching for information related to the target. This stage also has another name and is open source intelligence (OSINT). This technique focuses on searching for critical data of targets in several public databases, leaked databases, protocols and sensitive credentials.
 - In the active recon stage, pentesters directly interact with the web application to extract information based on requests to and responses from the server. This process involves using protocols to transmit data. It provides pentesters with an overview of the web application's structure, including endpoints, subdomains, and parameters. At the end of the workflow, pentesters scan for potential vulnerabilities in the target using various vulnerability scanning templates.
 ### 3.3 Passive Reconnaissance
-#### 3.1.1 Open Source Intelligence (OSINT)
-##### 3.1.1.1 OSINT Definition and Work Flow
+#### 3.3.1 OSINT (Open Source Intelligence) Definition and Work Flow
 
 - **OSINT** is an abbreviation of Open Source Intelligence. It is the process of collecting, analyzing, and utilizing information that can be gathering from the internet. Expected output of the process is critical data related to the target, such as IP address, domain information, employees' email, sensitive information, hidden endpoints, documents and social network information. Here is a standard OSINT work flow [1] applied to web application .
 
@@ -384,10 +385,9 @@ Disallow: /tmp/ # Access to the admin section is restricted.
 	- `Article Rewriter`: Helps to rewrite articles to make them unique.
 	- `Backlink Checker`: Analyzes backlinks to your website.
 	- `Keyword Position Checker`: Monitors the position of specific keywords in search engine results.
+#### 3.3.2 Result Enrich & Extraction
 
-##### 3.1.1.2 Result Enrich & Extraction
-
-##### 3.1.1.3 Preventing Missing Important Information
+#### 3.3.3 Preventing Missing Important Information
 
 - In order to not missing important information, we should fllow those steps
 
@@ -467,22 +467,13 @@ https://pentester.land/blog/compilation-of-recon-workflows/
 	- Taken by another Entity 
 	- Redirect request from web server turn user to lastest version
 
-#### 3.4.2 Verify Alive Target
-
-#### 3.4.2 DNS Enumeration
+#### 3.4.2 Server's Technology Detection
+#### 3.4.3 Domain Discovery
+##### 3.4.2.1 Domain Enumeration
 
 - `Subdomain Enumeration`: Identify subdomains using `Amass enum` in both active mode and passive mode
-- 
+##### 3.4.2.1 Vitural Host Fuzzing
 
-#### 3.4.3 Port Scanning
-    
-    [](https://github.com/cs8u7/ICT-Lab_Internship-Project#342-port-scanning)
-
-- `Port Scanning`: Use tools like Nmap to identify open ports and running services on the target.
-    - Example: `nmap -sS -sV example.com`
-- `Service Fingerprinting`: Determine the versions of the services running on the open ports.
-
-#### 3.4.4 Endpoint Fuzzing
 - Vitual Host: There are many websites are hosted in a same web server
 	- Reduce cost & utilize resource
 
@@ -529,7 +520,18 @@ https://pentester.land/blog/compilation-of-recon-workflows/
     DocumentRoot /var/www/shop
 </VirtualHost>
 ```
-#### 3.4.5Vulnerability Scanning
+#### 3.4.4 Port Scanning
+    
+    [](https://github.com/cs8u7/ICT-Lab_Internship-Project#342-port-scanning)
+
+- `Port Scanning`: Use tools like Nmap to identify open ports and running services on the target.
+    - Example: `nmap -sS -sV example.com`
+- `Service Fingerprinting`: Determine the versions of the services running on the open ports.
+
+#### 3.4.5 Endpoint Fuzzing
+#### 3.4.6 Parameter Fuzzing
+
+#### 3.4.7 Vulnerability Scanning
 
 - `Automated Scanners`: Use tools like `Nuclei`, `Acunetix`, `Nessus`, `OpenVAS`, or `Burp Suite's scanner` to identify known vulnerabilities.
 - `Manual Testing`: Manually test for common web vulnerabilities such as SQL injection (`sqlmap`), XSS (`fuzzing`), LFI (`lfimap`), and others.
