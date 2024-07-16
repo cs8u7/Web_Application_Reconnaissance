@@ -31,16 +31,18 @@ ICT Lab, May 15, 2024
 	- ##### 3.3.1 OSINT - Open Source Intelligence
 	- ##### 3.3.1 Screenshot Gathering
 - #### 3.4 Active Reconnaissance
-	- ##### 3.4.1 Domain Enumeration
-	- ##### 3.4.2 Port Scanning
-	- ##### 3.4.3 Virtual Host Fuzzing
-	- ##### 3.4.4 Endpoint Fuzzing
-	- ##### 3.4.5 Vulnerability Scanning
+	- ##### 3.4.1 Verify Alive Target
+	- ##### 3.4.2 Server's Technology Detection
+	- ##### 3.4.3 Domain Enumeration
+	- ##### 3.4.4 Port Scanning
+	- ##### 3.4.5 Endpoint Fuzzing
+	- ##### 3.4.6 Vulnerability Scanning
 ### 4. Implementation
 - #### 4.1 Applying Reconnaissance Idea & Technology To Develop Reconnaissance Tool With Narrowed Purpose
 ### 5. Result
 - #### 5.1 Testing Tools and Comparing Result With Using Specific Tools For Each Stage
 - #### 5.2 Conclusion
+### 6. References
 
 
 	- method
@@ -80,52 +82,6 @@ ICT Lab, May 15, 2024
 - `Web Application Domain`: Input for Reconnaissance and Pentest Processing,a web application is an application program stored on a remote server and delivered over the internet through a browser interface.
 	![](capture/Pasted%20image%2020240528154451.png)
 
-- Vitual Host: There are many websites are hosted in a same web server
-	- Reduce cost & utilize resource
-
-| Name-base Hosting                                               | Ip-base Hosting                                      |
-| --------------------------------------------------------------- | ---------------------------------------------------- |
-| Multiple domains to share a single IP address.                  | Unique IP address for each domain                    |
-| Header "Host" determine which virtual host configuration to use | Uses IP address to determine which website to serve. |
-- Name-base example:
-```PHP
-<VirtualHost *:80>
-    ServerName example.com
-    DocumentRoot /var/www/example.com
-</VirtualHost>
-
-<VirtualHost *:80>
-    ServerName example.org
-    DocumentRoot /var/www/example.org
-</VirtualHost>
-```
-
-- IP-base example:
-```PHP
-<VirtualHost 192.168.1.1:80>
-    ServerName example.com
-    DocumentRoot /var/www/example.com
-</VirtualHost>
-
-<VirtualHost 192.168.1.2:80>
-    ServerName example.org
-    DocumentRoot /var/www/example.org
-</VirtualHost>
-
-```
-
-- Subdomain example:
-```PHP
-<VirtualHost *:80>
-    ServerName blog.example.com
-    DocumentRoot /var/www/blog
-</VirtualHost>
-
-<VirtualHost *:80>
-    ServerName shop.example.com
-    DocumentRoot /var/www/shop
-</VirtualHost>
-```
 #### 2.1.3 Offensive Security - Red Teaming
 
 Red teaming is a structured process used to simulate an attack on an organization to identify vulnerabilities and improve security.
@@ -196,25 +152,11 @@ My project doesn’t include the following features:
 #### 3.1.1 Open Source Intelligence (OSINT)
 ##### 3.1.1.1 OSINT Definition and Work Flow
 
-- `OSINT` is an abbreviation of Open Source Intelligence, it is any information can legaling garthering form the internet. Belows is an explaination of a `OSINT` work flow apply for `Web Domain`.
+- **OSINT** is an abbreviation of Open Source Intelligence. It is the process of collecting, analyzing, and utilizing information that can be gathering from the internet. Expected output of the process is critical data related to the target, such as IP address, domain information, employees' email, sensitive information, hidden endpoints, documents and social network information. Here is a standard OSINT work flow [1] applied to web application .
 
-![](capture/Pasted%20image%2020240530094142.png)
+![](capture/Pasted%20image%2020240716092353.png)
 
-- Intialtion of this `OSINT` work flow, is a web domain as an input for the process.
-
-- In order to continue, we need to verfify that the domain is live by looking at the live website associated with the domain.
-	- Use command `ping` to target's domain: is a network utility used to test the reachability of a host on an IP network and to measure the round-trip time for messages sent from the originating host to a destination computer.
-		
-		![](capture/Pasted%20image%2020240605225837.png)
-		
-		- `ping` command uses the Internet Control Message Protocol (ICMP) to send and receive messages. The package is sent from the source host to the target host over the network using IP.The ICMP Echo Reply packet mirrors the Echo Request, changing the ICMP type to 0 (Echo Reply) and keeping the identifier, sequence number, and payload data intact.
-			
-			![](capture/Pasted%20image%2020240605232009.png)
-	
-	- Access the domain in browser, there are some possibilities can occur:
-		- Error 404: DNS record for the domain is delete
-		- Taken by another Entity 
-		- Redirect request from web server turn user to lastest version
+- In order to initiate of this OSINT work flow, it requires an live web domain as an input for the process. This process covers most of OSINT's fields and there are two main parts: gathering, extracting & analyzing data. While in the collecting information part, the workflow uses a searching technique (docking) in several well-known search engines or Spiderbot's databases (Wayback Machine). In the other part, the process extracts critical information from the gathered data list and analyzes it.
 
 - Using `search engines (Google, Bing, Yandex)` to find cached versions of the website and other related information.
 	- In Google, you can use the search query `cache:example.com` to find cached pages of a website. Alternatively, you can search for `site:example.com` and click on the down arrow next to the URL in the search results, then select "Cached" to view the cached version of the page 
@@ -443,7 +385,8 @@ Disallow: /tmp/ # Access to the admin section is restricted.
 	- `Backlink Checker`: Analyzes backlinks to your website.
 	- `Keyword Position Checker`: Monitors the position of specific keywords in search engine results.
 
-##### 3.1.1.2 
+##### 3.1.1.2 Result Enrich & Extraction
+
 ##### 3.1.1.3 Preventing Missing Important Information
 
 - In order to not missing important information, we should fllow those steps
@@ -499,11 +442,6 @@ Disallow: /tmp/ # Access to the admin section is restricted.
 	- *Training and Courses*: Participate in OSINT training programs and courses.
 	- *Communities and Forums*: Join OSINT communities and forums to exchange knowledge.
 	- *Publications and Blogs*: Follow OSINT blogs and publications for the latest updates.
-
-#### 2.1.3 Website Analysis
-
-- `HTML Source Code`: Inspect the website’s HTML source code for comments, hidden fields, and other clues.
-
 ### 3.4. Active Reconnaissance
 
 https://pentester.land/blog/compilation-of-recon-workflows/
@@ -512,38 +450,102 @@ https://pentester.land/blog/compilation-of-recon-workflows/
 
 - Recon 2:
 ![](capture/Pasted%20image%2020240607113203.png)
-#### 3.4.1 DNS Enumeration
+#### 3.4.1 Verify Alive Target
+
+- In order to continue, we need to verify that the domain is live by looking at the live website associated with the domain.
+- Use command `ping` to target's domain: is a network utility used to test the reachability of a host on an IP network and to measure the round-trip time for messages sent from the originating host to a destination computer.
+	
+	![](capture/Pasted%20image%2020240605225837.png)
+
+- `ping` command uses the Internet Control Message Protocol (ICMP) to send and receive messages. The package is sent from the source host to the target host over the network using IP.The ICMP Echo Reply packet mirrors the Echo Request, changing the ICMP type to 0 (Echo Reply) and keeping the identifier, sequence number, and payload data intact.
+	
+	![](capture/Pasted%20image%2020240605232009.png)
+
+
+- Access the domain in browser, there are some possibilities can occur:
+	- Error 404: DNS record for the domain is delete
+	- Taken by another Entity 
+	- Redirect request from web server turn user to lastest version
+
+#### 3.4.2 Verify Alive Target
+
+#### 3.4.2 DNS Enumeration
 
 - `Subdomain Enumeration`: Identify subdomains using `Amass enum` in both active mode and passive mode
 - 
 
-#### 3.4.2 Network Scanning
+#### 3.4.3 Port Scanning
+    
+    [](https://github.com/cs8u7/ICT-Lab_Internship-Project#342-port-scanning)
 
 - `Port Scanning`: Use tools like Nmap to identify open ports and running services on the target.
     - Example: `nmap -sS -sV example.com`
 - `Service Fingerprinting`: Determine the versions of the services running on the open ports.
 
-#### 3.4.3 Web Application Analysis
+#### 3.4.4 Endpoint Fuzzing
+- Vitual Host: There are many websites are hosted in a same web server
+	- Reduce cost & utilize resource
 
-- `Content Discovery`: Use tools like `DirBuster`, `Gobuster`, or `Burp Suite` (Intruder) to find hidden directories and files.
-- `Web Server Information`: Identify the web server and its version (`Apache`, `Nginx`, `IIS`, etc.) with tools like [`Wappalyzer`](https://github.com/tunetheweb/wappalyzer)
-- `Application Frameworks`: Detect the frameworks and technologies used by the application (`PHP`, `ASP.NET`, `Django`, ...).
+| Name-base Hosting                                               | Ip-base Hosting                                      |
+| --------------------------------------------------------------- | ---------------------------------------------------- |
+| Multiple domains to share a single IP address.                  | Unique IP address for each domain                    |
+| Header "Host" determine which virtual host configuration to use | Uses IP address to determine which website to serve. |
+- Name-base example:
+```PHP
+<VirtualHost *:80>
+    ServerName example.com
+    DocumentRoot /var/www/example.com
+</VirtualHost>
 
-#### 3.4.4. Spidering and Crawling
+<VirtualHost *:80>
+    ServerName example.org
+    DocumentRoot /var/www/example.org
+</VirtualHost>
+```
 
-- `Web Crawlers`: Use tools like `Burp Suite`, `OWASP ZAP`, or custom scripts to crawl the website and map its structure.
-- `Identify Input Fields`: Locate all forms and input fields for potential injection points. Scan params with `arjun`. 
+- IP-base example:
+```PHP
+<VirtualHost 192.168.1.1:80>
+    ServerName example.com
+    DocumentRoot /var/www/example.com
+</VirtualHost>
 
-#### 3.4.5 Vulnerability Identification
+<VirtualHost 192.168.1.2:80>
+    ServerName example.org
+    DocumentRoot /var/www/example.org
+</VirtualHost>
+
+```
+
+- Subdomain example:
+```PHP
+<VirtualHost *:80>
+    ServerName blog.example.com
+    DocumentRoot /var/www/blog
+</VirtualHost>
+
+<VirtualHost *:80>
+    ServerName shop.example.com
+    DocumentRoot /var/www/shop
+</VirtualHost>
+```
+#### 3.4.5Vulnerability Scanning
 
 - `Automated Scanners`: Use tools like `Nuclei`, `Acunetix`, `Nessus`, `OpenVAS`, or `Burp Suite's scanner` to identify known vulnerabilities.
-	- https://blog.projectdiscovery.io/secret-token-scanning-with-nuclei/
 - `Manual Testing`: Manually test for common web vulnerabilities such as SQL injection (`sqlmap`), XSS (`fuzzing`), LFI (`lfimap`), and others.
 
-### 4. Implementation
+## 4. Implementation
 - #### 4.1 Applying Reconnaissance Idea & Technology and Customizing Open-Source Reconnaissance For Automatic Purpose
 - 
-### 5. Result
+## 5. Result
 - #### 5.1 Testing Customized Tools and Comparing Result With Using Specific Tools For Each Stage
 - #### 5.2 Conclusion
 
+## 6. References
+https://github.com/Lissy93/web-check
+https://github.com/The-Osint-Toolbox/Website-OSINT
+https://github.com/yogeshojha/rengine
+https://github.com/six2dez/reconftw
+https://github.com/sakibulalikhan/reconx
+https://github.com/samhaxr/recox
+https://blog.projectdiscovery.io/secret-token-scanning-with-nuclei/
