@@ -17,9 +17,8 @@ ICT Lab, May 15, 2024
 - #### 2.1 Project Context
 	- ##### 2.1.1 Web Application
 	- ##### 2.1.2 Web Application Domain
-	- ##### 2.1.3 Offensive Security - Red Teaming
+	- ##### 2.1.3 Offensive Security - Red Teaming & Penetration Testing
 	- ##### 2.1.4 Reconnaissance
-	- ##### 2.1.5 Penetration Testing
 - #### 2.2 Project Objective
 - #### 2.3 Project Scopes
 	- ##### 2.3.1 Inclusion
@@ -28,7 +27,7 @@ ICT Lab, May 15, 2024
 - #### 3.1 Introduce Open-Source Reconnaissance Tool - reNginx
 - #### 3.2 Breakdown Web Domain Reconnaissance Workflow Into Stages
 - #### 3.3 Passive Reconnaissance
-	- ##### 3.3.1 OSINT (Open Source Intelligence) Definition and Work Flow
+	- ##### 3.3.1 OSINT (Open Source Intelligence) Definition and Workflow
 	- ##### 3.3.2 Result Enrich & Extraction
 	- ##### 3.3.3 Preventing Missing Important Information
 - #### 3.4 Active Reconnaissance
@@ -81,22 +80,13 @@ ICT Lab, May 15, 2024
 
 #### 2.1.2 Web Application Domain
 
-- `Web Application Domain`: Input for Reconnaissance and Pentest Processing,a web application is an application program stored on a remote server and delivered over the internet through a browser interface.
+- `Web Application Domain`: Input for Reconnaissance and Pentest Processing, a web application domain is a component of a uniform resource locator (URL) used to access websites. It is also a representative name for web application's IP address. 
 	![](capture/Pasted%20image%2020240528154451.png)
+#### 2.1.3 Offensive Security - Red Teaming & Penetration Testing
 
-#### 2.1.3 Offensive Security - Red Teaming
-
-Red teaming is a structured process used to simulate an attack on an organization to identify vulnerabilities and improve security.
-- Testing specific systems, processes, or overall security posture.
-- Involves gathering information about the target organization to understand its structure, technology stack, and potential vulnerabilities.
-- Using the information gathered during reconnaissance, the red team attempts to exploit vulnerabilities to gain initial access to the target environment.
--  The red team seeks to establish a stable and persistent presence within the target environment.
-- Escalate their privileges within the target environment to gain higher levels of access and control.
-- Moving through the network to access other systems, data, and resources, expanding the red team’s control over the environment.
--  Simulating the extraction of sensitive data from the target environment to test the effectiveness of data protection and monitoring mechanisms.
-- Ensuring that no traces of the red team’s activities remain within the target environment, simulating what a real attacker might do to avoid detection.
-- Documenting the findings, detailing the vulnerabilities discovered, and providing recommendations for remediation.
-- Working with the target organization to address the identified vulnerabilities.
+- Red teaming is a structured process used to simulate an attack on an organization to identify vulnerabilities and improve security. Red teaming focus on deep attack in organization's server such as take control server and attack to related infrastructure and server while pentesting which present is initial access of whole red team process involves identifying vulnerabilities, exploiting them to determine their impact, and providing actionable recommendations to mitigate the discovered weaknesses. 
+- Pentest typically includes a comprehensive examination of various aspects of the target environment, such as network infrastructure, web applications, and internal systems. 
+- In this report, I will focus on web application testing, demonstrate detailed methodologies for identifying and exploiting vulnerabilities, and clarify the logical workflows and tools used in the pentest process.
 
 ![](capture/Pasted%20image%2020240707171822.png)
 
@@ -105,11 +95,6 @@ Red teaming is a structured process used to simulate an attack on an organizatio
 -  Its regular name is recon for short. It is the process of gathering information about a target system, network, or organization before attempting an attack or security assessment. 
 - The Reconnaissance process involves collecting extensive information about the potential targets, their vulnerabilities, and possible attack vectors. 
 - In this report, I would focus on web reconnaissance, demonstrate analyze workflows and clarify analyzing of the mentioned tools in the reconnaissance process.
-#### 2.1.5 Penetration Testing
-
-- Its regular name is pentest. It is the process of actively evaluating the security of a target system, network, or organization by simulating an attack. This process involves identifying vulnerabilities, exploiting them to determine their impact, and providing actionable recommendations to mitigate the discovered weaknesses.
-- Pentest typically includes a comprehensive examination of various aspects of the target environment, such as network infrastructure, web applications, and internal systems. 
-- In this report, I will focus on web application testing, demonstrate detailed methodologies for identifying and exploiting vulnerabilities, and clarify the logical workflows and tools used in the pentest process.
 ### 2.2 Project Objective
 
 - My project leads to clarifying protocol and techniques which are used to searching for structure and information related to the input target domain. In each technology or protocol or some kind of researched information, I would like to determine if it is a critical data related web application target or evidence for the next stage of gathering data.
@@ -126,9 +111,9 @@ My project includes the following features:
 
 My project doesn’t include the following features:
 - Customize an open-source recon tool for automatic purpose.
-- Reserve some close-course tool to extract recon work flow.
+- Reserve some close-course tool to extract recon workflow.
 - Define red team technique in custom recon flow
-- Research and Analyze others stage in red team work flow.
+- Research and Analyze others stage in red team workflow.
 ## 3. Methodology
 ### 3.1 Introduce Open-Source Reconnaissance Tool - reNginx
 #### 3.1.1 Introduction\
@@ -144,30 +129,41 @@ My project doesn’t include the following features:
 
 ![](capture/Pasted%20image%2020240710094028.png)
 
-- reNginx also require a Web Domain or URL which point to web application to trigger the recon process. Base on the graph's work flow, I consider that OSINT process (passive recon) run parallel with active recon process. The aim of osint process is gathering several kind of information related to target such as domain whois data, register email, and employees emails and sensitive data. reNginx would collect list subdomain and active port data in active recon stage then the result's list would become input of vulnerability scanning stage.
+- reNginx also require a Web Domain or URL which point to web application to trigger the recon process. Base on the graph's workflow, I consider that OSINT process (passive recon) run parallel with active recon process. The aim of osint process is gathering several kind of information related to target such as domain whois data, register email, and employees emails and sensitive data. reNginx would collect list subdomain and active port data in active recon stage then the result's list would become input of vulnerability scanning stage.
 ### 3.2 Breakdown Web Domain Reconnaissance Workflow Into Stages
 
-- I would like to separate the recon work flow into stages by techniques before digging into analysis. A recon process regularly divided into two main stages, which are passive recon and active recon. While passive recon involves gathering information without directly interacting with the target, the other one involves interacting with the target system. This can be more detectable by the target but often capture more detailed information.
+- I would like to separate the recon workflow into stages by techniques before digging into analysis. A recon process regularly divided into two main stages, which are passive recon and active recon. While passive recon involves gathering information without directly interacting with the target, the other one involves interacting with the target system. This can be more detectable by the target but often capture more detailed information.
 - In the passive recon stage, I would like to demonstrate analyzing workflows and tactics for searching for information related to the target. This stage also has another name and is open source intelligence (OSINT). This technique focuses on searching for critical data of targets in several public databases, leaked databases, protocols and sensitive credentials.
 - In the active recon stage, pentesters directly interact with the web application to extract information based on requests to and responses from the server. This process involves using protocols to transmit data. It provides pentesters with an overview of the web application's structure, including endpoints, subdomains, and parameters. At the end of the workflow, pentesters scan for potential vulnerabilities in the target using various vulnerability scanning templates.
 ### 3.3 Passive Reconnaissance
-#### 3.3.1 OSINT (Open Source Intelligence) Definition and Work Flow
+#### 3.3.1 OSINT (Open Source Intelligence) Definition and Workflow
 
-- **OSINT** is an abbreviation of Open Source Intelligence. It is the process of collecting, analyzing, and utilizing information that can be gathering from the internet. Expected output of the process is critical data related to the target, such as IP address, domain information, employees' email, sensitive information, hidden endpoints, documents and social network information. Here is a standard OSINT work flow [1] applied to web application .
+- **OSINT** is an abbreviation of Open Source Intelligence. It is the process of collecting, analyzing, and utilizing information that can be gathering from the internet. Expected output of the process is critical data related to the target, such as IP address, domain information, employees' email, sensitive information, hidden endpoints, documents and social network information. Here is a standard OSINT workflow [1] applied to web application .
 
 ![](capture/Pasted%20image%2020240716092353.png)
 
-- In order to initiate of this OSINT work flow, it requires an live web domain as an input for the process. This process covers most of OSINT's fields and there are two main parts: gathering, extracting & analyzing data. While in the collecting information part, the workflow uses a searching technique (docking) in several well-known search engines or Spiderbot's databases (Wayback Machine). In the other part, the process extracts critical information from the gathered data list and analyzes it.
+- In order to initiate of this OSINT workflow, it requires an live web domain as an input for the process. This process covers most of OSINT's fields and there are two main parts: gathering, extracting & analyzing data. While in the collecting information part, the workflow uses a searching technique (docking) in several well-known search engines or Spiderbot's databases (Wayback Machine). In the other part, the process extracts critical information from the gathered data list and analyzes it.
+##### 3.3.1.1 Search Engines and Web Cached
 
-- Using `search engines (Google, Bing, Yandex)` to find cached versions of the website and other related information.
-	- In Google, you can use the search query `cache:example.com` to find cached pages of a website. Alternatively, you can search for `site:example.com` and click on the down arrow next to the URL in the search results, then select "Cached" to view the cached version of the page 
-	- The `cache:` operator is only available on web search.
-	- The `cache:` operator is a search operator that you can use to find the cached version of a page. Google generates a cached version so that users can still access the web page, for example, if the site isn't available.
+- In daily life, internet users usually use several search engines in computer browsers, such as Google, Firefox, Bing, ... Each browser has its own corresponding search engine or users can choose the engine which is the most suitable for them. In general, Google is the most well-known search engine, and it is also used by most of internet users.
+- Indeed, using search engines to find information is searching for data of cached versions of websites matched with search's form which is stored on the servers of the entity running the spider bot, such as a search engine company.
+- A cached page (cached versions of websites) is a web page that has been saved by a search engine on its servers or by a user's browser. Search engines cache pages to allow access to them even when the website's server is not accessible because it is data crawled at the latest capture time but not the data page at search time.
+##### 3.3.1.2 Regular Search and Search Engine Dorking
 
-- Using `Wayback Machine` to searching older version of the website, may be include critical deleted information or ability of unfix vulnerability.
-	![](capture/Pasted%20image%2020240530102505.png)
-	
-	- Wayback Machine automatically crawls and captures snapshots of webpages at various points in time. These snapshots are then stored, attached to timestamps and made accessible to users.
+- Because Google is the most famous search engine, and it also has the highest number of users in all over the world, so in this part and during this report, I would like to use and research about Google search engine.
+- There are two main kinds of internet user: basic user and attacker. While the former used to use regular Google searching, the latter takes advantage of Google dorking most of the time.
+
+- While using regular Google searching, Google interprets the search query by splitting it into individual words or terms and searches for pages that are relevant to any or all of those terms. Google uses its ranking algorithms to show the most relevant results based on factors such as relevance, popularity, user behavior, and content quality.
+- Google might also consider synonyms, related terms, and variations of the words in the query to provide a comprehensive set of results. Google tries to understand the context and intent behind the search query to offer the most useful results.
+- From a Pentesters' view, regular searching is easy to use and collects a amount of search results by input searching term. But, because regular search splits search terms into terms to make sure that it is possible to collect the most results as can - this feature can cause a critical weak point is low accuracy.
+
+- In order to avoid is disadvantage, attackers suggest using a more advance searching technique. Google Dorking, also known as Google hacking, involves using advanced search operators to find specific information. It involves using basic search operators to find information that is publicly accessible but might not be immediately obvious. 
+- Google Working sites, which are regular search, can not act. It's often used to find specific files, information, or directories on a website. Dorking is a combination between using fixed terms placed in double or single quotes and Google search operators. While regular searching is able to split search terms to collect the most possible result, advanced search with quotes makes Google search engine algorithms respect full string search to collect accurate results.
+- Besides, Google Dorking is famous for using Google search engine operators. It includes the operator keyword followed by a colon and the search term. The search term can be put in quotes to increase accuracy.
+- Here is an example of using Google Dorking to search public salary sheets of government companies in Vietnam.
+
+![](capture/Pasted%20image%2020240720161531.png)
+##### 3.3.1.3 Crawler (Spider bot) and Wayback Machine 
 
 - `Spiderbot, Crawler`: is an automated program that systematically browses the web to index and retrieve information from websites.
 	- Googlebot starts with a list of known URLs, including frequently updated sites.
@@ -205,22 +201,10 @@ My project doesn’t include the following features:
 | -------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Ip Range | [googlebot.json](https://developers.google.com/static/search/apis/ipranges/googlebot.json) | [special-crawlers.json](https://developers.google.com/static/search/apis/ipranges/special-crawlers.json) | [user-triggered-fetchers.json](https://developers.google.com/static/search/apis/ipranges/user-triggered-fetchers.json) and [user-triggered-fetchers-google.json](https://developers.google.com/static/search/apis/ipranges/user-triggered-fetchers-google.json) |
 
-- Using `Google Docking`: involves using basic search operators to find information that is publicly accessible but might not be immediately obvious. It's often used to find specific files, information, or directories on a website. The general structure of a search operator includes the *operator keyword* followed by a *colon* and the *target term*, without any spaces between the keyword and the colon.
-	- `site`: Limits the search to a specific domain or site (`site:example.com`). 
-	- `intitle`: Finds pages with the specified keyword in the title ().
-	- `inurl`: Searches for pages with the specified keyword in the URL (`inurl:login`).
-	- `filetype`: Finds files of a specific type (`filetype:pdf`).
-	- `intext`: Searches for pages containing the specified keyword in the text (`intext:"confidential"`).
-	- *Basic Usage*: Using single operator.
-		 ![](capture/Pasted%20image%2020240530113115.png)
-	
-	- *Advanced Techniques:* Combining multiple operators, using more complex queries, and employing additional tools and techniques. It is often used in a more targeted manner to identify vulnerabilities, sensitive information, and potential security risks.
-		- *Combining Multiple Operators*: Creating complex queries to narrow down search results.
-		    - Example: `site:example.com intitle:"index of" inurl:backup filetype:zip`
-		- *Exploiting Error Messages*: Searching for specific error messages that might indicate vulnerabilities.
-		    - Example: `site:example.com intext:"SQL syntax error"`
-		- *Identifying Sensitive Endpoints*: Finding URLs or endpoints that might expose sensitive data.
-		    - Example: `site:example.com inurl:/api/`, `site:example.com ext:bkf | ext:bkp | ext:bak | ext:old | ext:backup
+- Using `Wayback Machine` to searching older version of the website, may be include critical deleted information or ability of unfix vulnerability.
+	![](capture/Pasted%20image%2020240530102505.png)
+
+- Wayback Machine automatically crawls and captures snapshots of webpages at various points in time. These snapshots are then stored, attached to timestamps and made accessible to users.
 
 - Using `IntelTechniques.com`: Beside providing knowledge and course about `OSINT`, this website equip a tremendous amout of searching template (Google Docking). All the templates are categoried base on search engine and social media. User is redicrect to search endpoint with correspoding search template.
 	![](capture/Pasted%20image%2020240531093930.png)
@@ -255,7 +239,7 @@ My project doesn’t include the following features:
 			- A `recursive DNS` lookup is where one DNS server communicates with several other `DNS servers` to hunt down an `IP address` and return it to the client. This is in contrast to an iterative `DNS query`, where the client communicates directly with each `DNS server` involved in the lookup.
 		- The recursive server queries a root server (just a dot `.`), which refers it to the `.com` TLD servers.
 			- `DNS root Server` is a root domain name resolution service. The reason it has such a name is because all domain names in the world must pass it. There are about 13 DNS root servers in the world.
-			- `DNS root server` manages all Top level domains. These domain names can be mentioned as:`.com`,`.org`,`.vn`,`.net`,... When there is a request to resolve a Domain Name into an Ip address, the client will send the request to the nearest `DNS`. (`DNS ISP`). `DNS ISP` will connect to `DNS` root Server to ask for the address of a Domain Name. `DNS` root Server will base on the `Top Levels of a Domain Name` from which to provide appropriate instructions to redirect the client to the correct address it needs to query.
+			- `DNS root server` manages all Top level domains. These domain names can be mentioned as:`.com`,`.org`,`.vn`,`.net`,... When there is a request to resolve a Domain Name into an IP address, the client will send the request to the nearest `DNS`. (`DNS ISP`). `DNS ISP` will connect to `DNS` root Server to ask for the address of a Domain Name. `DNS` root Server will base on the `Top Levels of a Domain Name` from which to provide appropriate instructions to redirect the client to the correct address it needs to query.
 		- The `.com` TLD servers refer the recursive server to the `authoritative DNS` server for `example.com`.
 			- Authoritative DNS is the system that keeps official records corresponding to domain names such as IP addresses. Domain names are the human-readable names of IP addresses that direct applications such as browsers to websites such as `www.example.com`.
 		- The authoritative server responds with an A record that includes the IP address (e.g., `93.184.216.34`).
@@ -469,6 +453,7 @@ https://pentester.land/blog/compilation-of-recon-workflows/
 
 #### 3.4.2 Server's Technology Detection
 #### 3.4.3 Domain Discovery
+- Domain name structure
 ##### 3.4.2.1 Domain Enumeration
 
 - `Subdomain Enumeration`: Identify subdomains using `Amass enum` in both active mode and passive mode
