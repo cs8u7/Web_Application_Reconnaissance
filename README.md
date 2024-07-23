@@ -28,8 +28,11 @@ ICT Lab, May 15, 2024
 - #### 3.2 Breakdown Web Domain Reconnaissance Workflow Into Stages
 - #### 3.3 Passive Reconnaissance
 	- ##### 3.3.1 OSINT (Open Source Intelligence) Definition and Workflow
-	- ##### 3.3.2 Result Enrich & Extraction
-	- ##### 3.3.3 Preventing Missing Important Information
+	- ##### 3.3.2 User Name
+	- ##### 3.3.3 Email Address
+	- ##### 3.3.4 Real Name
+	- ##### 3.3.5 Phone Number And Telephone
+	- ##### 3.3.6 Location
 - #### 3.4 Active Reconnaissance
 	- ##### 3.4.1 Verify Alive Target
 	- ##### 3.4.2 Server's Technology Detection
@@ -140,7 +143,7 @@ My project doesn’t include the following features:
 
 - **OSINT** is an abbreviation of Open Source Intelligence. It is the process of collecting, analyzing, and utilizing information that can be gathering from the internet. Expected output of the process is critical data related to the target, such as IP address, domain information, employees' email, sensitive information, hidden endpoints, documents and social network information. Here is a standard OSINT workflow [1] applied to web application .
 
-![](capture/Pasted%20image%2020240716092353.png)
+![](capture/Pasted%20image%2020240723163134.png)
 
 - In order to initiate of this OSINT workflow, it requires an live web domain as an input for the process. This process covers most of OSINT's fields and there are two main parts: gathering, extracting & analyzing data. While in the collecting information part, the workflow uses a searching technique (docking) in several well-known search engines or Spiderbot's databases (Wayback Machine). In the other part, the process extracts critical information from the gathered data list and analyzes it.
 ##### 3.3.1.1 Search Engines and Web Cached
@@ -163,51 +166,28 @@ My project doesn’t include the following features:
 - Here is an example of using Google Dorking to search public salary sheets of government companies in Vietnam.
 
 ![](capture/Pasted%20image%2020240720161531.png)
-##### 3.3.1.3 Crawler (Spider bot) and Wayback Machine 
 
-- `Spiderbot, Crawler`: is an automated program that systematically browses the web to index and retrieve information from websites.
-	- Googlebot starts with a list of known URLs, including frequently updated sites.
-	- The crawler sends requests to these URLs, downloads the HTML content, and parses it to extract links.
-	- Extract useful information and discover new links. The crawler identifies hyperlinks (`<a>` tags), scripts, images, and other resources linked from the page.
-	- The extracted URLs are filtered to remove duplicates, irrelevant links, or links that point to already visited pages.
-	- URLs are prioritized based on Google's algorithms, considering factors like page importance and update frequency.
-	- Googlebot schedules visits to avoid server overload, respecting the `robots.txt` directives.
-	- The content is indexed, and metadata is stored for efficient retrieval and ranking.
-	- Periodically, Googlebot revisits pages to detect changes and update the index accordingly.
-	- Googlebot manages errors and dynamic content effectively, ensuring comprehensive coverage of the web.
-	![](capture/Pasted%20image%2020240603153739.png)
+- While Google Working is highly effective at searching for hidden data or data which is unable to search regularly, it is still hard to collect a set of results but only display results on page in on a search engine's browser. I would like to introduce tools which support capturing dorking results and provide more effective search operators: Shodan and FOFA. Both of these tools support search engines in a better way and each of these tools has its own crawlers and databases. FOFA and there both have support documents about search operators and API, but there are a few differences in the operators and has a client version but FOFA does not.
+##### 3.3.1.3 Crawler (Spiderbot) and Wayback Machine 
 
-- Verifying `Googlebot` and other Google crawlers. You can verify if a web crawler accessing your server really is a `Google crawler`, such as `Googlebot`. This is useful if you're concerned that spammers or other troublemakers are accessing your site while claiming to be `Googlebot`. There are two methods for verifying Google's crawlers:
-	- *Manually*: For one-off lookups, use command line tools. This method is sufficient for most use cases.
-	- *Automatically*: For large scale lookups, use an automatic solution to match a crawler's IP address against the list of published Googlebot IP addresses.
+- Crawler (Spiderbot) is an automated program that systematically browses the web to collect, retrieve and index information from websites. Here is a general workflow of a web crawler.
 
-- Use command line tools
-	- Run a reverse DNS lookup on the accessing IP address from your logs, using the `host` command.
-	- Verify that the domain name is either `googlebot.com`, `google.com`, or `googleusercontent.com`.
-	- Run a forward DNS lookup on the domain name retrieved in step 1 using the `host` command on the retrieved domain name.
-	- Verify that it's the same as the original accessing IP address from your logs.
-	![](capture/Pasted%20image%2020240606115718.png)
+![](capture/Pasted%20image%2020240721170611.png)
 
-- `Google's crawlers` fall into three categories:
+- The web spiderbot prepares a list of URLs (Seed URLs) as input for the crawl process. The selection of seed URLs depends on the goals of the web crawler. For each endpoint in the seed list, the crawler uses HTTP requests to fetch the HTML content of the web pages and parses it based on HTML tags. Then, the crawler extracts useful information, most of which are external links pointing to new websites. Sometimes, the crawler can detect sensitive data in the HTML content. In the view of Googlebot, for searching purposes, it prioritizes extracting content in header tags and images. After finishing the downloading process of the seed list, the crawler removes duplicates, irrelevant links, or URLs that already exist in the seed list. URLs are prioritized based on the crawler's algorithms, considering factors like page importance and update frequency while scheduling to avoid server overload. Unlike some specific-purpose spiderbots, crawlers that serve search engines like Google or Bing index URLs based on their rank (number of backlinks) and categories to enhance performance.  Last, the crawler updates new-found URLs into the seed list in order to initialize new crawl processes.
 
-| Type                    | Description                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 | Reverse DNS mask                                                                         |
-| ----------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
-| Googlebot               | The main crawler for Google's search products. Always respects robots.txt rules.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            | `crawl-***-***-***-***.googlebot.com` or `geo-crawl-***-***-***-***.geo.googlebot.com`   |
-| Special-case crawlers   | Crawlers that perform specific functions (such as AdsBot), which may or may not respect robots.txt rules.                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   | rate-limited-proxy-`***-***`-`***-***`.google.com                                        |
-| User-Triggered fetchers | Tools and product functions where the end user triggers a fetch. For example, [Google Site Verifier](https://support.google.com/webmasters/answer/9008080) acts on the request of a user. Because the fetch was requested by a user, these fetchers ignore robots.txt rules.  <br>Fetchers controlled by Google originate from IPs in the `user-triggered-fetchers-google.json` object and resolve to a `google.com` hostname. IPs in the `user-triggered-fetchers.json` object resolve to `gae.googleusercontent.com` hostnames. These IPs are used, for example, if a site running on Google Cloud (GCP) has a feature that requires fetching external RSS feeds on the request of the user of that site. | `***-***-***-***.gae.googleusercontent.com` or `google-proxy-***-***-***-***.google.com` |
+- The Web crawler plays an important role in the OSINT process because it gives the pentesters a view of target's web structure, especially is hidden endpoint or internal documents. Indeed, most web spiderbots serve for search purposes or search engines, so it do not display old cached versions of websites in order to ensure access the URL search lists. Wayback Machine is a well-known internet archive providing a friendly search engine for older versions of the website. Wayback snapshot a website's content at specific times in the past. This provides a major advantage in collecting critical deleted information or ability (hidden API keys) of unfix vulnerability. 
 
+![](capture/Pasted%20image%2020240722120622.png)
 
-| Type     | Googlebot                                                                                  | Special-case crawlers                                                                                    | User-Triggered fetchers                                                                                                                                                                                                                                         |
-| -------- | ------------------------------------------------------------------------------------------ | -------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Ip Range | [googlebot.json](https://developers.google.com/static/search/apis/ipranges/googlebot.json) | [special-crawlers.json](https://developers.google.com/static/search/apis/ipranges/special-crawlers.json) | [user-triggered-fetchers.json](https://developers.google.com/static/search/apis/ipranges/user-triggered-fetchers.json) and [user-triggered-fetchers-google.json](https://developers.google.com/static/search/apis/ipranges/user-triggered-fetchers-google.json) |
+- Thanks to crawlers' Wayback and its data, WaybackURLs help pentesters find old subdomains and hidden endpoints by leverage the existing archived data from the Wayback Machine. Those find-able old subdomains that may have vulnerabilities are described as follows. I consider a scenario where a web developer has to shut down a service on the web application. But the developer just deletes a service's DNS record so that a basic user is unable to access the service, while the attacker may find the IP of that service and, of course, old services always contain vulnerabilities.
+##### 3.3.1.4 Hidden Endpoints: Server's Config and Local Documents
 
-- Using `Wayback Machine` to searching older version of the website, may be include critical deleted information or ability of unfix vulnerability.
-	![](capture/Pasted%20image%2020240530102505.png)
-
-- Wayback Machine automatically crawls and captures snapshots of webpages at various points in time. These snapshots are then stored, attached to timestamps and made accessible to users.
-
-- Using `IntelTechniques.com`: Beside providing knowledge and course about `OSINT`, this website equip a tremendous amout of searching template (Google Docking). All the templates are categoried base on search engine and social media. User is redicrect to search endpoint with correspoding search template.
-	![](capture/Pasted%20image%2020240531093930.png)
+- Hidden endpoints are web application URLs or paths which exist but are not documented or publicly advertised. These endpoints are not intended for general use and may serve various specific purposes, such as using in internal of companies or organizations, testing new features and serving for superusers. Indeed, hidden endpoints are latent risks of being attacked by entities outside the organization. Attackers would like to focus on the endpoints which bring value, the web application's information as endpoints are internal documents or web config files.
+- Attackers have many ways to collect hidden endpoints archives, search engine dorking and webmaster files. For web archives, as I mention in the above part, Wayback's crawler downloads web content automatically but, important thing is the crawler indexes the URLs. This structures the web accidentally so the attacker can collect all the URLs which are collected by the crawler.
+- Besides URLs collected from web archives, attackers also can gather hidden paths in webmaster files which optimize the way search engine crawlers interact with their websites. There are two webmaster files we should pay attention to: robots.txt and sitemap.xml. robots.txt is a file which is placed at the document root of a web application, and provides directives to web crawlers about which pages or sections of a site should not be crawled or indexed. sitemap.xml is a file contains a list of URLs on a website, along with metadata about each URL.
+- Using search engine dorking is not really gathering URLs technique. 
+##### 3.3.1.5 WHOIS Databases and Domain Information.
 
 - `Whois`: is a public database that houses the information collected when someone registers a domain name or updates their `DNS` settings. Every domain name that’s been registered belongs to someone, and by default, that registration information is public. `WHOIS` is a way of storing that information and making it available for the public to search.The information collected during the domain registration process includes your: *Name*, *Address*, *Phone Number*, *Email Address*. In draw back, it doesn’t display all of the registration information for every domain name, like `.com` and `.net` can be store more data than `.me` and `.gov`. There are some domain doesn't require policy so its always be displayed.
 
@@ -231,7 +211,7 @@ My project doesn’t include the following features:
 		- `DNS syntax` is just a string of characters used as commands that tell the DNS server what to do. All DNS records also have a `TTL`, which stands for time-to-live - indicates how often a DNS server will refresh that record.
 		
 		- Domain Name System (DNS)
-		![](capture/Pasted%20image%2020240608160245.png)
+		![](capture/Pasted%20image%2020240720214038.png)
 		
 		- User enters `www.example.com` into the browser.
 		- Browser checks its cache, then the OS cache.
@@ -272,54 +252,6 @@ My project doesn’t include the following features:
 
 - `SharedCount`: SharedCount is a tool used to track how many times a specific URL has been shared across various social media platforms. It provides insights into the popularity and reach of a webpage by showing the total number of shares, likes, comments, and other social interactions from platforms like Facebook, Twitter, Pinterest, LinkedIn, and more.
 	![](capture/Pasted%20image%2020240601232025.png)
-
-- `Robots.txt`: is a file which is place at document root of Web application, provides directives to web crawlers about which pages or sections of a site should not be crawled or indexed.
-
-```PHP
-User-agent: *
-Disallow: /admin/  # Access to the admin section is restricted.
-Disallow: /private/ # Access to the admin section is restricted.
-Disallow: /tmp/ # Access to the admin section is restricted.
-```
-
-- `Sitemap.xml`: is a file contains a list of URLs on a website, along with metadata about each URL
-	- Typically found at `https://example.com/sitemap.xml`. Some sites might have multiple sitemaps, or an index sitemap linking to multiple sub-sitemaps.
-	- Analyze the `sitemap.xml` file to find all publicly accessible pages. This is useful for uncovering hidden or less obvious sections of a website.
-
-```XML
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://example.com/</loc>
-    <lastmod>2024-05-01</lastmod>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-  # https://example.com/: Last modified on 2024-05-01, changes daily, highest priority.
-  <url>
-    <loc>https://example.com/about</loc>
-    <lastmod>2024-04-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
-  </url>
-  # https://example.com/about: Last modified on 2024-04-15, changes monthly, medium priority.
-  <url>
-    <loc>https://example.com/blog</loc>
-    <lastmod>2024-05-20</lastmod>
-    <changefreq>weekly</changefreq>
-    <priority>0.9</priority>
-	# https://example.com/blog: Last modified on 2024-05-20, changes weekly, high priority.
-  </url>
-  <url>
-    <loc>https://example.com/contact</loc>
-    <lastmod>2024-03-30</lastmod>
-    <changefreq>yearly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  # https://example.com/contact: Last modified on 2024-03-30, changes yearly, low priority.
-</urlset>
-
-```
 
 - `FOCA`: `FOCA` is a network infrastructure mapping tool that can be used for `OSINT`. It can analyze metadata from various files, including doc, pdf and ppt files. FOCA can also enumerate users, folders, emails, software used, operating system, and other useful information.
 	- *Document Search and Download*: `FOCA` searches for and downloads documents from the target domain.
@@ -363,69 +295,12 @@ Disallow: /tmp/ # Access to the admin section is restricted.
 
 - `Metagoofil`: This is a free and open-source tool designed to extract all the metadata information from public documents that are available on websites. This tool uses two libraries to extract data. These are Hachoir and PdfMiner. After extracting all the data, this tool will generate a report which contains usernames, software versions, and servers or machine names that will help Penetration testers in the information-gathering phase. This tool can also extract MAC addresses from Microsoft office documents. This tool can give information about the hardware of the system by which they generated the report of the tool.
 	![](capture/Pasted%20image%2020240609164505.png)
+#### 3.3.2 User Name
+#### 3.3.3 Email Address
+#### 3.3.4 Real Name
+#### 3.3.5 Phone Number And Telephone
+#### 3.3.6 Location
 
-- `Small SEO tools`: Small SEO Tools is a suite of free online tools designed to assist with various aspects of search engine optimization (SEO). These tools are used to enhance website visibility, monitor performance, and improve overall SEO strategy.
-	- `Plagiarism Checker`: Detects duplicate content across the web.
-	- `Article Rewriter`: Helps to rewrite articles to make them unique.
-	- `Backlink Checker`: Analyzes backlinks to your website.
-	- `Keyword Position Checker`: Monitors the position of specific keywords in search engine results.
-#### 3.3.2 Result Enrich & Extraction
-
-#### 3.3.3 Preventing Missing Important Information
-
-- In order to not missing important information, we should fllow those steps
-
-- Define and Focus on objective and scope
-	- Define objective to collect data around or relate to it
-	- Notice to the level of detail required
-
-- Double check if **domain is expired**: `WHOIS` is a public database that stores information about domain names, including their expiration dates and is not affected by the deletion of DNS records. In case, an service's web is no longer in use, the lazy dev just delete the dns record but do not stop the web service. user can still access the service if they know the ip.
-
-- Use a Variety of Sources
-	- Diverse sources provide a broader view and reduce the risk of missing critical information. 
-		- *News Media*: Newspapers, magazines, and online news platforms.
-		- *Social Media*: Twitter, Facebook (Cyber Space), LinkedIn, and other social networks.
-		- *Government Websites*: Official documents, reports, and update releases.
-		- *Academic Publications*: Journals, papers, and reports.
-		- *Forums and Blogs*: Suitable communities and expert blogs.
-		- *Specialized Databases*: Industry-specific databases and archives.
-
-- Advanced Search Techniques
-	- *Boolean Operators*: Use AND, OR, NOT to combine or exclude keywords.
-	- *Exact Phrases*: Use quotation marks `""` to search for exact phrases.
-	- *Site Search*: Use `site:example.com` to search within a specific domain.
-	- *File Type*: Use `filetype:pdf` or other extensions to find specific document types.
-	- *Time Range*: Use tools to filter results by date range to find the most recent information.
-
-- Automate Data Collection
-	- *Web Scrapers*: Tools like `BeautifulSoup`, `Scrapy`, or `Selenium` for extracting data from websites. Extract data in title tag.
-	- *APIs*: Utilize APIs from platforms like Twitter, Google, or news services. Return data usually in Json format. Large-scale, and structured data collection tasks.
-		- Google APIs is a google service can signup with google cloud, then achive api_key and cse_id for automate actions
-	- *Custom Search Engines*: Create a Google Custom Search Engine (CSE) tailored to your specific needs. While using default google search query just quick and only find some match result.
-
- - Verify and Cross-Reference Information
-	- *Cross-Verification*: Check the same information across different reputable sources.
-	- **Fact-Checking:** Use dedicated fact-checking websites to validate controversial or suspect claims.
-	- **Original Sources:** Whenever possible, trace information back to its original source.
-
-- Use Specialized OSINT Tools
-	- *Maltego*: For link analysis and data mining.
-		- Visualizing relationships between various entities such as people, companies, websites, domains, and IP addresses through detailed graphs.
-		- Investigating cyber threats, mapping social networks, analyzing criminal activity, and researching corporate structures.
-	- *Shodan*: For information on internet-connected devices (FOFA).
-		- Indexes information about devices connected to the internet.
-		- Searching vulnerability assessments, and IoT device inventory.
-	- *TheHarvester*: For gathering emails, subdomains, and more.
-		- Collect information related to domains, such as email addresses, subdomains, IP addresses, and employee names.
-		- Gathering information for social engineering attacks, and creating contact lists.
-	- *Recon-ng*: A web reconnaissance framework.
-		- Includes numerous modules that can be used to perform various tasks such as domain reconnaissance, email harvesting, and vulnerability analysis.
-		- Gathering information for red teaming exercises.
-
-- Stay Updated on OSINT Techniques
-	- *Training and Courses*: Participate in OSINT training programs and courses.
-	- *Communities and Forums*: Join OSINT communities and forums to exchange knowledge.
-	- *Publications and Blogs*: Follow OSINT blogs and publications for the latest updates.
 ### 3.4. Active Reconnaissance
 
 https://pentester.land/blog/compilation-of-recon-workflows/
@@ -529,6 +404,7 @@ https://pentester.land/blog/compilation-of-recon-workflows/
 - #### 5.2 Conclusion
 
 ## 6. References
+https://github.com/willc/OSINT-flowcharts
 https://github.com/Lissy93/web-check
 https://github.com/The-Osint-Toolbox/Website-OSINT
 https://github.com/yogeshojha/rengine
