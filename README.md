@@ -1,6 +1,6 @@
 # UNIVERSITY OF SCIENCE AND TECHNOLOGY OF HANOI
 # DEPARTMENT OF INFORMATION COMMUNICATION TECHNOLOGY
-![](USTH%20logo/Logo-Truong-Dai-hoc-Khoa-hoc-va-Cong-nghe-Ha-Noi.png)
+![](USTH_logo/Logo-Truong-Dai-hoc-Khoa-hoc-va-Cong-nghe-Ha-Noi.png)
 
 # INTERNSHIP PROJECT REPORT
 # Web Application Reconnaissance Flow Analysis
@@ -151,6 +151,7 @@ My project doesn’t include the following features:
 - In daily life, internet users usually use several search engines in computer browsers, such as Google, Firefox, Bing, ... Each browser has its own corresponding search engine or users can choose the engine which is the most suitable for them. In general, Google is the most well-known search engine, and it is also used by most of internet users.
 - Indeed, using search engines to find information is searching for data of cached versions of websites matched with search's form which is stored on the servers of the entity running the spider bot, such as a search engine company.
 - A cached page (cached versions of websites) is a web page that has been saved by a search engine on its servers or by a user's browser. Search engines cache pages to allow access to them even when the website's server is not accessible because it is data crawled at the latest capture time but not the data page at search time.
+- 
 ##### 3.3.1.2 Regular Search and Search Engine Dorking
 
 - Because Google is the most famous search engine, and it also has the highest number of users in all over the world, so in this part and during this report, I would like to use and research about Google search engine.
@@ -167,29 +168,39 @@ My project doesn’t include the following features:
 
 ![](capture/Pasted%20image%2020240720161531.png)
 
-- While Google Working is highly effective at searching for hidden data or data which is unable to search regularly, it is still hard to collect a set of results but only display results on page in on a search engine's browser. I would like to introduce tools which support capturing dorking results and provide more effective search operators: Shodan and FOFA. Both of these tools support search engines in a better way and each of these tools has its own crawlers and databases. FOFA and there both have support documents about search operators and API, but there are a few differences in the operators and has a client version but FOFA does not.
+- While Google Working is highly effective at searching for hidden data or data which is unable to search regularly, it is still hard to collect a set of results but only display results on page in on a search engine's browser. I would like to introduce tools which support capturing dorking results and provide more effective search operators: shodan and FOFA. Both of these tools support search engines in a better way and each of these tools has its own crawlers and databases. FOFA and there both have support documents about search operators and API, but there are a few differences in the operators and has a client version but FOFA does not.
 ##### 3.3.1.3 Crawler (Spiderbot) and Wayback Machine 
 
 - Crawler (Spiderbot) is an automated program that systematically browses the web to collect, retrieve and index information from websites. Here is a general workflow of a web crawler.
 
 ![](capture/Pasted%20image%2020240721170611.png)
 
-- The web spiderbot prepares a list of URLs (Seed URLs) as input for the crawl process. The selection of seed URLs depends on the goals of the web crawler. For each endpoint in the seed list, the crawler uses HTTP requests to fetch the HTML content of the web pages and parses it based on HTML tags. Then, the crawler extracts useful information, most of which are external links pointing to new websites. Sometimes, the crawler can detect sensitive data in the HTML content. In the view of Googlebot, for searching purposes, it prioritizes extracting content in header tags and images. After finishing the downloading process of the seed list, the crawler removes duplicates, irrelevant links, or URLs that already exist in the seed list. URLs are prioritized based on the crawler's algorithms, considering factors like page importance and update frequency while scheduling to avoid server overload. Unlike some specific-purpose spiderbots, crawlers that serve search engines like Google or Bing index URLs based on their rank (number of backlinks) and categories to enhance performance.  Last, the crawler updates new-found URLs into the seed list in order to initialize new crawl processes.
+- The web spiderbot prepares a list of URLs (Seed URLs) as input for the crawl process. The selection of seed URLs depends on the goals of the web crawler. For each endpoint in the seed list, the crawler uses HTTP requests to fetch the HTML content of the web pages and parses it based on HTML tags. Then, the crawler extracts useful information, most of which are external links pointing to new websites. Sometimes, the crawler can detect sensitive data in the HTML content. In the view of Googlebot, for searching purposes, it prioritizes extracting content in header tags and images. After finishing the downloading process of the seed list, the crawler removes duplicates, irrelevant links, or URLs that already exist in the seed list. URLs are prioritized based on the crawler's algorithms, considering factors like page importance and update frequency while scheduling to avoid server overload. Unlike some specific-purpose spiderbots, crawlers that serve search engines like Google or Bing index URLs based on their rank (number of backlinks) and categories to enhance performance. backlinks also known as inbound links or incoming links, are links from one website to a page on another website. It is an external links place in others sites which are point to your website. Last, the crawler updates new-found URLs into the seed list in order to initialize new crawl processes.
 
 - The Web crawler plays an important role in the OSINT process because it gives the pentesters a view of target's web structure, especially is hidden endpoint or internal documents. Indeed, most web spiderbots serve for search purposes or search engines, so it do not display old cached versions of websites in order to ensure access the URL search lists. Wayback Machine is a well-known internet archive providing a friendly search engine for older versions of the website. Wayback snapshot a website's content at specific times in the past. This provides a major advantage in collecting critical deleted information or ability (hidden API keys) of unfix vulnerability. 
 
 ![](capture/Pasted%20image%2020240722120622.png)
 
 - Thanks to crawlers' Wayback and its data, WaybackURLs help pentesters find old subdomains and hidden endpoints by leverage the existing archived data from the Wayback Machine. Those find-able old subdomains that may have vulnerabilities are described as follows. I consider a scenario where a web developer has to shut down a service on the web application. But the developer just deletes a service's DNS record so that a basic user is unable to access the service, while the attacker may find the IP of that service and, of course, old services always contain vulnerabilities.
-##### 3.3.1.4 Hidden Endpoints: Server's Config and Local Documents
+##### 3.3.1.4 Hidden Endpoints
 
 - Hidden endpoints are web application URLs or paths which exist but are not documented or publicly advertised. These endpoints are not intended for general use and may serve various specific purposes, such as using in internal of companies or organizations, testing new features and serving for superusers. Indeed, hidden endpoints are latent risks of being attacked by entities outside the organization. Attackers would like to focus on the endpoints which bring value, the web application's information as endpoints are internal documents or web config files.
 - Attackers have many ways to collect hidden endpoints archives, search engine dorking and webmaster files. For web archives, as I mention in the above part, Wayback's crawler downloads web content automatically but, important thing is the crawler indexes the URLs. This structures the web accidentally so the attacker can collect all the URLs which are collected by the crawler.
 - Besides URLs collected from web archives, attackers also can gather hidden paths in webmaster files which optimize the way search engine crawlers interact with their websites. There are two webmaster files we should pay attention to: robots.txt and sitemap.xml. robots.txt is a file which is placed at the document root of a web application, and provides directives to web crawlers about which pages or sections of a site should not be crawled or indexed. sitemap.xml is a file contains a list of URLs on a website, along with metadata about each URL.
-- Technique search engine dorking is not really directly gathering URLs as both methods above. This technique is mentions above with ability of searching endpoints which are hard to finds, low rank and can not find by regular searching. At the time when web programming templates were created, It mark an explosive growth of web applications' services. But, while all web developers focus on create services which make people's daily life become more convenient, developers usually do not concern about exist security problems. Because of ensuring development progress of the web service and reducing time for project's newbie understanding the code, developers rarely change name of various file type and folder name, especially is local documents and configs folders. Attackers usually take advantage of those default name paths in order to design vulnerability dorking to search web applications which do not configs well enough to hide those sensitive endpoints.
+- Technique search engine dorking is not really directly gathering URLs as both methods above. This technique is mentions above with ability of searching endpoints which are hard to finds, low rank and can not find by regular searching. At the time when web programming templates were created, It mark an explosive growth of web applications' services. But, while all web developers focus on create services which make people's daily life become more convenient, developers usually do not concern about exist security problems. Because of ensuring development progress of the web service and reducing time for project's newbie understanding the code, developers rarely change name of various file type and folder name, especially is documents and configs folders. Attackers usually take advantage of those default name paths in order to design vulnerability dorking to search web applications which do not configs well enough to hide those sensitive endpoints.
 
 ![](capture/Pasted%20image%2020240724105739.png)
-##### 3.3.1.5 WHOIS Databases and Domain Information.
+##### 3.3.1.5 Server's Config and Documents
+
+- Web application configuration refers to the process of setting up and managing the settings and parameters that control the behavior, security, and functionality of a web application. This includes configuring server settings, database connections, environment variables, application settings. 
+- In other words, a server's config can be the server's setting or instructions for initializing the server or even the server's secret key. If web crawlers provide the pentesters overview of the web's structure, the config file may contain information about services of the applications application, such as subdomain, virtual host, folder permissions, communication protocol between the application's services and cryptography secret key.
+
+![](capture/Pasted%20image%2020240729144303.png)
+
+- Documents may stand for images and texts, but on the pentesters usually focus on types of internal document which bring back rich information such as salary sheets or employee's sheets and documents which are created on a web server.
+-  Visible data from those documents can be an employee's email, real name, real name or various kinds of sensitive data. Indeed, attackers regularly demonstrate invisible data inside those files - metadata. Metadata is information that is stored within a file and used to provide context or descriptions about that file. So, metadata of files which are created on a web server is very valuable because it contains critical important information such as opera system information, file's creator software version, username of author, embed email and file path. Each gathered information above opens an attack arrow to the web server system: the attacker can search for CVE based on a version of an opera system or software, phishing email attack and reveal the web structure on file path.
+- Metagoofil is a tool for extracting metadata of public documents (PDF, doc,XLS, ppt,etc.) available on the target websites. This information could be useful because you can get valid usernames, people's names, for using later in bruteforce password attacks (vpn, ftp, webapps), the tool will also extract interesting "paths" of the documents, where we can get shared resources names, server names, etc. The tool first performs a query in Google requesting different filetypes that can have useful metadata (PDF, doc, XLS, ppt,etc.), then will download those documents to the disk and extracts the metadata of the file using specific libraries for parsing different file types (Hachoir, Pdfminer, etc.)
+##### 3.3.1.6 WHOIS Databases and Domain Information.
 
 - `Whois`: is a public database that houses the information collected when someone registers a domain name or updates their `DNS` settings. Every domain name that’s been registered belongs to someone, and by default, that registration information is public. `WHOIS` is a way of storing that information and making it available for the public to search.The information collected during the domain registration process includes your: *Name*, *Address*, *Phone Number*, *Email Address*. In draw back, it doesn’t display all of the registration information for every domain name, like `.com` and `.net` can be store more data than `.me` and `.gov`. There are some domain doesn't require policy so its always be displayed.
 
@@ -246,14 +257,7 @@ My project doesn’t include the following features:
 - `WhoisMind`: Allow lookup IP address details including location, owners, ISP (internet service provider), hostname, type, proxy, blacklist status and more. Find people information by IP. So I tried to search information which is extract by `Reverse DNS Lookup` with input domain of example.com. With input IP, this tool extract full range IP. 
 	![](capture/Pasted%20image%2020240609144143.png)
 
-- `DNSTrails`: is a Internet service that provides you with the tools to find any domain someone owns among other things. `DNSTrails` allows users to view the history of DNS records for a domain. This includes changes to A records, MX records, NS records, and more. - This tool is dead.
 
-- `Backlinks`: also known as inbound links or incoming links, are links from one website to a page on another website. It is an external links place in others sites which are point to your website. Numbers of backlinks affect to site's rank for SEO (search engine optimization).
-    - When `Googlebot` encounters a hyperlink on a webpage, it adds that link to its list of pages to crawl next. This process helps Googlebot discover new pages and the relationships between pages through backlinks. Once Googlebot crawls a page, it processes the content and stores it in Google’s index, a massive database of web pages.
-	![](capture/Pasted%20image%2020240601231048.png)
-
-- `SharedCount`: SharedCount is a tool used to track how many times a specific URL has been shared across various social media platforms. It provides insights into the popularity and reach of a webpage by showing the total number of shares, likes, comments, and other social interactions from platforms like Facebook, Twitter, Pinterest, LinkedIn, and more.
-	![](capture/Pasted%20image%2020240601232025.png)
 
 - `FOCA`: `FOCA` is a network infrastructure mapping tool that can be used for `OSINT`. It can analyze metadata from various files, including doc, pdf and ppt files. FOCA can also enumerate users, folders, emails, software used, operating system, and other useful information.
 	- *Document Search and Download*: `FOCA` searches for and downloads documents from the target domain.
@@ -283,20 +287,11 @@ My project doesn’t include the following features:
 		
 		![](capture/Pasted%20image%2020240605105905.png)
 
-- `DomainCrawler`: automates the process of gathering, analyzing, and presenting information about domains on the internet, providing valuable insights for businesses, researchers, and cybersecurity professionals.
-	![](capture/Pasted%20image%2020240609162732.png)
-
 - `NerdyData`: discovering and analyzing data on the web. It focuses on searching through the source code of websites, allowing users to find specific pieces of code, technologies, and other web assets.
 	- NerdyData is a free alternative to Wappalyzer, Whatruns, and BuiltWith.
 	- Search all the web which are using the same template's input code
 	- Allows users to search for websites using specific technologies, such as CMS platforms (e.g., WordPress, Drupal), e-commerce solutions (e.g., Shopify, Magento), JavaScript libraries (e.g., jQuery, React), and more.
 	![](capture/Pasted%20image%2020240609164639.png)
-
-- `PubDB`: PubDB, which stands for Public Database, is a platform designed to collect, organize, and provide access to publicly available information about companies, websites, technologies, and various other entities.
-	![](capture/Pasted%20image%2020240609164346.png)
-
-- `Metagoofil`: This is a free and open-source tool designed to extract all the metadata information from public documents that are available on websites. This tool uses two libraries to extract data. These are Hachoir and PdfMiner. After extracting all the data, this tool will generate a report which contains usernames, software versions, and servers or machine names that will help Penetration testers in the information-gathering phase. This tool can also extract MAC addresses from Microsoft office documents. This tool can give information about the hardware of the system by which they generated the report of the tool.
-	![](capture/Pasted%20image%2020240609164505.png)
 #### 3.3.2 User Name
 #### 3.3.3 Email Address
 #### 3.3.4 Real Name
