@@ -151,22 +151,18 @@ My project doesn’t include the following features:
 - In daily life, internet users usually use several search engines in computer browsers, such as Google, Firefox, Bing, ... Each browser has its own corresponding search engine or users can choose the engine which is the most suitable for them. In general, Google is the most well-known search engine, and it is also used by most of internet users.
 - Indeed, using search engines to find information is searching for data of cached versions of websites matched with search's form which is stored on the servers of the entity running the spider bot, such as a search engine company.
 - A cached page (cached versions of websites) is a web page that has been saved by a search engine on its servers or by a user's browser. Search engines cache pages to allow access to them even when the website's server is not accessible because it is data crawled at the latest capture time but not the data page at search time.
-- 
 ##### 3.3.1.2 Regular Search and Search Engine Dorking
 
-- Because Google is the most famous search engine, and it also has the highest number of users in all over the world, so in this part and during this report, I would like to use and research about Google search engine.
-- There are two main kinds of internet user: basic user and attacker. While the former used to use regular Google searching, the latter takes advantage of Google dorking most of the time.
+- Because Google is the most famous search engine, and it also has the highest number of users in all over the world, so in this part and during this report, I would like to use and research about Google search engine. Indeed, search action in the browser is query data in search engine databases with searching term which is input by user but not google search engine help user search the result in the internet at the time user input the term. There are two main kinds of internet user: basic user and attacker. While the former used to use regular Google searching, the latter takes advantage of Google dorking most of the time in order to optimize searching efficacy.
 
-- While using regular Google searching, Google interprets the search query by splitting it into individual words or terms and searches for pages that are relevant to any or all of those terms. Google uses its ranking algorithms to show the most relevant results based on factors such as relevance, popularity, user behavior, and content quality.
-- Google might also consider synonyms, related terms, and variations of the words in the query to provide a comprehensive set of results. Google tries to understand the context and intent behind the search query to offer the most useful results.
+- While using regular Google searching, Google interprets the search query by splitting it into individual words or terms and searches for pages that are relevant to any or all of those terms. Google uses its ranking algorithms to show the most relevant results based on factors such as relevance, popularity, user behavior, and content quality. Google might also consider synonyms, related terms, and variations of the words in the query to provide a comprehensive set of results. Google tries to understand the context and intent behind the search query to offer the most useful results.
+
 - From a Pentesters' view, regular searching is easy to use and collects a amount of search results by input searching term. But, because regular search splits search terms into terms to make sure that it is possible to collect the most results as can - this feature can cause a critical weak point is low accuracy.
-
 - In order to avoid is disadvantage, attackers suggest using a more advance searching technique. Google Dorking, also known as Google hacking, involves using advanced search operators to find specific information. It involves using basic search operators to find information that is publicly accessible but might not be immediately obvious. 
 - Google Working sites, which are regular search, can not act. It's often used to find specific files, information, or directories on a website. Dorking is a combination between using fixed terms placed in double or single quotes and Google search operators. While regular searching is able to split search terms to collect the most possible result, advanced search with quotes makes Google search engine algorithms respect full string search to collect accurate results.
-- Besides, Google Dorking is famous for using Google search engine operators. It includes the operator keyword followed by a colon and the search term. The search term can be put in quotes to increase accuracy.
-- Here is an example of using Google Dorking to search public salary sheets of government companies in Vietnam.
+- Besides, Google Dorking is famous for using Google search engine operators. It includes the operator keyword followed by a colon and the search term. The search term can be put in quotes to increase accuracy. Here is an example of searching login endpoint with Google Dorking.
 
-![](capture/Pasted%20image%2020240720161531.png)
+![](capture/Pasted%20image%2020240803231739.png)
 
 - While Google Working is highly effective at searching for hidden data or data which is unable to search regularly, it is still hard to collect a set of results but only display results on page in on a search engine's browser. I would like to introduce tools which support capturing dorking results and provide more effective search operators: shodan and FOFA. Both of these tools support search engines in a better way and each of these tools has its own crawlers and databases. FOFA and there both have support documents about search operators and API, but there are a few differences in the operators and has a client version but FOFA does not.
 ##### 3.3.1.3 Crawler (Spiderbot) and Wayback Machine 
@@ -197,14 +193,37 @@ My project doesn’t include the following features:
 
 ![](capture/Pasted%20image%2020240729144303.png)
 
-- Documents may stand for images and texts, but on the pentesters usually focus on types of internal document which bring back rich information such as salary sheets or employee's sheets and documents which are created on a web server.
+- Documents may stand for images and texts, but on the pentesters usually focus on types of internal document which bring back rich information such as salary sheets or employee's sheets and documents which are created on a web server. Here is an example of using Google Dorking to search public salary sheets of government companies in Vietnam.
+
+![](capture/Pasted%20image%2020240720161531.png)
+
 -  Visible data from those documents can be an employee's email, real name, real name or various kinds of sensitive data. Indeed, attackers regularly demonstrate invisible data inside those files - metadata. Metadata is information that is stored within a file and used to provide context or descriptions about that file. So, metadata of files which are created on a web server is very valuable because it contains critical important information such as opera system information, file's creator software version, username of author, embed email and file path. Each gathered information above opens an attack arrow to the web server system: the attacker can search for CVE based on a version of an opera system or software, phishing email attack and reveal the web structure on file path.
 - Metagoofil is a tool for extracting metadata of public documents (PDF, doc,XLS, ppt,etc.) available on the target websites. This information could be useful because you can get valid usernames, people's names, for using later in bruteforce password attacks (vpn, ftp, webapps), the tool will also extract interesting "paths" of the documents, where we can get shared resources names, server names, etc. The tool first performs a query in Google requesting different filetypes that can have useful metadata (PDF, doc, XLS, ppt,etc.), then will download those documents to the disk and extracts the metadata of the file using specific libraries for parsing different file types (Hachoir, Pdfminer, etc.)
-##### 3.3.1.6 WHOIS Databases and Domain Information.
+##### 3.3.1.6 DNS, WHOIS Databases and Domain Information.
 
-- `Whois`: is a public database that houses the information collected when someone registers a domain name or updates their `DNS` settings. Every domain name that’s been registered belongs to someone, and by default, that registration information is public. `WHOIS` is a way of storing that information and making it available for the public to search.The information collected during the domain registration process includes your: *Name*, *Address*, *Phone Number*, *Email Address*. In draw back, it doesn’t display all of the registration information for every domain name, like `.com` and `.net` can be store more data than `.me` and `.gov`. There are some domain doesn't require policy so its always be displayed.
+- nslookup (stands for “Name Server Lookup”) is a useful command for getting information from the DNS server. It is a network administration tool for querying the Domain Name System (DNS) to obtain domain name or IP address mapping or any other specific DNS record. Here is a general workflow of DNS record query, this flow is applied for both command and internet browser [2].
 
-- `Whoisology`: is a web-based service that offers comprehensive WHOIS data and tools for exploring and analyzing domain registration information.
+![](capture/Pasted%20image%2020240804095515.png)
+
+- First, nslookup requires a web domain to initialize the work flow, then check that domain if it exists in the local cache, OS cache and router cache. 
+- The local cache, also known as the browser cache, is maintained by web browsers (regular in browser://net-internals/#dns and browser stands for what browser user is using). When a user visits a website, the browser stores the DNS resolution results temporarily. 
+- The OS cache, or system cache, is maintained by the operating system and is used to store DNS query results system-wide. When an application needs to resolve a domain name, the OS checks its cache. If a recent entry is found, it uses the cached IP address. This reduces the number of queries sent to the DNS resolver and speeds up network requests.
+- The router cache is maintained by the router or network gateway device that connects a local network to the internet. When a device on the network makes a DNS query, the router checks its cache. If a recent entry is found, it responds with the cached IP address.
+- After checking the user's device cache, the command checks host file (/etc/hosts for Linux distro), which is a static text file used by the operating system to map host-names to IP addresses. Users possibly to change content of this file in order to map domain with IP may not resolve in public DNS.
+- After cache checking, client requests the DNS resolver (or recursive DNS resolver) provided by the ISP (Internet Service Provider) or a third-party service like Google Public DNS or Cloudflare. It is responsible for communicating with several other DNS servers to hunt down an IP address. This is reducing software burden on client sites by avoiding an iterative DNS query, where the client communicates directly with each DNS server involved in the lookup.
+- Because DNS resolvers are provided by different organizations, they are basically different systems, so they can have their own policy and cache. So, the DNS resolver's cache is also looked up for domain information. Then, the resolver query to DNS servers in order queries are root DNS server, Top Level DNS server and Authoritative DNS server to collect the IP address of the provided domain.
+- When there is a request to complete a domain name into an IP address, the client will send the request to the nearest DNS resolver. The resolver server queries a DNS root server, which is the top level in the DNS hierarchy. When the root server receives a query for the IP address for google.com Google, for example, the root server is not going to know what the IP address is.  The DNS root server manages all top level domains so the root server will direct the resolver to the TLD or top-level domain server for the **.com** domain. So the resolver will now ask the TLD server for an IP address for the domain base on instruction in response's root DNS server.
+- The top-level domain server stores address information for top-level domains such as **.com**, **.net**, **.org** and so on. TLD servers store numbers DNS records, which specify the authoritative DNS servers for each level domain under the TLD. This particular TLD server manages **.com** domain which google.com is a part of. So when a TLD server receives query for IP address for google.com, TLD server is not going to know what IP addresses for google.com but they store information about the authoritative DNS servers that are responsible for providing the IP addresses for these domain names. So the TLD will direct resolver to  authoritative name servers. So once again the resolver will now ask authoritative name server for IP address for google.com. Authoritative name server or servers are responsible for knowing everything about domain which includes IP address.
+- Authoritative DNS is the system that keeps official records corresponding to domain names such as IP addresses. Domain names are the human-readable names of IP addresses that direct applications such as browsers to websites such as google.com.
+- The authoritative server responds with DNS record that includes the IP address and the DNS resolver server caches the IP address and sends it to the browser. So now the client or browser get the domain's IP address
+
+- WHOIS is a public database that store the information collected when someone registers a domain name or updates their DNS settings. Every domain name that’s been registered belongs to someone, and by default, that registration information is public. WHOIS is a way of storing that information and making it available for the public to search.The information collected during the domain registration process includes your: Name, Address, Phone Number, Email Address. In draw back, it doesn’t display all of the registration information for every domain name, like **.com** and **.net** can be store more data than those domain. There are some domain doesn't require policy so its always be displayed.
+
+![](Capture/Pasted%20image%2020240730104615.png)
+
+- Users have to request to query WHOIS data domain's information by WHOIS protocol. When a user want to public a web application or a web service out to the internet, they first need to create a new domain with creator information then update to WHOIS, then that user is able to use that new domain to register DNS record for the web application.
+
+- Whoisology is a web-based service that offers comprehensive WHOIS data and tools for exploring and analyzing domain registration information.
 	- Whoisology collects WHOIS data from a wide range of domain registries.
 	- The collected data from various` WHOIS database` is organized into a searchable database. This database allows users to query and analyze domain information efficiently.
 		
@@ -214,7 +233,7 @@ My project doesn’t include the following features:
 	- Links related WHOIS records based on common attributes such as registrant names, email addresses, and IP addresses. This helps users uncover relationships between different domains and identify patterns.
 	- Maintains historical WHOIS records, allowing users to see changes in domain registration information over time. This is useful for tracking the history of a domain or identifying trends.
 	- Below is Raw data reponse from `Whoisology` with input domain is `whoisology.com`
-	![](capture/Pasted%20image%2020240531152255.png)
+	
 
 - `ViewDNS`: is an online service that provides a variety of tools for examining domain name and IP address information. It helps users gather information about domains, IP addresses, and related records. Here are some of the key services provided by ViewDNS:
 	
@@ -223,21 +242,7 @@ My project doesn’t include the following features:
 			![](capture/Pasted%20image%2020240608105859.png)
 		- `DNS syntax` is just a string of characters used as commands that tell the DNS server what to do. All DNS records also have a `TTL`, which stands for time-to-live - indicates how often a DNS server will refresh that record.
 		
-		- Domain Name System (DNS)
-		![](capture/Pasted%20image%2020240720214038.png)
-		
-		- User enters `www.example.com` into the browser.
-		- Browser checks its cache, then the OS cache.
-		- No cached record is found; the request goes to the recursive DNS server.
-			- A `recursive DNS` lookup is where one DNS server communicates with several other `DNS servers` to hunt down an `IP address` and return it to the client. This is in contrast to an iterative `DNS query`, where the client communicates directly with each `DNS server` involved in the lookup.
-		- The recursive server queries a root server (just a dot `.`), which refers it to the `.com` TLD servers.
-			- `DNS root Server` is a root domain name resolution service. The reason it has such a name is because all domain names in the world must pass it. There are about 13 DNS root servers in the world.
-			- `DNS root server` manages all Top level domains. These domain names can be mentioned as:`.com`,`.org`,`.vn`,`.net`,... When there is a request to resolve a Domain Name into an IP address, the client will send the request to the nearest `DNS`. (`DNS ISP`). `DNS ISP` will connect to `DNS` root Server to ask for the address of a Domain Name. `DNS` root Server will base on the `Top Levels of a Domain Name` from which to provide appropriate instructions to redirect the client to the correct address it needs to query.
-		- The `.com` TLD servers refer the recursive server to the `authoritative DNS` server for `example.com`.
-			- Authoritative DNS is the system that keeps official records corresponding to domain names such as IP addresses. Domain names are the human-readable names of IP addresses that direct applications such as browsers to websites such as `www.example.com`.
-		- The authoritative server responds with an A record that includes the IP address (e.g., `93.184.216.34`).
-		- The recursive server caches the IP address and sends it to the browser.
-		- The browser connects to the server at `93.184.216.34` and loads the website.
+		- 
 		
 		- Result of searching `kenh14.vn`
 		![](capture/Pasted%20image%2020240601103211.png)
@@ -402,6 +407,7 @@ https://pentester.land/blog/compilation-of-recon-workflows/
 
 ## 6. References
 https://github.com/willc/OSINT-flowcharts
+https://praveendandu24.medium.com/a-beginners-guide-to-how-dns-works-making-sense-of-the-internet-s-phonebook-cd90e2054f85
 https://github.com/Lissy93/web-check
 https://github.com/The-Osint-Toolbox/Website-OSINT
 https://github.com/yogeshojha/rengine

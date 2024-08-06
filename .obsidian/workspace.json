@@ -20,6 +20,16 @@
             }
           },
           {
+            "id": "f5ab81fa5a04f86d",
+            "type": "leaf",
+            "state": {
+              "type": "image",
+              "state": {
+                "file": "capture/Pasted image 20240804095515.png"
+              }
+            }
+          },
+          {
             "id": "9f1c1c40d3efeb9a",
             "type": "leaf",
             "state": {
@@ -158,20 +168,20 @@
   },
   "active": "527d0f217f035ac5",
   "lastOpenFiles": [
-    "capture/Pasted image 20240723163134.png",
+    "capture/Pasted image 20240804095515.png",
     "README.md",
+    "capture/Pasted image 20240730104615.png",
+    "capture/Pasted image 20240803231739.png",
+    "capture/Pasted image 20240804093352.png",
+    "capture/Pasted image 20240720214038.png",
+    "capture/Pasted image 20240723163134.png",
+    "capture/Pasted image 20240730101839.png",
+    "capture/Pasted image 20240531152255.png",
     "capture/Pasted image 20240729144303.png",
     "capture/Pasted image 20240729144215.png",
-    "capture/Pasted image 20240609164505.png",
-    "capture/Pasted image 20240601231048.png",
-    "capture/Pasted image 20240601232025.png",
-    "capture/Pasted image 20240609162732.png",
-    "capture/Pasted image 20240609164346.png",
     "notion.zip",
     "zinoLkcX",
-    "USTH_logo/Logo-Truong-Dai-hoc-Khoa-hoc-va-Cong-nghe-Ha-Noi.png",
     "USTH_logo",
-    "capture/Pasted image 20240724105739.png",
     "popdom/exploit_db.py",
     "popdom",
     "rengine/web/staticfiles",
