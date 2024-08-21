@@ -8,7 +8,7 @@
         "type": "tabs",
         "children": [
           {
-            "id": "527d0f217f035ac5",
+            "id": "9f1c1c40d3efeb9a",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -16,26 +16,6 @@
                 "file": "README.md",
                 "mode": "source",
                 "source": false
-              }
-            }
-          },
-          {
-            "id": "f5ab81fa5a04f86d",
-            "type": "leaf",
-            "state": {
-              "type": "image",
-              "state": {
-                "file": "capture/Pasted image 20240804095515.png"
-              }
-            }
-          },
-          {
-            "id": "9f1c1c40d3efeb9a",
-            "type": "leaf",
-            "state": {
-              "type": "image",
-              "state": {
-                "file": "capture/Pasted image 20240723163134.png"
               }
             }
           }
@@ -166,15 +146,23 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "527d0f217f035ac5",
+  "active": "9f1c1c40d3efeb9a",
   "lastOpenFiles": [
-    "capture/Pasted image 20240804095515.png",
+    "popdom/exploit_db.py",
+    "popdom/test.py",
+    "popdom/module/__pycache__/web_archive.cpython-310.pyc",
+    "popdom/module/__pycache__",
+    "popdom/module/web_archive.py",
+    "popdom/module",
+    "popdom/exploit-db",
+    "popdom/popdom.py",
     "README.md",
+    "capture/Pasted image 20240723163134.png",
+    "capture/Pasted image 20240804095515.png",
     "capture/Pasted image 20240730104615.png",
     "capture/Pasted image 20240803231739.png",
     "capture/Pasted image 20240804093352.png",
     "capture/Pasted image 20240720214038.png",
-    "capture/Pasted image 20240723163134.png",
     "capture/Pasted image 20240730101839.png",
     "capture/Pasted image 20240531152255.png",
     "capture/Pasted image 20240729144303.png",
@@ -182,13 +170,6 @@
     "notion.zip",
     "zinoLkcX",
     "USTH_logo",
-    "popdom/exploit_db.py",
-    "popdom",
-    "rengine/web/staticfiles",
-    "rengine/web",
-    "rengine",
-    "rengine/web/errors.log",
-    "rengine/web/db.log",
     "rengine/README.md",
     "rengine/CONTRIBUTORS.md",
     "rengine/CHANGELOG.md",
