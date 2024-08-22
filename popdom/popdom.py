@@ -8,6 +8,7 @@ import shutil
 from module.endpoint import fetch_urls
 from module.endpoint import hidden_and_document_endpoint
 from module.domain import subdomain_discover
+from module.dns import ip_lookup
 
 def main():
    parser = argparse.ArgumentParser(description="Automate Reconnaissance Tool")
@@ -42,6 +43,9 @@ def main():
 
       print('[+] Hidden Endpoints & Document Filtering')
       hidden_and_document_endpoint(endpoint_result,folder_result)
+
+      print('[+] IP Lookup and Reverse DNS Lookup')
+      ip_lookup(endpoint_result,folder_result)
 
 if __name__ == '__main__':
   main()
