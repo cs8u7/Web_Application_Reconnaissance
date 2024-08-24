@@ -17,3 +17,7 @@ pip3 install dnspython
 ```
 pip3 install ipinfo
 ```
+
+```
+pip install requests
+```

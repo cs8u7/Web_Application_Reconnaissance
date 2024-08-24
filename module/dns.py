@@ -6,8 +6,6 @@ import os
 import ipinfo
 import socket
 
-import pprint
-
 def fetch_networkcalc(domain):
    print('[-] Fetching networkcalc')
    IPs_v4 = []
@@ -119,8 +117,8 @@ def fetching_reverse_dns_from_ipv4(ip,api_key):
 
 def redict_fetching_reverse_dns_from_ipv4(ip):
    try:
-        host_name = socket.gethostbyaddr(ip)
-        return host_name
+        host_name = socket.gethostbyaddr(ip)[0]
+        return [host_name]
    except socket.herror:
         return []
    
@@ -162,7 +160,7 @@ def ip_dns_lookup(domain,is_trail,folder_sample):
       print('[-] Fetching IPinfo')
       reverse_dns_set = []
       for ip in ip_v4_set:
-         reverse_dns_set = reverse_dns_set + fetching_reverse_dns_from_ipv4(ip,api_key) + [redict_fetching_reverse_dns_from_ipv4(ip)[0]]
+         reverse_dns_set = reverse_dns_set + fetching_reverse_dns_from_ipv4(ip,api_key) + redict_fetching_reverse_dns_from_ipv4(ip)
       filter_reverse_dns_set = list(set(reverse_dns_set))
       with open(ip_dns_report, 'a') as file:
          file.write('Reverse DNS:\n')

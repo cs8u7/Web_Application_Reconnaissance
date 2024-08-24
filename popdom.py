@@ -9,6 +9,7 @@ from module.endpoint import fetch_urls
 from module.endpoint import hidden_and_document_endpoint
 from module.domain import subdomain_discover
 from module.dns import ip_dns_lookup
+from module.whois import whois_lookup
 
 def main():
    parser = argparse.ArgumentParser(description="Automate Reconnaissance Tool")
@@ -61,8 +62,11 @@ def main():
          # print('[+] Hidden Endpoints & Document Filtering')
          # hidden_and_document_endpoint(endpoint_result,folder_result)
 
-         print('[+] IP Lookup and Reverse DNS Lookup')
-         ip_dns_lookup(args.u,args.trial,folder_result)
+         # print('[+] IP Lookup and Reverse DNS Lookup')
+         # ip_dns_lookup(args.u,args.trial,folder_result)
+
+         print('[+] WHOIS Lookup')
+         whois_lookup(args.u,folder_result)
 
 if __name__ == '__main__':
   main()
