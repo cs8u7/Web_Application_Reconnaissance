@@ -45,7 +45,7 @@ def fetch_virustotal_urls(domain,sample):
    urls = []
    api_key = os.getenv('VT_API_KEY')
    if not api_key:
-      return
+      return urls
 
    try:
       load_dotenv()

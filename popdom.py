@@ -13,6 +13,7 @@ from module.dns import ip_dns_lookup
 def main():
    parser = argparse.ArgumentParser(description="Automate Reconnaissance Tool")
    parser.add_argument('-u', type=str, help="URL of target web application.")
+   parser.add_argument('-trial', action='store_true', help="Mark IPinfo key is trail or premium")
    args = parser.parse_args()
 
    if len(sys.argv) == 1:
@@ -61,7 +62,7 @@ def main():
          # hidden_and_document_endpoint(endpoint_result,folder_result)
 
          print('[+] IP Lookup and Reverse DNS Lookup')
-         ip_dns_lookup(args.u,folder_result)
+         ip_dns_lookup(args.u,args.trial,folder_result)
 
 if __name__ == '__main__':
   main()
