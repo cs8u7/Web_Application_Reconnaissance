@@ -22,7 +22,6 @@ def fetch_virustotal(domain,sample):
 
       domain_list = data['subdomains']
       with open(sample, 'a') as file:
-         file.write("\n\n")
          for item in domain_list:
             file.write(f"{item}\n")
    except (requests.RequestException, json.JSONDecodeError):
@@ -43,7 +42,6 @@ def extract_endpoint_sample(endpoint_sample,domain_sample):
             subdomain_set.append(linedata[2])
 
    with open(domain_sample, 'a') as file:
-      file.write("\n\n")
       for item in subdomain_set:
          file.write(f"{item}\n")
 

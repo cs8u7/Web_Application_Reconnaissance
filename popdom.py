@@ -10,6 +10,7 @@ from module.endpoint import hidden_and_document_endpoint
 from module.domain import subdomain_discover
 from module.dns import ip_dns_lookup
 from module.whois import whois_lookup
+from module.analytics_id import domain_by_analytic
 
 def main():
    parser = argparse.ArgumentParser(description="Automate Reconnaissance Tool")
@@ -50,23 +51,25 @@ def main():
             shutil.rmtree(folder_result)
          os.makedirs(folder_result, exist_ok=True)
          
-         # print('[+] Endpoint Discover')
-         # endpoint_result = folder_result + '/' +folder_result + '@endpoint.txt'
-         # with open(endpoint_result, 'w') as file:
-         #    pass 
-         # fetch_urls(args.u,endpoint_result)
+         print('[+] Endpoint Discover')
+         endpoint_result = folder_result + '/' +folder_result + '@endpoint.txt'
+         with open(endpoint_result, 'w') as file:
+            pass 
+         fetch_urls(args.u,endpoint_result)
 
-         # print('[+] Subdomain Discover')
-         # subdomain_discover(args.u,endpoint_result,folder_result)
+         print('[+] Subdomain Discover')
+         subdomain_discover(args.u,endpoint_result,folder_result)
 
-         # print('[+] Hidden Endpoints & Document Filtering')
-         # hidden_and_document_endpoint(endpoint_result,folder_result)
+         print('[+] Hidden Endpoints & Document Filtering')
+         hidden_and_document_endpoint(endpoint_result,folder_result)
 
-         # print('[+] IP Lookup and Reverse DNS Lookup')
-         # ip_dns_lookup(args.u,args.trial,folder_result)
+         print('[+] IP Lookup and Reverse DNS Lookup')
+         ip_dns_lookup(args.u,args.trial,folder_result)
 
          print('[+] WHOIS Lookup')
          whois_lookup(args.u,folder_result)
 
+         print('[+] Lookup New Domains by Google Analytics')
+         domain_by_analytic(args.u,folder_result)
 if __name__ == '__main__':
   main()

@@ -43,7 +43,7 @@ def whois_lookup(domain,folder_sample):
    whois_sample = folder_sample + '/' + folder_sample + '@WHOIS.txt'
 
    load_dotenv()
-   api_key = os.getenv('WHOIS_API_KEY')
+   api_key = os.getenv('RAPID_WHOIS_API_KEY')
 
    if not api_key:
       fetch_networkcalc(domain,whois_sample)

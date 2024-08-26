@@ -104,7 +104,7 @@ def fetch_ipinfo_localtion(ip,is_trail,api_key):
    result = loop.run_until_complete(do_req())
    return result
 
-def fetching_reverse_dns_from_ipv4(ip,api_key):
+def fetching_reverse_dns_ipinfo(ip,api_key):
    try:
       url = f'https://ipinfo.io/domains/{ip}?token={api_key}'
       response = requests.get(url)
@@ -114,14 +114,14 @@ def fetching_reverse_dns_from_ipv4(ip,api_key):
 
    except (requests.RequestException, json.JSONDecodeError):
       return []
-
-def redict_fetching_reverse_dns_from_ipv4(ip):
+   
+def direct_fetching_reverse_dns(ip):
    try:
         host_name = socket.gethostbyaddr(ip)[0]
         return [host_name]
    except socket.herror:
         return []
-   
+
 def ip_dns_lookup(domain,is_trail,folder_sample):
    ip_dns_report = folder_sample + '/' + folder_sample + '@ip_dns.txt'
    networkcalc_ip_v4, networkcalc_mail_servers = fetch_networkcalc(domain)
@@ -131,7 +131,7 @@ def ip_dns_lookup(domain,is_trail,folder_sample):
    print('[-] Fetching Cloudflare ISP')
    cloudflare_ip_v4_1, cloudflare_ip_v6_1, cloudflare_mail_servers_1 = fetch_public_isp(domain,'1.1.1.1')
    cloudflare_ip_v4_2, cloudflare_ip_v6_2, cloudflare_mail_servers_2 = fetch_public_isp(domain,'1.0.0.1')
-   
+
    ip_v4_set = list(set(networkcalc_ip_v4 + hackertarget_ip_v4 + gg_ip_v4 + cloudflare_ip_v4_1 + cloudflare_ip_v4_2))
    ip_v6_set = list(set(hackertarget_ip_v6 + gg_ip_v6 + cloudflare_ip_v6_1 + cloudflare_ip_v6_2))
    mail_servers_set = list(set(networkcalc_mail_servers + hackertarget_mail_servers + gg_mail_servers + cloudflare_mail_servers_1 + cloudflare_mail_servers_2))
@@ -153,28 +153,31 @@ def ip_dns_lookup(domain,is_trail,folder_sample):
       file.write('\n')
 
    load_dotenv()
-   api_key = os.getenv('IPinfo_API_KEY')
-
+   api_key_ipinfo = os.getenv('IPinfo_API_KEY')
    print('[+] Reverse DNS')
-   if api_key:
+   reverse_dns_set = []
+   if api_key_ipinfo:
       print('[-] Fetching IPinfo')
-      reverse_dns_set = []
       for ip in ip_v4_set:
-         reverse_dns_set = reverse_dns_set + fetching_reverse_dns_from_ipv4(ip,api_key) + redict_fetching_reverse_dns_from_ipv4(ip)
-      filter_reverse_dns_set = list(set(reverse_dns_set))
-      with open(ip_dns_report, 'a') as file:
-         file.write('Reverse DNS:\n')
-         for reverse_dns in filter_reverse_dns_set:
-            file.write(f'{reverse_dns}\n')
-         file.write('\n')
+         reverse_dns_set = reverse_dns_set + fetching_reverse_dns_ipinfo(ip,api_key_ipinfo) 
+
+   print('[-] Direct query')
+   for ip in ip_v4_set:
+      reverse_dns_set = reverse_dns_set + direct_fetching_reverse_dns(ip)
+   filter_reverse_dns_set = list(set(reverse_dns_set))
+   with open(ip_dns_report, 'a') as file:
+      file.write('Reverse DNS:\n')
+      for reverse_dns in filter_reverse_dns_set:
+         file.write(f'{reverse_dns}\n')
+      file.write('\n')
 
    print('[+] Localtion, Hosting Provider, Region')
-   if api_key:
+   if api_key_ipinfo:
       print('[-] Fetching IPinfo')
       with open(ip_dns_report, 'a') as file:
          file.write('Localtion, Hosting Provider, Region:\n')
          for ip in ip_v4_set:
-            text = fetch_ipinfo_localtion(ip,is_trail,api_key)
+            text = fetch_ipinfo_localtion(ip,is_trail,api_key_ipinfo)
             file.write(f'{text}\n')
          file.write('\n')
          
