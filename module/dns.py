@@ -6,6 +6,8 @@ import os
 import ipinfo
 import socket
 
+import pprint
+
 def fetch_networkcalc(domain):
    print('[-] Fetching networkcalc')
    IPs_v4 = []
@@ -121,6 +123,21 @@ def direct_fetching_reverse_dns(ip):
         return [host_name]
    except socket.herror:
         return []
+   
+def fetch_viewdns(domain,api_key):
+   history_IPs = []
+
+   try:
+      url = f'https://api.viewdns.info/iphistory/?domain={domain}&apikey={api_key}&output=json'
+      response = requests.get(url)
+      data = response.json()
+
+      for record in data['response']['records']:
+         history_IPs.append(record['ip'])
+      return history_IPs
+
+   except (requests.RequestException, json.JSONDecodeError):
+      return history_IPs
 
 def ip_dns_lookup(domain,is_trail,folder_sample):
    ip_dns_report = folder_sample + '/' + folder_sample + '@ip_dns.txt'
@@ -153,7 +170,27 @@ def ip_dns_lookup(domain,is_trail,folder_sample):
       file.write('\n')
 
    load_dotenv()
+   print('[+] IP History')
+   api_key_viewdns = os.getenv('VIEWDNS_API_KEY')
+   if api_key_viewdns:
+      history_IPs = fetch_viewdns(domain,api_key_viewdns)
+      with open(ip_dns_report, 'a') as file:
+         file.write(' IP History\n')
+         for ip in history_IPs:
+            file.write(f'{ip}\n')
+         file.write('\n')
+
    api_key_ipinfo = os.getenv('IPinfo_API_KEY')
+   print('[+] Localtion, Hosting Provider, Region')
+   if api_key_ipinfo:
+      print('[-] Fetching IPinfo')
+      with open(ip_dns_report, 'a') as file:
+         file.write('Localtion, Hosting Provider, Region:\n')
+         for ip in ip_v4_set:
+            text = fetch_ipinfo_localtion(ip,is_trail,api_key_ipinfo)
+            file.write(f'{text}\n')
+         file.write('\n')
+
    print('[+] Reverse DNS')
    reverse_dns_set = []
    if api_key_ipinfo:
@@ -170,15 +207,5 @@ def ip_dns_lookup(domain,is_trail,folder_sample):
       for reverse_dns in filter_reverse_dns_set:
          file.write(f'{reverse_dns}\n')
       file.write('\n')
-
-   print('[+] Localtion, Hosting Provider, Region')
-   if api_key_ipinfo:
-      print('[-] Fetching IPinfo')
-      with open(ip_dns_report, 'a') as file:
-         file.write('Localtion, Hosting Provider, Region:\n')
-         for ip in ip_v4_set:
-            text = fetch_ipinfo_localtion(ip,is_trail,api_key_ipinfo)
-            file.write(f'{text}\n')
-         file.write('\n')
          
       
