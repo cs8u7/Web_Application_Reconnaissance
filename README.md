@@ -7,6 +7,14 @@ python3 popdom.py -u <target_url>
 ### Require:
 
 ```
+pip3 install termcolor
+```
+
+```
+pip3 install requests
+```
+
+```
 pip3 install python-dotenv
 ```
 
