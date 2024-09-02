@@ -6,7 +6,9 @@ import os
 from termcolor import colored
 from datetime import datetime
 
-HEADER = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'}
+HEADER = {
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'}
+
 
 def get_cert_ids(domain):
     url = "https://crt.sh/"
@@ -24,14 +26,16 @@ def get_cert_ids(domain):
 
     return data
 
-def get_cert(cert_id,cert_folder):
+
+def get_cert(cert_id, cert_folder):
     cert_path = f'{cert_folder}/{cert_id}.pem'
     if not os.path.exists(cert_path):
         url = f"https://crt.sh/?d={cert_id}"
         response = requests.get(url, headers=HEADER)
-        with open(cert_path,'wb') as file:
+        with open(cert_path, 'wb') as file:
             file.write(response.content)
     return cert_path
+
 
 def get_subjectaltname(cert_path):
     with open(cert_path, 'rb') as cert_file:
@@ -48,8 +52,9 @@ def get_subjectaltname(cert_path):
     except Exception:
         return subdomains
 
-def get_subdomains_with_cert(domain,cache,folder_sample):
-    domain_sample = folder_sample + '/' + folder_sample + '@subdomain_from_cert.txt'
+
+def get_subdomains_with_cert(domain, cache, folder_sample):
+    domain_sample = folder_sample + '/passive/subdomain_from_cert.txt'
     with open(domain_sample, 'w') as file:
         pass
     cert_folder = f'SSL_cert/{domain}'
@@ -59,24 +64,23 @@ def get_subdomains_with_cert(domain,cache,folder_sample):
         files = os.listdir(cert_folder)
         for file_name in files:
             if os.path.isfile(os.path.join(cert_folder, file_name)):
-                with open(domain_sample,'a') as file:
+                with open(domain_sample, 'a') as file:
                     for subdomain in get_subjectaltname(f'{cert_folder}/{file_name}'):
                         file.write(f'{subdomain}\n')
     else:
         if cache:
-            print(colored(f'[*] Cache of domain {domain} is missing','magenta'))
+            print(
+                colored(f'[*] Cache of domain {domain} is missing', 'magenta'))
         print('[-] Download And Decode Certificates')
         crtsh_data = get_cert_ids(domain)
         for crtsh_id in crtsh_data:
-            cert_path = get_cert(crtsh_id,cert_folder)
-            with open(domain_sample,'a') as file:
+            cert_path = get_cert(crtsh_id, cert_folder)
+            with open(domain_sample, 'a') as file:
                 for subdomain in get_subjectaltname(cert_path):
                     file.write(f'{subdomain}\n')
-    
 
     with open(domain_sample, 'r') as file:
         lines = file.readlines()
     unique_lines = sorted(set(lines))
     with open(domain_sample, 'w') as file:
         file.writelines(unique_lines)
-            
