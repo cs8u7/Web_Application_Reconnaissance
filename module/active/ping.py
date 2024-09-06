@@ -4,12 +4,16 @@ import dns.resolver
 import os
 import re
 
+current_ip = 0
 
 def ping_sweep(ip, folder_sample):
+    global current_ip 
     ip_net = ipaddress.ip_network(ip, strict=False)
     live_hosts = []
 
     for ip in ip_net.hosts():
+        current_ip += 1
+        print(f"[{(current_ip/256)*100:.2f}%][{current_ip}/256]", end='\r')
         ip = str(ip)
         try:
             result = subprocess.run(
@@ -28,7 +32,6 @@ def ping_sweep(ip, folder_sample):
             with open(f'{folder_sample}/active/alive_ip.txt', 'w') as file:
                 for ip in live_hosts:
                     file.write(f'{ip}\n')
-
         except Exception:
             pass
 

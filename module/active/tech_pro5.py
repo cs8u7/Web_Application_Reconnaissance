@@ -3,6 +3,8 @@ import json
 from bs4 import BeautifulSoup
 import re
 
+tech_count = 0
+
 
 def fetch_web_content(domain):
     try:
@@ -18,16 +20,19 @@ def load_tech_footprints():
 
 
 def detect(response, tech_footprints):
+    global tech_count
     detected_technologies = []
     html_content = response.text
     headers = response.headers
     cookies = response.cookies.get_dict()
-
     soup = BeautifulSoup(html_content, 'html.parser')
+    tech_range = len(tech_footprints)
 
     for tech in tech_footprints:
+        tech_count += 1
+        print(
+            f"[{(tech_count/tech_range)*100:.2f}%][{tech_count}/{tech_range}]", end='\r')
         attributes = tech.get("attributes", {})
-
         html_patterns = attributes.get("html", [])
         if isinstance(html_patterns, str):
             html_patterns = [html_patterns]
@@ -133,5 +138,3 @@ def technology_pro5(domain, folder_result):
     with open(technology_pro5_sample, 'w') as file:
         for tech in detected_technologies:
             file.write(f'{tech}\n')
-
-

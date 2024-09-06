@@ -34,8 +34,12 @@ def extract_endpoint_sample(endpoint_sample, domain_sample):
     print('[-] Extract Endpoint Sample')
     with open(endpoint_sample, 'r') as file:
         filedata = file.readlines()
-
+    line_number = len(filedata)
+    count = 0
     for line in filedata:
+        count += 1
+        print(
+            f"[{(count/line_number)*100:.2f}%] [{count}/{line_number}]", end='\r')
         linedata = line.split('/')
         if linedata.__len__() > 2:
             if subdomain_set.__len__() == 0:
