@@ -2,25 +2,33 @@ import requests
 import json
 from dotenv import load_dotenv
 import os
+import whois
+import whois.whois
+import subprocess
+import logging
+logging.getLogger("whois").setLevel(logging.CRITICAL)
 
-import pprint
 
-
-def fetch_networkcalc(domain, whois_sample):
-    print('[-] Fetching networkcalc')
+def fetch_whois_libary(domain, whois_sample):
+    print('[-] Direct query with WHOIS libary')
 
     try:
-        data = requests.get(
-            f"https://networkcalc.com/api/dns/whois/{domain}").json()
-
+        domain_in4 = whois.whois(domain)
         with open(whois_sample, 'w') as file:
-            file.write(f"{data['whois']['abuse_email']}\n")
-            file.write(f"{data['whois']['abuse_phone']}\n")
-            file.write(f"{data['whois']['registrar']}\n")
-            file.write(f"{data['whois']['registry_domain_id']}\n")
-
-    except (requests.RequestException, json.JSONDecodeError):
-        return
+            file.write(f"domain name: {domain_in4['domain_name']}\n")
+            file.write(f"registrar: {domain_in4['registrar']}\n")
+            file.write(f"whois_server: {domain_in4['whois_server']}\n")
+            file.write(f"emails: {domain_in4['emails']}\n")
+            file.write(f"name: {domain_in4['name']}\n")
+            file.write(f"org: {domain_in4['org']}\n")
+            file.write(f"address: {domain_in4['address']}\n")
+            file.write(f"city: {domain_in4['city']}\n")
+            file.write(f"country: {domain_in4['country']}\n")
+            file.write(
+                f"registrant_postal_code: {domain_in4['registrant_postal_code']}\n")
+        return True
+    except Exception:
+        return None
 
 
 def fetch_whoisxml(domain, whois_sample, api_key):
@@ -40,9 +48,23 @@ def fetch_whoisxml(domain, whois_sample, api_key):
 
         with open(whois_sample, 'w') as file:
             file.write(f'{response["rawdata"][0]}\n')
-
     except (requests.RequestException, json.JSONDecodeError):
-        return
+        pass
+
+
+def fetch_whois_command(domain, whois_sample):
+    print('[-] Direct query with WHOIS comamnd')
+    try:
+        result = subprocess.run(
+            ["whois", domain], capture_output=True, text=True)
+        if 'no whois server' in result.stdout:
+            return None
+        else:
+            with open(whois_sample, 'w') as file:
+                file.write(result.stdout)
+            return True
+    except Exception as e:
+        return None
 
 
 def whois_lookup(domain, folder_sample):
@@ -51,7 +73,9 @@ def whois_lookup(domain, folder_sample):
     load_dotenv()
     api_key = os.getenv('RAPID_WHOIS_API_KEY')
 
-    if not api_key:
-        fetch_networkcalc(domain, whois_sample)
-    else:
-        fetch_whoisxml(domain, whois_sample, api_key)
+    result_state_1 = fetch_whois_command(domain, whois_sample)
+    if not result_state_1:
+        result_state_2 = fetch_whois_libary(domain, whois_sample)
+        if not result_state_2:
+            if api_key:
+                fetch_whoisxml(domain, whois_sample, api_key)

@@ -7,6 +7,10 @@ python3 popdom.py -u <target_url>
 ### Require:
 
 ```
+pip3 install python-Wappalyzer
+```
+
+```
 pip3 install scapy
 ```
 

@@ -8,9 +8,6 @@ import re
 def ping_sweep(ip, folder_sample):
     ip_net = ipaddress.ip_network(ip, strict=False)
     live_hosts = []
-    set_0 = 0
-    set_1 = 0
-    set_2 = 0
 
     for ip in ip_net.hosts():
         ip = str(ip)
@@ -86,6 +83,3 @@ def ping(domain, folder_sample):
     for ip in ip_lines:
         ping_sweep(ip_to_cidr(ip), folder_sample)
 
-
-def active_ip_os_detection(folder_sample):
-    return

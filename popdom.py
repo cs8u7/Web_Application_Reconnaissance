@@ -16,7 +16,10 @@ from module.passive.analytics_id import domain_by_analytic
 from module.passive.cert import get_subdomains_with_cert
 
 from module.active.ping import ping
-from module.active.ping import active_ip_os_detection
+from module.active.tech_pro5 import technology_pro5
+from module.active.endpoint_fuzzing import endpoint_fuzzing
+from module.active.subdomain_fuzzing import subdomain_fuzzing
+from module.active.param_fuzzing import parameter_fuzzing
 
 
 def main():
@@ -35,6 +38,8 @@ def main():
                         help="Enable domain discover with certificate")
     parser.add_argument('-cache', action='store_true',
                         help="Only use captured SSL certificate for domain discover")
+    parser.add_argument('-threads', type=int, default=10,
+                        help="Define number of threads in fuzzing (default: 10)")
     args = parser.parse_args()
 
     args_dict = vars(args)
@@ -67,7 +72,7 @@ def main():
         domain = match.group('domain')
         date = datetime.now().date()
         folder_result = str(date) + '#' + args.u
-        
+
         if args.p:
             if os.path.exists(f'{folder_result}/passive') and os.path.isdir(f'{folder_result}/passive'):
                 shutil.rmtree(f'{folder_result}/passive')
@@ -110,11 +115,21 @@ def main():
                 shutil.rmtree(f'{folder_result}/active')
             os.makedirs(f'{folder_result}/active', exist_ok=True)
             print(colored(f'[**] Starting Active Recon', 'yellow'))
+
             print(colored('[+] Ping Sweeping', 'cyan'))
             ping(domain, folder_result)
-            print(colored('[+] OS Detection', 'cyan'))
-            active_ip_os_detection(folder_result)
 
+            print(colored('[+] Technology Profiling', 'cyan'))
+            technology_pro5(domain, folder_result)
+
+            print(colored('[+] Endpoints Fuzzing', 'cyan'))
+            endpoint_fuzzing(domain, args.threads, folder_result)
+
+            print(colored('[+] Subdomains Fuzzing', 'cyan'))
+            subdomain_fuzzing(domain, args.threads, folder_result)
+
+            print(colored('[+] Parameters Fuzzing', 'cyan'))
+            parameter_fuzzing(domain, args.threads, folder_result)
     else:
         print(colored(
             "Error: The url has invalid form. Please provide a valid URL.", "magenta"))
