@@ -1,48 +1,55 @@
 import socket
+from concurrent.futures import ThreadPoolExecutor
 import threading
-from queue import Queue
+import concurrent.futures
 
-# Target configuration
-target = "127.0.0.1"  # Replace with your target IP or hostname
-port_range = (1, 1024)  # Port range to scan
+port_count = 0
+port_lock = threading.Lock()
+port_progress_lock = threading.Lock()
 
-# Thread-safe queue to store ports
-port_queue = Queue()
-open_ports = []
 
-# Function to scan a port
-def scan_port(port):
+def scan_port(port, total_ports, domain, port_sample):
+    global port_count
     try:
         with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
-            s.settimeout(1)
-            result = s.connect_ex((target, port))
+            s.settimeout(10)
+            result = s.connect_ex((domain, port))
             if result == 0:
-                print(f"Port {port} is open")
-                open_ports.append(port)
+                with port_lock:
+                    with open(port_sample, 'a') as file:
+                        file.write(f'{port}\n')
+
+        with port_progress_lock:
+            port_count += 1
+            print(
+                f"[{(port_count / total_ports) * 100:.2f}%][{port_count}/{total_ports}]", end='\r')
+
     except Exception as e:
-        print(f"Error scanning port {port}: {e}")
+        pass
 
-# Worker function for threading
-def worker():
-    while not port_queue.empty():
-        port = port_queue.get()
-        scan_port(port)
-        port_queue.task_done()
 
-# Populate queue with ports
-for port in range(port_range[0], port_range[1] + 1):
-    port_queue.put(port)
+def multi_threaded_port_scan(threads, port_range, domain, port_sample):
+    total_ports = port_range[1] - port_range[0] + 1
+    ports = range(port_range[0], port_range[1] + 1)
 
-# Start threading
-threads = []
-for _ in range(100):  # Number of threads
-    thread = threading.Thread(target=worker)
-    threads.append(thread)
-    thread.start()
+    with ThreadPoolExecutor(max_workers=threads) as executor:
+        futures = [executor.submit(
+            scan_port, port, total_ports, domain, port_sample) for port in ports]
 
-# Wait for all threads to finish
-for thread in threads:
-    thread.join()
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                future.result()
+            except Exception:
+                pass
 
-# Summary of open ports
-print("Open ports:", open_ports)
+
+def port_scanning(domain, threads, folder_result, port_start, port_end):
+    port_sample = folder_result + f'/active/open_port.txt'
+    port_range = (port_start, port_end)
+    multi_threaded_port_scan(threads, port_range, domain, port_sample)
+
+    with open(port_sample, 'r') as file:
+        lines = file.readlines()
+    unique_lines = sorted(set(lines))
+    with open(port_sample, 'w') as file:
+        file.writelines(unique_lines)

@@ -20,6 +20,9 @@ from module.active.tech_pro5 import technology_pro5
 from module.active.endpoint_fuzzing import endpoint_fuzzing
 from module.active.subdomain_fuzzing import subdomain_fuzzing
 from module.active.param_fuzzing import parameter_fuzzing
+from module.active.port_scanning import port_scanning
+from module.active.service_probing import service_probing
+from module.active.banner_grabbing import banner_grabbing
 
 
 def main():
@@ -40,6 +43,12 @@ def main():
                         help="Only use captured SSL certificate for domain discover")
     parser.add_argument('-threads', type=int, default=10,
                         help="Define number of threads in fuzzing (default: 10)")
+    parser.add_argument('-port_start', type=int, default=1,
+                        help="Define start port for scanning (default: 1)")
+    parser.add_argument('-port_end', type=int, default=10000,
+                        help="Define end port for scanning  (default: 10000)")
+    parser.add_argument('-full_range', action='store_true', default=False,
+                        help="Enable full range of open port service probbing and banner grabbing (default: False)")
     args = parser.parse_args()
 
     args_dict = vars(args)
@@ -117,7 +126,11 @@ def main():
             print(colored(f'[**] Starting Active Recon', 'yellow'))
 
             print(colored('[+] Ping Sweeping', 'cyan'))
-            ping(domain, folder_result)
+            is_dead = ping(domain, folder_result)
+            if is_dead:
+                print(colored(
+                    "Error: Target is offline", "magenta"))
+                sys.exit(1)
 
             print(colored('[+] Technology Profiling', 'cyan'))
             technology_pro5(domain, folder_result)
@@ -130,6 +143,15 @@ def main():
 
             print(colored('[+] Parameters Fuzzing', 'cyan'))
             parameter_fuzzing(domain, args.threads, folder_result)
+
+            print(colored('[+] Port Scanning    ', 'cyan'))
+            port_scanning(domain, args.threads, folder_result, args.port_start, args.port_end)
+
+            print(colored('[+] Service Probing    ', 'cyan'))
+            service_probing(domain, args.threads, folder_result, args.full_range)
+
+            print(colored('[+] Banner Grabbing On Port', 'cyan'))
+            banner_grabbing(domain, args.threads, folder_result, args.full_range)
     else:
         print(colored(
             "Error: The url has invalid form. Please provide a valid URL.", "magenta"))

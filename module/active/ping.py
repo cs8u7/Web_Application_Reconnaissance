@@ -4,42 +4,24 @@ import dns.resolver
 import os
 import re
 
-current_ip = 0
 
-def ping_sweep(ip, folder_sample):
-    global current_ip 
-    ip_net = ipaddress.ip_network(ip, strict=False)
-    live_hosts = []
-
-    for ip in ip_net.hosts():
-        current_ip += 1
-        print(f"[{(current_ip/256)*100:.2f}%][{current_ip}/256]", end='\r')
-        ip = str(ip)
-        try:
-            result = subprocess.run(
-                ['ping', '-c', '1', '-W', '1', ip], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            if result.returncode == 0:
-                ttl_match = re.search(
-                    r'ttl=(\d+)', result.stdout.decode('utf-8'))
-                if ttl_match:
-                    if detect_os(int(ttl_match.group(1))) == 1:
-                        live_hosts.append(f'{ip}#Linux')
-                    elif detect_os(int(ttl_match.group(1))) == 2:
-                        live_hosts.append(f'{ip}#Window')
-                    elif detect_os(int(ttl_match.group(1))) == 0:
-                        live_hosts.append(f'{ip}#Undetected')
-
-            with open(f'{folder_sample}/active/alive_ip.txt', 'w') as file:
-                for ip in live_hosts:
-                    file.write(f'{ip}\n')
-        except Exception:
-            pass
-
-
-def ip_to_cidr(ip):
-    network = ipaddress.IPv4Network(f'{ip}/24', strict=False)
-    return str(network)
-
+def ping_sweep(ip):
+    ip = str(ip)
+    try:
+        result = subprocess.run(
+            ['ping', '-c', '1', '-W', '1', ip], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        if result.returncode == 0:
+            ttl_match = re.search(
+                r'ttl=(\d+)', result.stdout.decode('utf-8'))
+            if ttl_match:
+                if detect_os(int(ttl_match.group(1))) == 1:
+                    print(f'[R] {ip} is active, OS detected: Linux')
+                elif detect_os(int(ttl_match.group(1))) == 2:
+                    print(f'[R] {ip} is active, OS detected: Window')
+                elif detect_os(int(ttl_match.group(1))) == 0:
+                    print(f'[R] {ip} is active, OS detected: Unknow')
+    except Exception:
+        pass
 
 def detect_os(ttl):
     if ttl:
@@ -77,12 +59,17 @@ def dns_ip_query(domain):
 
 def ping(domain, folder_sample):
     ipv4_sample = folder_sample + '/passive/ipv4.txt'
-    if not os.path.exists(ipv4_sample):
-        ip_lines = dns_ip_query(domain)
-    else:
+    ip_lines = []
+    if os.path.exists(ipv4_sample):
         with open(ipv4_sample, 'r') as file:
-            ip_lines = file.readlines()
+            ip_lines += file.readlines()
 
-    for ip in ip_lines:
-        ping_sweep(ip_to_cidr(ip), folder_sample)
+    ip_lines += dns_ip_query(domain)
+    ip_lines = sorted(set(ip_lines))
 
+    if len(ip_lines) == 0:
+        return True
+    else:
+        for ip in ip_lines:
+            ping_sweep(ip)
+        return False

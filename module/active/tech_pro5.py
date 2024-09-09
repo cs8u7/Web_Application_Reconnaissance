@@ -138,3 +138,5 @@ def technology_pro5(domain, folder_result):
     with open(technology_pro5_sample, 'w') as file:
         for tech in detected_technologies:
             file.write(f'{tech}\n')
+
+    print(f"", end='\r', flush=True)

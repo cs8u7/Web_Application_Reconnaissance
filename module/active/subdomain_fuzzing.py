@@ -9,7 +9,7 @@ def fuzzing_subdomain_with_wordlist(subdomain, base_domain, subdomain_sample, su
     print(f"[{(sub_count / sub_range) * 100:.2f}%][{sub_count}/{sub_range}]", end='\r')
     target_url = f'http://{subdomain}.{base_domain}'
     try:
-        response = requests.get(target_url, timeout=2)
+        response = requests.get(target_url, allow_redirects=False, timeout=30)
         if response.status_code == 200:
             with open(subdomain_sample, 'a') as file:
                 file.write(f'[{response.status_code}] {target_url}\n')
@@ -39,3 +39,5 @@ def subdomain_fuzzing(base_domain, threads, output_folder):
     subdomain_sample = f'{output_folder}/active/subdomain.txt'
     multi_threaded_subdomain_fuzzing(
         base_domain, threads, wordlist_file, subdomain_sample)
+    
+    print(f"", end='\r', flush=True)
