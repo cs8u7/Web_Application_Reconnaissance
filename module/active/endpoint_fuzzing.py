@@ -2,6 +2,7 @@ import requests
 from concurrent.futures import ThreadPoolExecutor
 
 endpoint_count = 0
+REQUEST_TIMEOUT = 10
 
 def fuzz(target_url, endpoint_fuzzing_sample, endpoint_range):
     global endpoint_count
@@ -9,7 +10,7 @@ def fuzz(target_url, endpoint_fuzzing_sample, endpoint_range):
     print(f"[{(endpoint_count / endpoint_range) * 100:.2f}%][{endpoint_count}/{endpoint_range}]", end='\r')
     
     try:
-        response = requests.get(target_url, allow_redirects=False, timeout=30)
+        response = requests.get(target_url, allow_redirects=False, timeout=REQUEST_TIMEOUT)
 
         with open(endpoint_fuzzing_sample, 'a') as file:
             file.write(f'[{response.status_code}] {target_url}\n')

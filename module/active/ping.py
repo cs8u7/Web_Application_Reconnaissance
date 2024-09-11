@@ -15,11 +15,11 @@ def ping_sweep(ip):
                 r'ttl=(\d+)', result.stdout.decode('utf-8'))
             if ttl_match:
                 if detect_os(int(ttl_match.group(1))) == 1:
-                    print(f'[R] {ip} is active, OS detected: Linux')
+                    print(f'[Notification] {ip} is active, OS detected: Linux')
                 elif detect_os(int(ttl_match.group(1))) == 2:
-                    print(f'[R] {ip} is active, OS detected: Window')
+                    print(f'[Notification] {ip} is active, OS detected: Window')
                 elif detect_os(int(ttl_match.group(1))) == 0:
-                    print(f'[R] {ip} is active, OS detected: Unknow')
+                    print(f'[Notification] {ip} is active, OS detected: Unknow')
     except Exception:
         pass
 

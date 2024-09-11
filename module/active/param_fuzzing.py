@@ -6,6 +6,7 @@ import threading
 
 current_line = 0
 lock = threading.Lock()
+REQUEST_TIMEOUT = 20
 
 def get_html_snippet(response):
     soup = BeautifulSoup(response.text, 'html.parser')
@@ -15,7 +16,7 @@ def parameter_fuzzing_unity(url, param, param_sample, baseline_html, total_lines
     global current_line
     try:
         payload = f'{url}/?{param}=1'
-        response = requests.get(payload, timeout=30)
+        response = requests.get(payload, timeout=REQUEST_TIMEOUT)
         response_html = get_html_snippet(response)
 
         if response_html != baseline_html:

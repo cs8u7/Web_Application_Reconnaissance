@@ -823,6 +823,7 @@ ad_manage
 add.php
 add_admin
 adfs/services/trust/2005/windowstransport
+tim-kiem.chn?
 adm
 adm.html
 adm.php

@@ -14,19 +14,22 @@ def fetch_whois_libary(domain, whois_sample):
 
     try:
         domain_in4 = whois.whois(domain)
-        with open(whois_sample, 'w') as file:
-            file.write(f"domain name: {domain_in4['domain_name']}\n")
-            file.write(f"registrar: {domain_in4['registrar']}\n")
-            file.write(f"whois_server: {domain_in4['whois_server']}\n")
-            file.write(f"emails: {domain_in4['emails']}\n")
-            file.write(f"name: {domain_in4['name']}\n")
-            file.write(f"org: {domain_in4['org']}\n")
-            file.write(f"address: {domain_in4['address']}\n")
-            file.write(f"city: {domain_in4['city']}\n")
-            file.write(f"country: {domain_in4['country']}\n")
-            file.write(
-                f"registrant_postal_code: {domain_in4['registrant_postal_code']}\n")
-        return True
+        if domain_in4['domain_name'] != None:
+            with open(whois_sample, 'w') as file:
+                file.write(f"domain name: {domain_in4['domain_name']}\n")
+                file.write(f"registrar: {domain_in4['registrar']}\n")
+                file.write(f"whois_server: {domain_in4['whois_server']}\n")
+                file.write(f"emails: {domain_in4['emails']}\n")
+                file.write(f"name: {domain_in4['name']}\n")
+                file.write(f"org: {domain_in4['org']}\n")
+                file.write(f"address: {domain_in4['address']}\n")
+                file.write(f"city: {domain_in4['city']}\n")
+                file.write(f"country: {domain_in4['country']}\n")
+                file.write(
+                    f"registrant_postal_code: {domain_in4['registrant_postal_code']}\n")
+            return True
+        else:
+            return None
     except Exception:
         return None
 

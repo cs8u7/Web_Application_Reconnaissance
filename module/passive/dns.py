@@ -139,7 +139,7 @@ def fetch_viewdns_ip_history(domain, api_key):
 
     try:
         url = f'https://api.viewdns.info/iphistory/?domain={domain}&apikey={api_key}&output=json'
-        response = requests.get(url)
+        response = requests.get(url, timeout=120)
         data = response.json()
 
         for record in data['response']['records']:
