@@ -29,20 +29,20 @@ def active_recon(domain, folder_result, threads, is_full_range, port_start, port
     print(colored('[+] Technology Profiling', 'cyan'))
     technology_pro5(domain, folder_result)
 
-    # print(colored('[+] Endpoints Fuzzing', 'cyan'))
-    # endpoint_fuzzing(domain, threads, folder_result)
+    print(colored('[+] Endpoints Fuzzing', 'cyan'))
+    endpoint_fuzzing(domain, threads, folder_result)
 
-    # print(colored('[+] Subdomains Fuzzing', 'cyan'))
-    # subdomain_fuzzing(domain, threads, folder_result)
+    print(colored('[+] Subdomains Fuzzing', 'cyan'))
+    subdomain_fuzzing(domain, threads, folder_result)
 
-    # print(colored('[+] Parameters Fuzzing', 'cyan'))
-    # parameter_fuzzing(domain, threads, folder_result)
+    print(colored('[+] Parameters Fuzzing', 'cyan'))
+    parameter_fuzzing(domain, threads, folder_result)
 
-    # print(colored('[+] Port Scanning    ', 'cyan'))
-    # port_scanning(domain, threads, folder_result, port_start, port_end)
+    print(colored('[+] Port Scanning    ', 'cyan'))
+    port_scanning(domain, threads, folder_result, port_start, port_end)
 
-    # print(colored('[+] Service Probing    ', 'cyan'))
-    # service_probing(domain, threads, folder_result, is_full_range)
+    print(colored('[+] Service Probing    ', 'cyan'))
+    service_probing(domain, threads, folder_result, is_full_range)
 
-    # print(colored('[+] Banner Grabbing On Port', 'cyan'))
-    # banner_grabbing(domain, threads, folder_result, is_full_range)
+    print(colored('[+] Banner Grabbing On Port', 'cyan'))
+    banner_grabbing(domain, threads, folder_result, is_full_range)

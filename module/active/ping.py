@@ -5,7 +5,7 @@ import os
 import re
 
 
-def ping_sweep(ip):
+def ping_ttl(ip):
     ip = str(ip)
     try:
         result = subprocess.run(
@@ -71,5 +71,5 @@ def ping(domain, folder_sample):
         return True
     else:
         for ip in ip_lines:
-            ping_sweep(ip)
+            ping_ttl(ip)
         return False

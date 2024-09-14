@@ -15,7 +15,7 @@ def identify_service(ip, port):
     return results
 
 
-def scan_ip_port(ip, port, service_on_port_sample, total_tasks):
+def scan_service_port(ip, port, service_on_port_sample, total_tasks):
     global progress
     try:
         service = identify_service(ip, port)
@@ -68,7 +68,7 @@ def service_probing(domain, threads, folder_sample, is_full_range):
         futures = []
         for ip in ip_lines:
             for port in ports:
-                futures.append(executor.submit(scan_ip_port, ip,
+                futures.append(executor.submit(scan_service_port, ip,
                                port, service_on_port_sample, total_tasks))
 
         for future in concurrent.futures.as_completed(futures):

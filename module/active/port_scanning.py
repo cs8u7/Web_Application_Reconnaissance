@@ -48,8 +48,3 @@ def port_scanning(domain, threads, folder_result, port_start, port_end):
     port_range = (port_start, port_end)
     multi_threaded_port_scan(threads, port_range, domain, port_sample)
 
-    with open(port_sample, 'r') as file:
-        lines = file.readlines()
-    unique_lines = sorted(set(lines))
-    with open(port_sample, 'w') as file:
-        file.writelines(unique_lines)

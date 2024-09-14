@@ -10,6 +10,7 @@ cpanel
 whm
 ns1
 ns2
+moodle
 autodiscover
 autoconfig
 ns
