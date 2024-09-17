@@ -2,7 +2,7 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
-import re
+import time
 
 
 def fetch_virustotal(domain, sample):
@@ -53,6 +53,7 @@ def extract_endpoint_sample(endpoint_sample, domain_sample):
 
 
 def subdomain_discover(domain, endpoint_sample, folder_sample):
+    start_time = time.time()
     domain_sample = folder_sample + '/passive/subdomain.txt'
     with open(domain_sample, 'w') as file:
         pass
@@ -64,3 +65,7 @@ def subdomain_discover(domain, endpoint_sample, folder_sample):
     unique_lines = sorted(set(lines))
     with open(domain_sample, 'w') as file:
         file.writelines(unique_lines)
+
+    end_time = time.time()
+    running = end_time - start_time 
+    print(f"\n[Time]: {running:.2f}s")

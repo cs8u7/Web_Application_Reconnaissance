@@ -1,9 +1,9 @@
 import requests
-from pathlib import Path
 from cryptography import x509
 from cryptography.hazmat.backends import default_backend
 import os
 from termcolor import colored
+import time
 from datetime import datetime
 
 HEADER = {
@@ -18,11 +18,14 @@ def get_cert_ids(domain):
     }
 
     data = []
-    response = requests.get(url, params=params, headers=HEADER).json()
-    for cert in response:
-        not_after = datetime.strptime(cert['not_after'], '%Y-%m-%dT%H:%M:%S')
-        if not_after.year > 2023:
-            data.append(cert['id'])
+    try:
+        response = requests.get(url, params=params, headers=HEADER).json()
+        for cert in response:
+            not_after = datetime.strptime(cert['not_after'], '%Y-%m-%dT%H:%M:%S')
+            if not_after.year > 2023:
+                data.append(cert['id'])
+    except Exception:
+        pass
 
     return data
 
@@ -54,9 +57,8 @@ def get_subjectaltname(cert_path):
 
 
 def get_subdomains_with_cert(domain, cache, folder_sample):
-    domain_sample = folder_sample + '/passive/subdomain_from_cert.txt'
-    with open(domain_sample, 'w') as file:
-        pass
+    start_time = time.time()
+    domain_sample = folder_sample + '/passive/subdomain.txt'
     cert_folder = f'SSL_cert/{domain}'
 
     if cache and os.path.exists(cert_folder):
@@ -71,9 +73,14 @@ def get_subdomains_with_cert(domain, cache, folder_sample):
         if cache:
             print(
                 colored(f'[*] Cache of domain {domain} is missing', 'magenta'))
-        print('[-] Download And Decode Certificates')
+        print('[-] Download Certificates')
+        count = 0
         crtsh_data = get_cert_ids(domain)
+        cert_range = len(crtsh_data)
+        print('[-] Decode Certificates')
         for crtsh_id in crtsh_data:
+            count += 1
+            print(f"[{(count / cert_range) * 100:.2f}%][{count}/{cert_range}]", end='\r')
             cert_path = get_cert(crtsh_id, cert_folder)
             with open(domain_sample, 'a') as file:
                 for subdomain in get_subjectaltname(cert_path):
@@ -84,3 +91,7 @@ def get_subdomains_with_cert(domain, cache, folder_sample):
     unique_lines = sorted(set(lines))
     with open(domain_sample, 'w') as file:
         file.writelines(unique_lines)
+
+    end_time = time.time()
+    running = end_time - start_time 
+    print(f"\n[Time]: {running:.2f}s")

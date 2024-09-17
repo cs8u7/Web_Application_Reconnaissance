@@ -5,7 +5,7 @@ from dotenv import load_dotenv
 from termcolor import colored
 import os
 import ipinfo
-import socket
+import time
 import asyncio
 
 import pprint
@@ -151,6 +151,7 @@ def fetch_viewdns_ip_history(domain, api_key):
 
 
 def ip_dns_lookup(domain, is_trial, folder_sample):
+    start_time = time.time()
     networkcalc_ip_v4, networkcalc_mail_servers = fetch_networkcalc(domain)
     hackertarget_ip_v4, hackertarget_ip_v6, hackertarget_mail_servers = fetch_hackertarget(
         domain)
@@ -218,3 +219,7 @@ def ip_dns_lookup(domain, is_trial, folder_sample):
     with open(reverse_dns_sample, 'w') as file:
         for reverse_dns in filter_reverse_dns_set:
             file.write(f'{reverse_dns}\n')
+    
+    end_time = time.time()
+    running = end_time - start_time 
+    print(f"[Time]: {running:.2f}s")

@@ -2,11 +2,15 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
-
+import time
+from datetime import datetime
 
 def fetch_wayback_urls(domain, sample):
     print('[-] Fetching WayBack')
-    url = f"http://web.archive.org/cdx/search/cdx?url=*.{domain}/*&output=json&collapse=urlkey"
+    current_year = datetime.now().year
+    start_year = current_year - 3
+
+    url = (f"http://web.archive.org/cdx/search/cdx?url=*.{domain}/*&output=json&collapse=urlkey&from={start_year}&to={current_year}")
     try:
         response = requests.get(url, timeout=600)
         response.raise_for_status()
@@ -81,6 +85,7 @@ def fetch_virustotal_urls(domain, sample):
 
 
 def fetch_urls(domain, sample):
+    start_time = time.time()
     fetch_commoncrawl_urls(domain, sample)
     fetch_virustotal_urls(domain, sample)
     fetch_wayback_urls(domain, sample)
@@ -90,9 +95,14 @@ def fetch_urls(domain, sample):
     unique_lines = sorted(set(lines))
     with open(sample, 'w') as file:
         file.writelines(unique_lines)
+    
+    end_time = time.time()
+    running = end_time - start_time 
+    print(f"[Time]: {running:.2f}s")
 
 
 def hidden_and_document_endpoint(endpoint_sample, folder_sample):
+    start_time = time.time()
     hidden_sample = folder_sample + '/passive/hidden.txt'
     print('[-] Reading URLs')
     with open(endpoint_sample, 'r') as file:
@@ -115,8 +125,8 @@ def hidden_and_document_endpoint(endpoint_sample, folder_sample):
 
     document_sample = folder_sample + '/passive/document.txt'
     document_set = []
-    doc_temps = ['.txt', '.pdf', '.doc', 'xlsx',
-                 'xls', 'ods', 'docx', 'ppt', 'pptx']
+    doc_temps = ['.txt', '.pdf', '.doc', '.xlsx',
+                 '.xls', '.ods', '.docx', '.ppt', '.pptx','.json']
     print('[-] Document Filtering')
     hidden_set = []
     for url_line in url_lines:
@@ -129,3 +139,7 @@ def hidden_and_document_endpoint(endpoint_sample, folder_sample):
         pass
     with open(document_sample, 'w') as file:
         file.writelines(document_set)
+
+    end_time = time.time()
+    running = end_time - start_time 
+    print(f"[Time]: {running:.2f}s")

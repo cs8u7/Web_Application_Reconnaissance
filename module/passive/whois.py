@@ -5,9 +5,7 @@ import os
 import whois
 import whois.whois
 import subprocess
-import logging
-logging.getLogger("whois").setLevel(logging.CRITICAL)
-
+import time
 
 def fetch_whois_libary(domain, whois_sample):
     print('[-] Direct query with WHOIS libary')
@@ -35,7 +33,7 @@ def fetch_whois_libary(domain, whois_sample):
 
 
 def fetch_whoisxml(domain, whois_sample, api_key):
-    print('[-] Fetching Rapid API')
+    print('[-] Fetching WHOISXML API')
 
     try:
         url = "https://zozor54-whois-lookup-v1.p.rapidapi.com/"
@@ -71,6 +69,7 @@ def fetch_whois_command(domain, whois_sample):
 
 
 def whois_lookup(domain, folder_sample):
+    start_time = time.time()
     whois_sample = folder_sample + '/passive/WHOIS.txt'
 
     load_dotenv()
@@ -82,3 +81,7 @@ def whois_lookup(domain, folder_sample):
         if not result_state_2:
             if api_key:
                 fetch_whoisxml(domain, whois_sample, api_key)
+    
+    end_time = time.time()
+    running = end_time - start_time 
+    print(f"[Time]: {running:.2f}s")

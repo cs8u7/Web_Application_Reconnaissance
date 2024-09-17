@@ -1,7 +1,6 @@
 import requests
 import re
-
-import pprint
+import time
 
 
 def extract_ga_ids(domain):
@@ -44,6 +43,7 @@ def fetch_hacker_target(ua_id, domain_sample):
 
 
 def domain_by_analytic(domain, folder_sample):
+    start_time = time.time()
     domain_sample = folder_sample + '/passive/subdomain.txt'
     ua_id_list = extract_ga_ids(domain)
     print('[-] Fetching Hacker Target')
@@ -55,3 +55,7 @@ def domain_by_analytic(domain, folder_sample):
     unique_lines = sorted(set(lines))
     with open(domain_sample, 'w') as file:
         file.writelines(unique_lines)
+
+    end_time = time.time()
+    running = end_time - start_time 
+    print(f"[Time]: {running:.2f}s")

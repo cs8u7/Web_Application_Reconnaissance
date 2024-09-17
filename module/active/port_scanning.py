@@ -2,6 +2,7 @@ import socket
 from concurrent.futures import ThreadPoolExecutor
 import threading
 import concurrent.futures
+import time
 
 port_count = 0
 port_lock = threading.Lock()
@@ -44,7 +45,12 @@ def multi_threaded_port_scan(threads, port_range, domain, port_sample):
 
 
 def port_scanning(domain, threads, folder_result, port_start, port_end):
+    start_time = time.time()
     port_sample = folder_result + f'/active/open_port.txt'
     port_range = (port_start, port_end)
     multi_threaded_port_scan(threads, port_range, domain, port_sample)
+
+    end_time = time.time()
+    running = end_time - start_time 
+    print(f"\n[Time]: {running:.2f}s")
 

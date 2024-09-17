@@ -4,6 +4,7 @@ from threading import Lock
 import concurrent.futures
 from module.active.ping import dns_ip_query
 import os
+import time
 
 
 lock = Lock()
@@ -42,6 +43,7 @@ def banner_collector(port, ip, banner_sample, total_tasks):
 
 
 def banner_grabbing(domain, threads, folder_sample, is_full_range):
+    start_time = time.time()
     banner_sample = folder_sample + f'/active/banner_grabbing#'
     port_sample = folder_sample + f'/active/open_port.txt'
     ipv4_sample = folder_sample + '/passive/ipv4.txt'
@@ -80,3 +82,7 @@ def banner_grabbing(domain, threads, folder_sample, is_full_range):
                     future.result()
                 except Exception:
                     pass
+
+    end_time = time.time()
+    running = end_time - start_time 
+    print(f"\n[Time]: {running:.2f}s")

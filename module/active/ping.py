@@ -21,7 +21,7 @@ def ping_ttl(ip):
                 elif detect_os(int(ttl_match.group(1))) == 0:
                     print(f'[Notification] {ip} is active, OS detected: Unknow')
     except Exception:
-        pass
+        pass  
 
 def detect_os(ttl):
     if ttl:

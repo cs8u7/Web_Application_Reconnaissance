@@ -2,13 +2,14 @@ import requests
 import json
 from bs4 import BeautifulSoup
 import re
+import time
 
 tech_count = 0
 
 
 def fetch_web_content(domain):
     try:
-        print(f'[Notification] Downloading Web Content')
+        print(f'[-] Downloading Web Content')
         response = requests.get(f'https://{domain}', timeout=30)
         return response
     except requests.exceptions.RequestException:
@@ -87,11 +88,15 @@ def detect(response, tech_footprints):
         script_patterns = attributes.get("scripts", [])
         if isinstance(script_patterns, str):
             script_patterns = [script_patterns]
+
         script_tags = soup.find_all('script')
+
         for script in script_patterns:
             for script_tag in script_tags:
                 try:
-                    if re.search(script, str(script_tag)) or re.search(str(script_tag), script):
+                    escaped_script = re.escape(script)
+                    escaped_script_tag = re.escape(str(script_tag))
+                    if re.search(escaped_script, escaped_script_tag) or re.search(escaped_script_tag, escaped_script):
                         detected_technologies = detect_relative(
                             detected_technologies, tech, 'HTML script tag')
                         break
@@ -147,6 +152,7 @@ def detect(response, tech_footprints):
 
 
 def technology_pro5(domain, folder_result):
+    start_time = time.time()
     web_content_sample = folder_result + f'/active/web_content.txt'
     technology_pro5_sample = folder_result + f'/active/technology_pro5.txt'
     response = fetch_web_content(domain)
@@ -156,6 +162,7 @@ def technology_pro5(domain, folder_result):
             file.write('Error to download content and response headers')
         return
 
+    print(f'[-] Analyzing Web Content')
     soup = BeautifulSoup(response.text, 'html.parser')
     html_content = str(soup)
 
@@ -174,4 +181,6 @@ def technology_pro5(domain, folder_result):
     with open(technology_pro5_sample, 'w') as file:
         file.writelines(unique_lines)
 
-    print(f"", end='\r', flush=True)
+    end_time = time.time()
+    running = end_time - start_time 
+    print(f"\n[Time]: {running:.2f}s")

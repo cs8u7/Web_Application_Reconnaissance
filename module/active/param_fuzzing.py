@@ -1,6 +1,6 @@
 import requests
 from concurrent.futures import ThreadPoolExecutor, as_completed
-import urllib.parse
+import time
 from bs4 import BeautifulSoup
 import threading
 
@@ -21,7 +21,7 @@ def parameter_fuzzing_unity(url, param, param_sample, baseline_html, total_lines
 
         if response_html != baseline_html:
             with open(param_sample, 'a') as file:
-                file.write(f'{url}/?{param}=\n')
+                file.write(f'{url}/?{param}=1\n')
 
     except requests.RequestException:
         pass
@@ -44,6 +44,7 @@ def multi_threaded_parameter_fuzzing(url, threads, param_sample, baseline_html, 
                 pass
 
 def parameter_fuzzing(domain, threads, folder_result):
+    start_time = time.time()
     param_sample = f'{folder_result}/active/parameter_results.txt'
     url = 'https://' + domain
     with open(param_sample, 'a') as file:
@@ -66,4 +67,6 @@ def parameter_fuzzing(domain, threads, folder_result):
     with open(param_sample, 'w') as file:
         file.writelines(unique_lines)
     
-    print(f"", end='\r', flush=True)
+    end_time = time.time()
+    running = end_time - start_time 
+    print(f"\n[Time]: {running:.2f}s")

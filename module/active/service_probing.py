@@ -3,6 +3,7 @@ import concurrent.futures
 import os
 from threading import Lock
 from module.active.ping import dns_ip_query
+import time
 
 lock = Lock()
 progress_lock = Lock()
@@ -37,6 +38,7 @@ def scan_service_port(ip, port, service_on_port_sample, total_tasks):
 
 
 def service_probing(domain, threads, folder_sample, is_full_range):
+    start_time = time.time()
     ipv4_sample = folder_sample + '/passive/ipv4.txt'
     ip_lines = []
     if os.path.exists(ipv4_sample):
@@ -77,4 +79,6 @@ def service_probing(domain, threads, folder_sample, is_full_range):
             except Exception:
                 pass
 
-    print(f"", end='\r', flush=True)
+    end_time = time.time()
+    running = end_time - start_time 
+    print(f"\n[Time]: {running:.2f}s")

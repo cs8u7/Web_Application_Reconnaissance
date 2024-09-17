@@ -1,5 +1,6 @@
 import requests
 from concurrent.futures import ThreadPoolExecutor
+import time
 
 endpoint_count = 0
 REQUEST_TIMEOUT = 10
@@ -45,9 +46,18 @@ def multi_threads_fuzzing(target_url, threads, endpoint_fuzzing_sample):
             except Exception as e:
                 print(f"Error processing future: {e}")
 
-def endpoint_fuzzing(domain, threads, folder_result):
+def endpoint_fuzzing(threads, folder_result):
+    start_time = time.time()
     endpoint_fuzzing_sample = folder_result + f'/active/endpoint_fuzzing.txt'
-    target_url = 'https://' + domain + "/{}"
-    multi_threads_fuzzing(target_url, threads, endpoint_fuzzing_sample)
+    domain_sample = f'{folder_result}/active/subdomain.txt'
+    with open(domain_sample, 'r') as file:
+        domains = file.read().splitlines()
 
-    print(f"", end='\r', flush=True)
+    for domain in domains:
+        target_url = 'https://' + domain + "/{}"
+        print(f'[-] Fuzzing Domain {domain}')
+        multi_threads_fuzzing(target_url, threads, endpoint_fuzzing_sample)
+
+    end_time = time.time()
+    running = end_time - start_time 
+    print(f"\n[Time]: {running:.2f}s")
