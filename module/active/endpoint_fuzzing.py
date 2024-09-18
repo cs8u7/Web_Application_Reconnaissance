@@ -15,8 +15,9 @@ def fuzz(target_url, endpoint_fuzzing_sample, endpoint_range):
         response = requests.get(
             target_url, allow_redirects=False, timeout=REQUEST_TIMEOUT)
 
-        with open(endpoint_fuzzing_sample, 'a') as file:
-            file.write(f'[{response.status_code}] {target_url}\n')
+        if response.status_code == 200:
+            with open(endpoint_fuzzing_sample, 'a') as file:
+                file.write(f'{target_url}\n')
 
     except requests.Timeout:
         pass

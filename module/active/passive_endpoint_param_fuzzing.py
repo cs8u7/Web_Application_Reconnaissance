@@ -33,12 +33,13 @@ def fuzz(target_url, endpoint_result_sample, domains, endpoint_range, param_samp
             response = requests.get(
                 target_url, allow_redirects=False, timeout=REQUEST_TIMEOUT)
 
-            with open(endpoint_result_sample, 'a') as file:
-                file.write(f'[{response.status_code}] {target_url}\n')
-
-            if check_params_in_url(target_url):
-                with open(param_sample, 'a') as file:
+            if response.status_code == 200:
+                with open(endpoint_result_sample, 'a') as file:
                     file.write(f'{target_url}\n')
+
+                if check_params_in_url(target_url):
+                    with open(param_sample, 'a') as file:
+                        file.write(f'{target_url}\n')
 
         except requests.Timeout:
             pass
@@ -71,7 +72,7 @@ def multi_threads_fuzzing(threads, endpoint_fuzzing_sample, endpoint_result_samp
 
 def passive_endpoint_param_fuzzing(threads, folder_result):
     start_time = time.time()
-    endpoint_result_sample = folder_result + f'/active/passive_endpoint_fuzzing.txt'
+    endpoint_result_sample = folder_result + f'/active/endpoint_fuzzing.txt'
     endpoint_fuzzing_sample = folder_result + f'/passive/endpoint.txt'
 
     domain_sample = folder_result + f'/active/subdomain.txt'
