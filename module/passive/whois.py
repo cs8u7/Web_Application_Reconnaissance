@@ -32,8 +32,8 @@ def fetch_whois_libary(domain, whois_sample):
         return None
 
 
-def fetch_whoisxml(domain, whois_sample, api_key):
-    print('[-] Fetching WHOISXML API')
+def fetch_rapid_api(domain, whois_sample, api_key):
+    print('[-] Fetching Rapid API')
 
     try:
         url = "https://zozor54-whois-lookup-v1.p.rapidapi.com/"
@@ -46,9 +46,11 @@ def fetch_whoisxml(domain, whois_sample, api_key):
         }
         response = requests.get(url, headers=headers,
                                 params=querystring).json()
-
-        with open(whois_sample, 'w') as file:
-            file.write(f'{response["rawdata"][0]}\n')
+        if response['messages']:
+            pass
+        else:
+            with open(whois_sample, 'w') as file:
+                file.write(f'{response["rawdata"][0]}\n')
     except (requests.RequestException, json.JSONDecodeError):
         pass
 
@@ -80,7 +82,7 @@ def whois_lookup(domain, folder_sample):
         result_state_2 = fetch_whois_libary(domain, whois_sample)
         if not result_state_2:
             if api_key:
-                fetch_whoisxml(domain, whois_sample, api_key)
+                fetch_rapid_api(domain, whois_sample, api_key)
     
     end_time = time.time()
     running = end_time - start_time 

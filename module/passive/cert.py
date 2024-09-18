@@ -58,7 +58,7 @@ def get_subjectaltname(cert_path):
 
 def get_subdomains_with_cert(domain, cache, folder_sample):
     start_time = time.time()
-    domain_sample = folder_sample + '/passive/subdomain.txt'
+    domain_sample = folder_sample + '/passive/cert_domain.txt'
     cert_folder = f'SSL_cert/{domain}'
 
     if cache and os.path.exists(cert_folder):

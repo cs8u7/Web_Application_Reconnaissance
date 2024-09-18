@@ -203,27 +203,27 @@ def ip_dns_lookup(domain, is_trial, folder_sample):
     print(colored('[+] Localtion, Hosting Provider, Region', 'cyan'))
     if api_key_ipinfo:
         print('[-] Fetching IPinfo')
-        location_sample = folder_sample + '/passive/ip_history.txt'
+        location_sample = folder_sample + '/passive/localtion.txt'
         with open(location_sample, 'w') as file:
             for ip in ip_v4_set:
                 text = fetch_ipinfo_localtion(ip, is_trial, api_key_ipinfo)
                 file.write(f'{text}\n')
 
     print(colored('[+] IP History', 'cyan'))
-    print('[-] Fetching ViewDNS')
     api_key_viewdns = os.getenv('VIEWDNS_API_KEY')
-    ip_history_sample = folder_sample + '/passive/ip_history.txt'
     if api_key_viewdns:
+        print('[-] Fetching ViewDNS')
+        ip_history_sample = folder_sample + '/passive/ip_history.txt'
         history_IPs = fetch_viewdns_ip_history(domain, api_key_viewdns)
         with open(ip_history_sample, 'w') as file:
             for ip in history_IPs:
                 file.write(f'{ip}\n')
 
-    print(colored('[+] Reverse IP Lookup', 'cyan'))
-    reverse_dns_set = []
+    print(colored('[+] Reverse DNS Lookup', 'cyan'))
     if api_key_viewdns:
+        reverse_dns_set = []
         print('[-] Fetching ViewDNS')
-        reverse_dns_sample = folder_sample + '/passive/ip_history.txt'
+        reverse_dns_sample = folder_sample + '/passive/reverse_dns.txt'
         for ip in ip_v4_set:
             reverse_dns_set = reverse_dns_set + fetch_viewdns_reverse_ip(ip, api_key_viewdns)
         filter_reverse_dns_set = list(set(reverse_dns_set))

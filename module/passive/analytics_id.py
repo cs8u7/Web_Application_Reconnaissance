@@ -22,7 +22,7 @@ def extract_ga_ids(domain):
     return ua_ids
 
 
-def fetch_hacker_target(ua_id, domain_sample):
+def fetch_hacker_target(ua_id, analytic_sample):
     domain_list = []
     try:
         url = f'https://api.hackertarget.com/analyticslookup/?q={ua_id}'
@@ -33,7 +33,7 @@ def fetch_hacker_target(ua_id, domain_sample):
             return domain_list
         else:
             domain_list = data.splitlines()
-            with open(domain_sample, 'a') as file:
+            with open(analytic_sample, 'a') as file:
                 for item in domain_list:
                     file.write(f"{item}\n")
 
@@ -44,16 +44,19 @@ def fetch_hacker_target(ua_id, domain_sample):
 
 def domain_by_analytic(domain, folder_sample):
     start_time = time.time()
-    domain_sample = folder_sample + '/passive/subdomain.txt'
+    analytic_sample = folder_sample + '/passive/analytic_domain.txt'
+    with open(analytic_sample, 'w') as file:
+        pass
+
     ua_id_list = extract_ga_ids(domain)
     print('[-] Fetching Hacker Target')
     for ua_id in ua_id_list:
-        fetch_hacker_target(ua_id, domain_sample)
+        fetch_hacker_target(ua_id, analytic_sample)
 
-    with open(domain_sample, 'r') as file:
+    with open(analytic_sample, 'r') as file:
         lines = file.readlines()
     unique_lines = sorted(set(lines))
-    with open(domain_sample, 'w') as file:
+    with open(analytic_sample, 'w') as file:
         file.writelines(unique_lines)
 
     end_time = time.time()
