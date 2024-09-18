@@ -3,14 +3,12 @@ import json
 from bs4 import BeautifulSoup
 import re
 import time
-
-tech_count = 0
+import os
 
 
 def fetch_web_content(domain):
     try:
-        print(f'[-] Downloading Web Content')
-        response = requests.get(f'https://{domain}', timeout=30)
+        response = requests.get(f'https://{domain}', timeout=5)
         return response
     except requests.exceptions.RequestException:
         return None
@@ -34,7 +32,7 @@ def detect_relative(detected_technologies, tech, technique):
 
 
 def detect(response, tech_footprints):
-    global tech_count
+    tech_count = 0
     detected_technologies = []
     html_content = response.text
     headers = response.headers.items()
@@ -120,13 +118,15 @@ def detect(response, tech_footprints):
             for meta_tag in meta_tags:
                 try:
                     if re.search(pattern, meta_tag.get("content", "")) or re.search(meta_tag.get("content", ""), pattern):
-                        implied_techs = tech.get("attributes", {}).get("implies", [])
+                        implied_techs = tech.get(
+                            "attributes", {}).get("implies", [])
 
                         if isinstance(implied_techs, str):
                             implied_techs = [implied_techs]
                         detected_technologies.extend(implied_techs)
 
-                        detected_technologies.append(f'{meta_tag.get("content", "")} - meta')
+                        detected_technologies.append(
+                            f'{meta_tag.get("content", "")} - meta')
                         break
                 except re.error:
                     pass
@@ -151,36 +151,49 @@ def detect(response, tech_footprints):
     return detected_technologies
 
 
-def technology_pro5(domain, folder_result):
+def technology_pro5(folder_result):
     start_time = time.time()
-    web_content_sample = folder_result + f'/active/web_content.txt'
-    technology_pro5_sample = folder_result + f'/active/technology_pro5.txt'
-    response = fetch_web_content(domain)
+    subdomain_sample = folder_result + '/active/subdomain.txt'
 
-    if response is None:
-        with open(web_content_sample, 'w') as file:
-            file.write('Error to download content and response headers')
-        return
+    with open(subdomain_sample, 'r') as file:
+        domains = file.read().splitlines()
 
-    print(f'[-] Analyzing Web Content')
-    soup = BeautifulSoup(response.text, 'html.parser')
-    html_content = str(soup)
-
-    with open(web_content_sample, 'w') as file:
-        file.write(html_content)
     tech_footprints = load_tech_footprints()
 
-    detected_technologies = detect(response, tech_footprints)
-    with open(technology_pro5_sample, 'w') as file:
-        for tech in detected_technologies:
-            file.write(f'{tech}\n')
+    os.makedirs(f'{folder_result}/active/web_content/')
+    os.makedirs(f'{folder_result}/active/technology_pro5/')
 
-    with open(technology_pro5_sample, 'r') as file:
-        lines = file.readlines()
-    unique_lines = sorted(set(lines))
-    with open(technology_pro5_sample, 'w') as file:
-        file.writelines(unique_lines)
+    for domain in domains:
+        web_content_sample = folder_result + \
+            f'/active/web_content/{domain}.txt'
+        technology_pro5_sample = folder_result + \
+            f'/active/technology_pro5/{domain}.txt'
+
+        response = fetch_web_content(domain)
+
+        if response is None:
+            with open(web_content_sample, 'w') as file:
+                file.write('Error to download content and response headers')
+            break
+
+        print(f'[-] Analyzing Web Content of {domain}')
+        soup = BeautifulSoup(response.text, 'html.parser')
+        html_content = str(soup)
+
+        with open(web_content_sample, 'w') as file:
+            file.write(html_content)
+        
+        detected_technologies = detect(response, tech_footprints)
+        with open(technology_pro5_sample, 'w') as file:
+            for tech in detected_technologies:
+                file.write(f'{tech}\n')
+
+        with open(technology_pro5_sample, 'r') as file:
+            lines = file.readlines()
+        unique_lines = sorted(set(lines))
+        with open(technology_pro5_sample, 'w') as file:
+            file.writelines(unique_lines)
 
     end_time = time.time()
-    running = end_time - start_time 
+    running = end_time - start_time
     print(f"\n[Time]: {running:.2f}s")

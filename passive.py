@@ -9,6 +9,7 @@ from module.passive.dns import ip_dns_lookup
 from module.passive.whois import whois_lookup
 from module.passive.analytics_id import domain_by_analytic
 from module.passive.cert import get_subdomains_with_cert
+from module.passive.domain_summary import domain_summary
 
 
 def passive_recon(domain, folder_result, cert, cache, ipinfo):
@@ -47,3 +48,7 @@ def passive_recon(domain, folder_result, cert, cache, ipinfo):
     print(
         colored('[+] Lookup New Domains by Google Analytics', 'cyan'))
     domain_by_analytic(domain, folder_result)
+
+    print(
+        colored('[+] Sumary Subdomains', 'cyan'))
+    domain_summary(domain, folder_result)

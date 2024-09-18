@@ -28,9 +28,6 @@ def active_recon(domain, folder_result, threads, is_full_range, port_start, port
             "Error: Target is offline", "magenta"))
         sys.exit(1)
 
-    print(colored('[+] Technology Profiling', 'cyan'))
-    technology_pro5(domain, folder_result)
-
     print(colored('[+] Subdomains Fuzzing', 'cyan'))
     subdomain_fuzzing(domain, threads, folder_result)
 
@@ -38,6 +35,9 @@ def active_recon(domain, folder_result, threads, is_full_range, port_start, port
     if os.path.exists(subdomain_fuzzing_sample):
         print(colored('[+] Passive Subdomains Fuzzing', 'cyan'))
         passive_subdomain_fuzzing(threads, folder_result)
+
+    print(colored('[+] Technology Profiling', 'cyan'))
+    technology_pro5(folder_result)
 
     print(colored('[+] Endpoints Fuzzing', 'cyan'))
     endpoint_fuzzing(threads, folder_result)

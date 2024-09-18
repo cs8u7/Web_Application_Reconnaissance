@@ -58,10 +58,10 @@ def get_subjectaltname(cert_path):
 
 def get_subdomains_with_cert(domain, cache, folder_sample):
     start_time = time.time()
-    domain_sample = folder_sample + '/passive/cert_domain.txt'
+    cert_sample = folder_sample + '/passive/cert_domain.txt'
     cert_folder = f'SSL_cert/{domain}'
 
-    with open(domain_sample, 'w') as file:
+    with open(cert_sample, 'w') as file:
         pass
 
     if cache and os.path.exists(cert_folder):
@@ -69,7 +69,7 @@ def get_subdomains_with_cert(domain, cache, folder_sample):
         files = os.listdir(cert_folder)
         for file_name in files:
             if os.path.isfile(os.path.join(cert_folder, file_name)):
-                with open(domain_sample, 'a') as file:
+                with open(cert_sample, 'a') as file:
                     for subdomain in get_subjectaltname(f'{cert_folder}/{file_name}'):
                         file.write(f'{subdomain}\n')
     else:
@@ -85,14 +85,14 @@ def get_subdomains_with_cert(domain, cache, folder_sample):
             count += 1
             print(f"[{(count / cert_range) * 100:.2f}%][{count}/{cert_range}]", end='\r')
             cert_path = get_cert(crtsh_id, cert_folder)
-            with open(domain_sample, 'a') as file:
+            with open(cert_sample, 'a') as file:
                 for subdomain in get_subjectaltname(cert_path):
                     file.write(f'{subdomain}\n')
 
-    with open(domain_sample, 'r') as file:
+    with open(cert_sample, 'r') as file:
         lines = file.readlines()
     unique_lines = sorted(set(lines))
-    with open(domain_sample, 'w') as file:
+    with open(cert_sample, 'w') as file:
         file.writelines(unique_lines)
 
     end_time = time.time()

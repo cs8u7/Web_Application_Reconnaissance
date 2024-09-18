@@ -46,7 +46,7 @@ def fetch_rapid_api(domain, whois_sample, api_key):
         }
         response = requests.get(url, headers=headers,
                                 params=querystring).json()
-        if response['messages']:
+        if 'messages' in response:
             pass
         else:
             with open(whois_sample, 'w') as file:
