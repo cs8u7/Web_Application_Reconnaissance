@@ -6,7 +6,7 @@ import threading
 
 current_line = 0
 lock = threading.Lock()
-REQUEST_TIMEOUT = 20
+REQUEST_TIMEOUT = 5
 
 def get_html_snippet(response):
     soup = BeautifulSoup(response.text, 'html.parser')

@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 
 sub_count = 0
-REQUEST_TIMEOUT = 20
+REQUEST_TIMEOUT = 5
 
 
 def fuzzing_subdomain_with_wordlist(subdomain, subdomain_sample, sub_range):
@@ -14,8 +14,9 @@ def fuzzing_subdomain_with_wordlist(subdomain, subdomain_sample, sub_range):
     try:
         response = requests.get(
             target_url, allow_redirects=False, timeout=REQUEST_TIMEOUT)
-        with open(subdomain_sample, 'a') as file:
-            file.write(f'[{response.status_code}] {target_url}\n')
+        if response.status_code == 200:
+            with open(subdomain_sample, 'a') as file:
+                file.write(f'{subdomain}\n')
     except requests.RequestException:
         pass
 
@@ -28,7 +29,7 @@ def multi_threaded_subdomain_fuzzing(threads, wordlist_file, subdomain_sample):
 
     with ThreadPoolExecutor(max_workers=threads) as executor:
         futures = {executor.submit(fuzzing_subdomain_with_wordlist, subdomain,
-                                subdomain_sample, sub_range): subdomain for subdomain in subdomains}
+                                   subdomain_sample, sub_range): subdomain for subdomain in subdomains}
 
         for future in as_completed(futures):
             try:
@@ -43,7 +44,7 @@ def passive_subdomain_fuzzing(threads, folder_result):
     subdomain_sample = f'{folder_result}/active/subdomain.txt'
     multi_threaded_subdomain_fuzzing(
         threads, wordlist_file, subdomain_sample)
-    
+
     with open(subdomain_sample, 'r') as file:
         lines = file.readlines()
     unique_lines = sorted(set(lines))

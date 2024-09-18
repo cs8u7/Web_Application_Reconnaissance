@@ -131,6 +131,10 @@ def fetch_viewdns_reverse_ip(ip, api_key):
     response = requests.get(url)
     data = response.json()
 
+    if 'domains' in data['response'] and data['response']['domains']:
+        for domain in data['response']['domains']:
+            dns.append(domain['name'])
+    
     return dns
 
 
@@ -142,16 +146,19 @@ def fetch_viewdns_ip_history(domain, api_key):
         response = requests.get(url, timeout=120)
         data = response.json()
 
-        for record in data['response']['records']:
-            history_IPs.append(record['ip'])
-        return history_IPs
+        if 'error' in data['response'] and data['response']['error']:
+            return history_IPs
+        else:
+            for record in data['response']['records']:
+                history_IPs.append(record['ip'])
+            return history_IPs
 
     except (requests.RequestException, json.JSONDecodeError):
         return history_IPs
 
 
 def ip_dns_lookup(domain, is_trial, folder_sample):
-    start_time = time.time()
+    start_time1 = time.time()
     networkcalc_ip_v4, networkcalc_mail_servers = fetch_networkcalc(domain)
     hackertarget_ip_v4, hackertarget_ip_v6, hackertarget_mail_servers = fetch_hackertarget(
         domain)
@@ -185,17 +192,13 @@ def ip_dns_lookup(domain, is_trial, folder_sample):
         for mx in mail_servers_set:
             file.write(f'{mx}\n')
 
-    load_dotenv()
-    print(colored('[+] IP History', 'cyan'))
-    print('[-] Fetching ViewDNS')
-    api_key_viewdns = os.getenv('VIEWDNS_API_KEY')
-    ip_history_sample = folder_sample + '/passive/ip_history.txt'
-    if api_key_viewdns:
-        history_IPs = fetch_viewdns_ip_history(domain, api_key_viewdns)
-        with open(ip_history_sample, 'w') as file:
-            for ip in history_IPs:
-                file.write(f'{ip}\n')
+    end_time1 = time.time()
+    running1 = end_time1 - start_time1 
+    print(f"[Time]: {running1:.2f}s")
 
+    start_time2 = time.time()
+
+    load_dotenv()
     api_key_ipinfo = os.getenv('IPinfo_API_KEY')
     print(colored('[+] Localtion, Hosting Provider, Region', 'cyan'))
     if api_key_ipinfo:
@@ -206,20 +209,28 @@ def ip_dns_lookup(domain, is_trial, folder_sample):
                 text = fetch_ipinfo_localtion(ip, is_trial, api_key_ipinfo)
                 file.write(f'{text}\n')
 
+    print(colored('[+] IP History', 'cyan'))
+    print('[-] Fetching ViewDNS')
+    api_key_viewdns = os.getenv('VIEWDNS_API_KEY')
+    ip_history_sample = folder_sample + '/passive/ip_history.txt'
+    if api_key_viewdns:
+        history_IPs = fetch_viewdns_ip_history(domain, api_key_viewdns)
+        with open(ip_history_sample, 'w') as file:
+            for ip in history_IPs:
+                file.write(f'{ip}\n')
+
     print(colored('[+] Reverse IP Lookup', 'cyan'))
     reverse_dns_set = []
-
     if api_key_viewdns:
         print('[-] Fetching ViewDNS')
         reverse_dns_sample = folder_sample + '/passive/ip_history.txt'
         for ip in ip_v4_set:
-            reverse_dns_set = reverse_dns_set + \
-                fetch_viewdns_reverse_ip(ip, api_key_viewdns)
+            reverse_dns_set = reverse_dns_set + fetch_viewdns_reverse_ip(ip, api_key_viewdns)
     filter_reverse_dns_set = list(set(reverse_dns_set))
     with open(reverse_dns_sample, 'w') as file:
         for reverse_dns in filter_reverse_dns_set:
             file.write(f'{reverse_dns}\n')
     
-    end_time = time.time()
-    running = end_time - start_time 
-    print(f"[Time]: {running:.2f}s")
+    end_time2 = time.time()
+    running2 = end_time2 - start_time2 
+    print(f"[Time]: {running2:.2f}s")

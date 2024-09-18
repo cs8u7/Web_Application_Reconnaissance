@@ -37,7 +37,7 @@ def active_recon(domain, folder_result, threads, is_full_range, port_start, port
     subdomain_fuzzing_sample = folder_result + f'/passive/subdomain.txt'
     if os.path.exists(subdomain_fuzzing_sample):
         print(colored('[+] Passive Subdomains Fuzzing', 'cyan'))
-        passive_subdomain_fuzzing(domain, threads, folder_result)
+        passive_subdomain_fuzzing(threads, folder_result)
 
     print(colored('[+] Endpoints Fuzzing', 'cyan'))
     endpoint_fuzzing(threads, folder_result)
@@ -47,7 +47,7 @@ def active_recon(domain, folder_result, threads, is_full_range, port_start, port
 
     endpoint_fuzzing_sample = folder_result + f'/passive/endpoint.txt'
     if os.path.exists(endpoint_fuzzing_sample):
-        print(colored('[+] Passive Endpoints And Parameters Fuzzing', 'cyan'))
+        print(colored('[+] Passive Endpoints And Passive Parameters Fuzzing', 'cyan'))
         passive_endpoint_param_fuzzing(threads, folder_result)
 
     print(colored('[+] Port Scanning    ', 'cyan'))

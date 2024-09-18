@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 
 sub_count = 0
-REQUEST_TIMEOUT = 20
+REQUEST_TIMEOUT = 5
 
 def fuzzing_subdomain_with_wordlist(subdomain, base_domain, subdomain_sample, sub_range):
     global sub_count
@@ -12,8 +12,9 @@ def fuzzing_subdomain_with_wordlist(subdomain, base_domain, subdomain_sample, su
     target_url = f'https://{subdomain}.{base_domain}'
     try:
         response = requests.get(target_url, allow_redirects=False, timeout=REQUEST_TIMEOUT)
-        with open(subdomain_sample, 'a') as file:
-            file.write(f'[{response.status_code}] {target_url}\n')
+        if response.status_code == 200:
+            with open(subdomain_sample, 'a') as file:
+                file.write(f'{subdomain}.{base_domain}\n')
     except requests.RequestException:
         pass
 

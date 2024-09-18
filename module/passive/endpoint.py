@@ -2,8 +2,9 @@ import requests
 import json
 import os
 from dotenv import load_dotenv
-import time
+import time 
 from datetime import datetime
+import re
 
 def fetch_wayback_urls(domain, sample):
     print('[-] Fetching WayBack')
@@ -93,8 +94,11 @@ def fetch_urls(domain, sample):
     with open(sample, 'r') as file:
         lines = file.readlines()
     unique_lines = sorted(set(lines))
+    
+    cleaned_lines = [line for line in unique_lines if '.css' not in line]
+    
     with open(sample, 'w') as file:
-        file.writelines(unique_lines)
+        file.writelines(cleaned_lines)
     
     end_time = time.time()
     running = end_time - start_time 

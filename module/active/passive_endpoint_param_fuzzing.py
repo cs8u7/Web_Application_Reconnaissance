@@ -4,7 +4,8 @@ from urllib.parse import urlparse
 import time
 
 endpoint_count = 0
-REQUEST_TIMEOUT = 10
+REQUEST_TIMEOUT = 5
+
 
 def check_domain_in_url(target_url, domains):
     parsed_url = urlparse(target_url)
@@ -16,9 +17,11 @@ def check_domain_in_url(target_url, domains):
 
     return False
 
+
 def check_params_in_url(target_url):
     parsed_url = urlparse(target_url)
     return bool(parsed_url.query)
+
 
 def fuzz(target_url, endpoint_result_sample, domains, endpoint_range, param_sample):
     global endpoint_count
@@ -38,14 +41,11 @@ def fuzz(target_url, endpoint_result_sample, domains, endpoint_range, param_samp
                     file.write(f'{target_url}\n')
 
         except requests.Timeout:
-            with open(endpoint_result_sample, 'a') as file:
-                file.write(f"[Time out] {target_url}\n")
+            pass
         except requests.ConnectionError:
-            with open(endpoint_result_sample, 'a') as file:
-                file.write(f"[Error connect] {target_url}\n")
+            pass
         except requests.RequestException:
-            with open(endpoint_result_sample, 'a') as file:
-                file.write(f"[Error request] {target_url}\n")
+            pass
 
 
 def multi_threads_fuzzing(threads, endpoint_fuzzing_sample, endpoint_result_sample, domains, param_sample):
@@ -84,10 +84,16 @@ def passive_endpoint_param_fuzzing(threads, folder_result):
                           endpoint_result_sample, domains, param_sample)
 
     with open(endpoint_result_sample, 'r') as file:
-        lines = file.readlines()
-    unique_lines = sorted(set(lines))
+        endpoint_lines = file.readlines()
+    unique_endpoints = sorted(set(endpoint_lines))
     with open(endpoint_result_sample, 'w') as file:
-        file.writelines(unique_lines)
+        file.writelines(unique_endpoints)
+
+    with open(param_sample, 'r') as file:
+        param_lines = file.readlines()
+    unique_params = sorted(set(param_lines))
+    with open(param_sample, 'w') as file:
+        file.writelines(unique_params)
 
     end_time = time.time()
     running = end_time - start_time
