@@ -1,6 +1,5 @@
 .env
 test.*
-SSL_cert/
 [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]#*
 module/__pycache__
 module/active/__pycache__
