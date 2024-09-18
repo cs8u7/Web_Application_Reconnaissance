@@ -226,10 +226,10 @@ def ip_dns_lookup(domain, is_trial, folder_sample):
         reverse_dns_sample = folder_sample + '/passive/ip_history.txt'
         for ip in ip_v4_set:
             reverse_dns_set = reverse_dns_set + fetch_viewdns_reverse_ip(ip, api_key_viewdns)
-    filter_reverse_dns_set = list(set(reverse_dns_set))
-    with open(reverse_dns_sample, 'w') as file:
-        for reverse_dns in filter_reverse_dns_set:
-            file.write(f'{reverse_dns}\n')
+        filter_reverse_dns_set = list(set(reverse_dns_set))
+        with open(reverse_dns_sample, 'w') as file:
+            for reverse_dns in filter_reverse_dns_set:
+                file.write(f'{reverse_dns}\n')
     
     end_time2 = time.time()
     running2 = end_time2 - start_time2 
