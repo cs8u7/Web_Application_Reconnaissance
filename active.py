@@ -43,7 +43,7 @@ def active_recon(domain, folder_result, threads, is_full_range, port_start, port
     endpoint_fuzzing(threads, folder_result)
 
     print(colored('[+] Parameters Fuzzing', 'cyan'))
-    parameter_fuzzing(domain, threads, folder_result)
+    parameter_fuzzing(threads, folder_result)
 
     endpoint_fuzzing_sample = folder_result + f'/passive/endpoint.txt'
     if os.path.exists(endpoint_fuzzing_sample):
