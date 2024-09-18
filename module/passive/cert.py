@@ -61,6 +61,9 @@ def get_subdomains_with_cert(domain, cache, folder_sample):
     domain_sample = folder_sample + '/passive/cert_domain.txt'
     cert_folder = f'SSL_cert/{domain}'
 
+    with open(domain_sample, 'w') as file:
+        pass
+
     if cache and os.path.exists(cert_folder):
         print('[-] Decode Certificates From Storage')
         files = os.listdir(cert_folder)
