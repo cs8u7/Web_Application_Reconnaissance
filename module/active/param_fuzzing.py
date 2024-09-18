@@ -7,6 +7,7 @@ import threading
 REQUEST_TIMEOUT = 2
 lock = threading.Lock()
 
+
 def get_html_snippet(response):
     soup = BeautifulSoup(response.text, 'html.parser')
     return str(soup)[:1000]
@@ -29,17 +30,18 @@ def parameter_fuzzing_unity(url, param, param_sample, baseline_html, current_lin
     with lock:
         current_line[0] += 1
         percent_params = (current_line[0] / total_lines) * 100
-        print(f"[{url}] [{percent_params:.2f}% completed] "
+        print(f"[{percent_params:.2f}%]"
               f"[{current_line[0]}/{total_lines}]", end='\r', flush=True)
 
 
 def multi_threaded_parameter_fuzzing(url, threads, param_sample, baseline_html, params):
     total_lines = len(params)
-    current_line = [0]  
-    
+    current_line = [0]
+
     with ThreadPoolExecutor(max_workers=threads) as executor:
         futures = [
-            executor.submit(parameter_fuzzing_unity, url, param, param_sample, baseline_html, current_line, total_lines)
+            executor.submit(parameter_fuzzing_unity, url, param,
+                            param_sample, baseline_html, current_line, total_lines)
             for param in params
         ]
 
@@ -59,18 +61,21 @@ def parameter_fuzzing(threads, folder_result):
         domains = file.read().splitlines()
 
     for domain in domains:
+        print(f'[-] Parameter Fuzzing On Domain {domain}')
         url = 'https://' + domain
         with open(param_sample, 'a') as file:
             pass
 
-        web_content_sample = folder_result + f'/active/web_content/{domain}.txt'
+        web_content_sample = folder_result + \
+            f'/active/web_content/{domain}.txt'
         with open(web_content_sample, 'r') as file:
             baseline_html = file.read()[:1000]
 
         with open('module/active/word_list/param.txt', 'r') as file:
             params = file.read().splitlines()
 
-        multi_threaded_parameter_fuzzing(url, threads, param_sample, baseline_html, params)
+        multi_threaded_parameter_fuzzing(
+            url, threads, param_sample, baseline_html, params)
 
         with open(param_sample, 'r') as file:
             lines = file.readlines()

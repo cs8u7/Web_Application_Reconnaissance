@@ -59,7 +59,7 @@ def endpoint_fuzzing(threads, folder_result):
 
     for domain in domains:
         target_url = 'https://' + domain + "/{}"
-        print(f'[-] Fuzzing Domain {domain}')
+        print(f'[-] Endpoint Fuzzing On Domain {domain}')
         multi_threads_fuzzing(target_url, threads, endpoint_fuzzing_sample, domains_range)
         
     end_time = time.time()
