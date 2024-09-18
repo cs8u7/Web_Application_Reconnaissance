@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 import time
 
 sub_count = 0
-REQUEST_TIMEOUT = 5
+REQUEST_TIMEOUT = 2
 
 def fuzzing_subdomain_with_wordlist(subdomain, base_domain, subdomain_sample, sub_range):
     global sub_count

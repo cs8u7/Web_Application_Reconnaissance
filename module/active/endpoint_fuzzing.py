@@ -3,7 +3,7 @@ from concurrent.futures import ThreadPoolExecutor
 import time
 
 endpoint_count = 0
-REQUEST_TIMEOUT = 5
+REQUEST_TIMEOUT = 2
 
 
 def fuzz(target_url, endpoint_fuzzing_sample, endpoint_range):

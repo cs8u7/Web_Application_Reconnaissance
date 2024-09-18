@@ -160,7 +160,6 @@ av
 sftp
 server1
 stat
-moodle
 facebook
 test1
 photo

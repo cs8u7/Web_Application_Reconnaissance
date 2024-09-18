@@ -11,7 +11,7 @@ lock = Lock()
 progress_lock = Lock()
 progress = 0
 
-SOCKET_TIMEOUT = 20
+SOCKET_TIMEOUT = 10
 
 
 def banner_collector(port, ip, banner_sample, total_tasks):

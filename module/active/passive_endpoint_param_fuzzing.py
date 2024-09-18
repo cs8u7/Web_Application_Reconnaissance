@@ -4,7 +4,7 @@ from urllib.parse import urlparse
 import time
 
 endpoint_count = 0
-REQUEST_TIMEOUT = 5
+REQUEST_TIMEOUT = 2
 
 
 def check_domain_in_url(target_url, domains):
