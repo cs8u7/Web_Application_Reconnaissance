@@ -26,7 +26,6 @@ def parameter_fuzzing_unity(url, param, param_sample, baseline_html, current_lin
     except requests.RequestException:
         pass
 
-    # Update and print percentage progress for the wordlist
     with lock:
         current_line[0] += 1
         percent_params = (current_line[0] / total_lines) * 100

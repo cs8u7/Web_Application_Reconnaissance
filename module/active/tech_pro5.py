@@ -42,8 +42,7 @@ def detect(response, tech_footprints):
 
     for tech in tech_footprints:
         tech_count += 1
-        print(
-            f"[{(tech_count/tech_range)*100:.2f}%][{tech_count}/{tech_range}]", end='\r')
+        print(f"[{(tech_count/tech_range)*100:.2f}%][{tech_count}/{tech_range}]", end='\r')
 
         attributes = tech.get("attributes", {})
 
@@ -52,9 +51,8 @@ def detect(response, tech_footprints):
             html_patterns = [html_patterns]
         for pattern in html_patterns:
             try:
-                if re.search(html_content, pattern) or re.search(pattern, html_content):
-                    detected_technologies = detect_relative(
-                        detected_technologies, tech, 'HTML content')
+                if re.search(pattern, html_content):
+                    detected_technologies = detect_relative(detected_technologies, tech, 'HTML content')
                     break
             except re.error:
                 pass
@@ -63,15 +61,13 @@ def detect(response, tech_footprints):
         for header, pattern in header_patterns.items():
             for header_res, pattern_res in headers:
                 if not pattern and header.lower() == header_res.lower():
-                    detected_technologies = detect_relative(
-                        detected_technologies, tech, 'HTTP headers')
+                    detected_technologies = detect_relative(detected_technologies, tech, 'HTTP headers')
                     break
 
                 elif pattern and header.lower() == header_res.lower():
                     try:
-                        if re.search(pattern_res, pattern) or re.search(pattern, pattern_res):
-                            detected_technologies = detect_relative(
-                                detected_technologies, tech, 'HTTP headers')
+                        if re.search(pattern, pattern_res):
+                            detected_technologies = detect_relative(detected_technologies, tech, 'HTTP headers')
                             break
                     except re.error:
                         pass
@@ -79,8 +75,7 @@ def detect(response, tech_footprints):
         cookie_patterns = tech.get("attributes", {}).get("cookies", {})
         for cookie in cookie_patterns.keys():
             if cookie in cookies.keys():
-                detected_technologies = detect_relative(
-                    detected_technologies, tech, 'HTTP Cookie')
+                detected_technologies = detect_relative(detected_technologies, tech, 'HTTP Cookie')
                 break
 
         script_patterns = attributes.get("scripts", [])
@@ -92,11 +87,8 @@ def detect(response, tech_footprints):
         for script in script_patterns:
             for script_tag in script_tags:
                 try:
-                    escaped_script = re.escape(script)
-                    escaped_script_tag = re.escape(str(script_tag))
-                    if re.search(escaped_script, escaped_script_tag) or re.search(escaped_script_tag, escaped_script):
-                        detected_technologies = detect_relative(
-                            detected_technologies, tech, 'HTML script tag')
+                    if re.search(re.escape(script), str(script_tag)):
+                        detected_technologies = detect_relative(detected_technologies, tech, 'HTML script tag')
                         break
                 except re.error:
                     pass
@@ -105,9 +97,8 @@ def detect(response, tech_footprints):
         for js_var, pattern in js_patterns.items():
             try:
                 if re.search(js_var, html_content):
-                    if not pattern or re.search(html_content, pattern) or re.search(pattern, html_content):
-                        detected_technologies = detect_relative(
-                            detected_technologies, tech, 'js')
+                    if not pattern or re.search(pattern, html_content):
+                        detected_technologies = detect_relative(detected_technologies, tech, 'js')
                         break
             except re.error:
                 pass
@@ -117,16 +108,8 @@ def detect(response, tech_footprints):
             meta_tags = soup.find_all('meta', attrs={"name": meta_name})
             for meta_tag in meta_tags:
                 try:
-                    if re.search(pattern, meta_tag.get("content", "")) or re.search(meta_tag.get("content", ""), pattern):
-                        implied_techs = tech.get(
-                            "attributes", {}).get("implies", [])
-
-                        if isinstance(implied_techs, str):
-                            implied_techs = [implied_techs]
-                        detected_technologies.extend(implied_techs)
-
-                        detected_technologies.append(
-                            f'{meta_tag.get("content", "")} - meta')
+                    if re.search(pattern, meta_tag.get("content", "")):
+                        detected_technologies = detect_relative(detected_technologies, tech, 'meta tag')
                         break
                 except re.error:
                     pass
@@ -138,12 +121,11 @@ def detect(response, tech_footprints):
                 for element in elements:
                     match = True
                     for attr_name, attr_value in dom_attributes.get("attributes", {}).items():
-                        if not re.search(element.get(attr_name, ""), attr_value):
+                        if not re.search(attr_value, element.get(attr_name, "")):
                             match = False
                             break
                     if match:
-                        detected_technologies = detect_relative(
-                            detected_technologies, tech, 'DOM')
+                        detected_technologies = detect_relative(detected_technologies, tech, 'DOM')
                         break
             except re.error:
                 pass
@@ -160,14 +142,12 @@ def technology_pro5(folder_result):
 
     tech_footprints = load_tech_footprints()
 
-    os.makedirs(f'{folder_result}/active/web_content/')
-    os.makedirs(f'{folder_result}/active/technology_pro5/')
+    os.makedirs(f'{folder_result}/active/web_content/', exist_ok=True)
+    os.makedirs(f'{folder_result}/active/technology_pro5/', exist_ok=True)
 
     for domain in domains:
-        web_content_sample = folder_result + \
-            f'/active/web_content/{domain}.txt'
-        technology_pro5_sample = folder_result + \
-            f'/active/technology_pro5/{domain}.txt'
+        web_content_sample = folder_result + f'/active/web_content/{domain}.txt'
+        technology_pro5_sample = folder_result + f'/active/technology_pro5/{domain}.txt'
 
         response = fetch_web_content(domain)
 
