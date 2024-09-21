@@ -77,12 +77,12 @@ def whois_lookup(domain, folder_sample):
     load_dotenv()
     api_key = os.getenv('RAPID_WHOIS_API_KEY')
 
-    result_state_1 = fetch_whois_command(domain, whois_sample)
+    result_state_1 = fetch_rapid_api(domain, whois_sample)
     if not result_state_1:
         result_state_2 = fetch_whois_libary(domain, whois_sample)
         if not result_state_2:
             if api_key:
-                fetch_rapid_api(domain, whois_sample, api_key)
+                fetch_whois_command(domain, whois_sample, api_key)
     
     end_time = time.time()
     running = end_time - start_time 
