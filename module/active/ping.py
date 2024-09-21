@@ -81,6 +81,8 @@ def ping(domain, folder_sample):
     for domain in domains:
         ping_ttl(domain, IP_OS_sample)
 
+    unique_IPs = list(set(unique_IPs))
+
     for ip in unique_IPs:
         with open(unique_IPs_sample, 'a') as file:
             file.write(f'{ip}\n')
