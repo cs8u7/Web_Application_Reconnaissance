@@ -22,15 +22,15 @@ def ping_ttl(domain, IP_OS_sample):
                 if detect_os(int(ttl_match.group(1))) == 1:
                     with open(IP_OS_sample, 'a') as file:
                         file.write(
-                            f'Resolved {domain} to IP {detected_ip}: , OS detected: Linux')
+                            f'Resolved {domain} to IP {detected_ip}: , OS detected: Linux\n')
                 elif detect_os(int(ttl_match.group(1))) == 2:
                     with open(IP_OS_sample, 'a') as file:
                         file.write(
-                            f'Resolved {domain} to IP {detected_ip}, OS detected: Window')
+                            f'Resolved {domain} to IP {detected_ip}, OS detected: Window\n')
                 elif detect_os(int(ttl_match.group(1))) == 0:
                     with open(IP_OS_sample, 'a') as file:
                         file.write(
-                            f'Resolved {domain} to IP {detected_ip}, OS detected: Unknow')
+                            f'Resolved {domain} to IP {detected_ip}, OS detected: Unknow\n')
     except Exception:
         pass
 
