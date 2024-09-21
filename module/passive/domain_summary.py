@@ -38,4 +38,4 @@ def domain_summary(root_domain, folder_sample):
     end_time = time.time()
     running = end_time - start_time
     print(f"[Time]: {running:.2f}s")
-    print(f"[Success]: {len(final_subdomain)} subdomains written to {domain_sample}")
+    print(f"[Result]: {len(final_subdomain)}")

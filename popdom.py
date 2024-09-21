@@ -4,8 +4,8 @@ import re
 from datetime import datetime
 from termcolor import colored
 from module.print_title import print_title
-from active import active_recon
-from passive import passive_recon
+from main.active import active_recon
+from main.passive import passive_recon
 
 
 def main():

@@ -126,15 +126,23 @@ def fetching_reverse_dns_ipinfo(ip, api_key):
 
 def fetch_viewdns_reverse_ip(ip, api_key):
     dns = []
+    try:
+        url = f'https://api.viewdns.info/reverseip/?host={ip}&apikey={api_key}&output=json'
+        response = requests.get(url, timeout=100)
+        response.raise_for_status()
+        data = response.json()
 
-    url = f'https://api.viewdns.info/reverseip/?host={ip}&apikey={api_key}&output=json'
-    response = requests.get(url)
-    data = response.json()
+        if 'domains' in data['response'] and data['response']['domains']:
+            for domain in data['response']['domains']:
+                dns.append(domain['name'])
 
-    if 'domains' in data['response'] and data['response']['domains']:
-        for domain in data['response']['domains']:
-            dns.append(domain['name'])
-    
+    except requests.exceptions.RequestException as e:
+        pass
+    except ValueError:
+        pass
+    except KeyError:
+        pass
+
     return dns
 
 
@@ -193,7 +201,7 @@ def ip_dns_lookup(domain, is_trial, folder_sample):
             file.write(f'{mx}\n')
 
     end_time1 = time.time()
-    running1 = end_time1 - start_time1 
+    running1 = end_time1 - start_time1
     print(f"[Time]: {running1:.2f}s")
 
     start_time2 = time.time()
@@ -225,12 +233,13 @@ def ip_dns_lookup(domain, is_trial, folder_sample):
         print('[-] Fetching ViewDNS')
         reverse_dns_sample = folder_sample + '/passive/reverse_dns.txt'
         for ip in ip_v4_set:
-            reverse_dns_set = reverse_dns_set + fetch_viewdns_reverse_ip(ip, api_key_viewdns)
+            reverse_dns_set = reverse_dns_set + \
+                fetch_viewdns_reverse_ip(ip, api_key_viewdns)
         filter_reverse_dns_set = list(set(reverse_dns_set))
         with open(reverse_dns_sample, 'w') as file:
             for reverse_dns in filter_reverse_dns_set:
                 file.write(f'{reverse_dns}\n')
-    
+
     end_time2 = time.time()
-    running2 = end_time2 - start_time2 
+    running2 = end_time2 - start_time2
     print(f"[Time]: {running2:.2f}s")
