@@ -83,10 +83,15 @@ def ping(domain, folder_sample):
 
     unique_IPs = list(set(unique_IPs))
 
+    domain_count = 0
+    domain_range = len(domains)
     for ip in unique_IPs:
+        domain_count += 1
+        print(
+                f"[{(domain_count / domain_range) * 100:.2f}%][{domain_count}/{domain_range}]", end='\r')
         with open(unique_IPs_sample, 'a') as file:
             file.write(f'{ip}\n')
 
     end_time = time.time()
     running = end_time - start_time
-    print(f"[Time]: {running:.2f}s")
+    print(f"\n[Time]: {running:.2f}s")
