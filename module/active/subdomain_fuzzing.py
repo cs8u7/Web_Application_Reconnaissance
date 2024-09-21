@@ -7,7 +7,7 @@ REQUEST_TIMEOUT = 2
 lock = threading.Lock()
 
 
-def fuzzing_subdomain_with_wordlist(subdomain, base_domain, subdomain_sample, sub_range, current_count, results):
+def fuzzing_subdomain_with_wordlist(subdomain, base_domain, sub_range, current_count, results):
     target_url = f'https://{subdomain}.{base_domain}'
 
     try:
@@ -36,7 +36,7 @@ def multi_threaded_subdomain_fuzzing(base_domain, threads, wordlist_file, subdom
     with ThreadPoolExecutor(max_workers=threads) as executor:
         futures = [
             executor.submit(
-                fuzzing_subdomain_with_wordlist, subdomain, base_domain, subdomain_sample, sub_range, current_count, results
+                fuzzing_subdomain_with_wordlist, subdomain, base_domain, sub_range, current_count, results
             )
             for subdomain in subdomains
         ]
@@ -46,10 +46,12 @@ def multi_threaded_subdomain_fuzzing(base_domain, threads, wordlist_file, subdom
                 future.result()
             except Exception:
                 pass
-    
+
     with open(subdomain_sample, 'a') as file:
         for subdomain in results:
             file.write(f'{subdomain}\n')
+
+
 def subdomain_fuzzing(base_domain, threads, folder_result):
     start_time = time.time()
     wordlist_file = 'module/active/word_list/subdomain.txt'

@@ -23,7 +23,7 @@ def check_params_in_url(target_url):
     return bool(parsed_url.query)
 
 
-def fuzz(target_url, endpoint_result_sample, domains, endpoint_range, param_sample):
+def fuzz(target_url, domains, endpoint_range, endpoint_results, param_result):
     global endpoint_count
     endpoint_count += 1
     print(f"[{(endpoint_count / endpoint_range) * 100:.2f}%][{endpoint_count}/{endpoint_range}]", end='\r')
@@ -34,12 +34,9 @@ def fuzz(target_url, endpoint_result_sample, domains, endpoint_range, param_samp
                 target_url, allow_redirects=False, timeout=REQUEST_TIMEOUT)
 
             if response.status_code == 200:
-                with open(endpoint_result_sample, 'a') as file:
-                    file.write(f'{target_url}\n')
-
+                endpoint_results.append(target_url)
                 if check_params_in_url(target_url):
-                    with open(param_sample, 'a') as file:
-                        file.write(f'{target_url}\n')
+                    param_result.append(target_url)
 
         except requests.Timeout:
             pass
@@ -52,13 +49,15 @@ def fuzz(target_url, endpoint_result_sample, domains, endpoint_range, param_samp
 def multi_threads_fuzzing(threads, endpoint_fuzzing_sample, endpoint_result_sample, domains, param_sample):
     with open(endpoint_fuzzing_sample, 'r') as file:
         targets = file.read().splitlines()
+    endpoint_results = []
+    param_result = []
 
     endpoint_range = len(targets)
 
     with ThreadPoolExecutor(max_workers=threads) as executor:
         futures = [
             executor.submit(
-                fuzz, target, endpoint_result_sample, domains, endpoint_range, param_sample
+                fuzz, target, domains, endpoint_range, endpoint_results, param_result
             )
             for target in targets
         ]
@@ -68,6 +67,14 @@ def multi_threads_fuzzing(threads, endpoint_fuzzing_sample, endpoint_result_samp
                 future.result()
             except Exception as e:
                 print(f"Error processing future: {e}")
+
+    with open(endpoint_result_sample, 'a') as file:
+        for endpoint in endpoint_results:
+            file.write(f'{endpoint}\n')
+
+    with open(param_sample, 'a') as file:
+        for param_payload in param_result:
+            file.write(f'{param_payload}\n')
 
 
 def passive_endpoint_param_fuzzing(threads, folder_result):

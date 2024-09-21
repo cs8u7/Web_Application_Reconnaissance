@@ -13,15 +13,14 @@ def get_html_snippet(response):
     return str(soup)[:1000]
 
 
-def parameter_fuzzing_unity(url, param, param_sample, baseline_html, current_line, total_lines):
+def parameter_fuzzing_unity(url, param, baseline_html, current_line, total_lines, results):
     try:
         payload = f'{url}/?{param}=1'
         response = requests.get(payload, timeout=REQUEST_TIMEOUT)
         response_html = get_html_snippet(response)
 
         if response_html != baseline_html:
-            with open(param_sample, 'a') as file:
-                file.write(f'{url}/?{param}=1\n')
+            results.append(f'{url}/?{param}=1\n')
 
     except requests.RequestException:
         pass
@@ -36,11 +35,12 @@ def parameter_fuzzing_unity(url, param, param_sample, baseline_html, current_lin
 def multi_threaded_parameter_fuzzing(url, threads, param_sample, baseline_html, params):
     total_lines = len(params)
     current_line = [0]
+    results = []
 
     with ThreadPoolExecutor(max_workers=threads) as executor:
         futures = [
             executor.submit(parameter_fuzzing_unity, url, param,
-                            param_sample, baseline_html, current_line, total_lines)
+                            baseline_html, current_line, total_lines, results)
             for param in params
         ]
 
@@ -49,6 +49,10 @@ def multi_threaded_parameter_fuzzing(url, threads, param_sample, baseline_html, 
                 future.result()
             except Exception:
                 pass
+
+    with open(param_sample, 'a') as file:
+        for param_payload in results:
+            file.write(f'{param_payload}\n')
 
 
 def parameter_fuzzing(threads, folder_result):

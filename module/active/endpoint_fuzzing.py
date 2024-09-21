@@ -4,10 +4,10 @@ import time
 import threading
 
 REQUEST_TIMEOUT = 2
-lock = threading.Lock()  # Lock to manage concurrent access to shared variables
+lock = threading.Lock()
 
 
-def fuzz(target_url, endpoint_fuzzing_sample, endpoint_range, current_line):
+def fuzz(target_url, endpoint_range, current_line, results):
     with lock:
         current_line[0] += 1
         print(f"[{(current_line[0] / endpoint_range) * 100:.2f}%][{current_line[0]}/{endpoint_range}]", end='\r')
@@ -17,8 +17,7 @@ def fuzz(target_url, endpoint_fuzzing_sample, endpoint_range, current_line):
             target_url, allow_redirects=False, timeout=REQUEST_TIMEOUT)
 
         if response.status_code == 200:
-            with open(endpoint_fuzzing_sample, 'a') as file:
-                file.write(f'{target_url}\n')
+            results.append(target_url)
 
     except requests.Timeout:
         pass
@@ -31,14 +30,15 @@ def fuzz(target_url, endpoint_fuzzing_sample, endpoint_range, current_line):
 def multi_threads_fuzzing(target_url, threads, endpoint_fuzzing_sample):
     with open('module/active/word_list/endpoint.txt', 'r') as file:
         payloads = file.read().splitlines()
+    results = []
 
-    endpoint_range = len(payloads)  
-    current_line = [0]  
+    endpoint_range = len(payloads)
+    current_line = [0]
     with ThreadPoolExecutor(max_workers=threads) as executor:
         futures = [
             executor.submit(
                 fuzz, target_url.format(
-                    payload), endpoint_fuzzing_sample, endpoint_range, current_line
+                    payload), endpoint_range, current_line, results
             )
             for payload in payloads
         ]
@@ -48,6 +48,10 @@ def multi_threads_fuzzing(target_url, threads, endpoint_fuzzing_sample):
                 future.result()
             except Exception as e:
                 pass
+
+    with open(endpoint_fuzzing_sample, 'a') as file:
+        for endpoint in results:
+            file.write(f'{endpoint}\n')
 
 
 def endpoint_fuzzing(threads, folder_result):
