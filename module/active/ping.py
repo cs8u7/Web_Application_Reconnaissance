@@ -3,10 +3,8 @@ import dns.resolver
 import time
 import re
 
-unique_IPs = []
 
-def ping_ttl(domain, IP_OS_sample):
-    global unique_IPs
+def ping_ttl(domain, IP_OS_sample, unique_IPs):
     try:
         result = subprocess.run(
             ['ping', '-c', '1', '-W', '1', domain], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -78,8 +76,10 @@ def ping(domain, folder_sample):
     with open(domain_sample, 'r') as file:
         domains = file.read().splitlines()
 
+    unique_IPs = []
+
     for domain in domains:
-        ping_ttl(domain, IP_OS_sample)
+        ping_ttl(domain, IP_OS_sample, unique_IPs)
 
     unique_IPs = list(set(unique_IPs))
 
@@ -88,5 +88,5 @@ def ping(domain, folder_sample):
             file.write(f'{ip}\n')
 
     end_time = time.time()
-    running = end_time - start_time 
+    running = end_time - start_time
     print(f"[Time]: {running:.2f}s")
