@@ -4,5 +4,6 @@ test.*
 module/__pycache__
 module/active/__pycache__/
 module/passive/__pycache__/
+main/__pycache__
 __pycache__/
 .vscode
