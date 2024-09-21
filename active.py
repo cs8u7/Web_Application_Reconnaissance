@@ -21,13 +21,6 @@ def active_recon(domain, folder_result, threads, is_full_range, port_start, port
     os.makedirs(f'{folder_result}/active', exist_ok=True)
     print(colored(f'[**] Starting Active Recon', 'yellow'))
 
-    print(colored('[+] Ping', 'cyan'))
-    is_dead = ping(domain, folder_result)
-    if is_dead:
-        print(colored(
-            "Error: Target is offline", "magenta"))
-        sys.exit(1)
-
     print(colored('[+] Subdomains Fuzzing', 'cyan'))
     subdomain_fuzzing(domain, threads, folder_result)
 
@@ -35,6 +28,9 @@ def active_recon(domain, folder_result, threads, is_full_range, port_start, port
     if os.path.exists(subdomain_fuzzing_sample):
         print(colored('[+] Passive Subdomains Fuzzing', 'cyan'))
         passive_subdomain_fuzzing(threads, folder_result)
+
+    print(colored('[+] Ping & OS Detection', 'cyan'))
+    ping(domain, folder_result)
 
     print(colored('[+] Technology Profiling', 'cyan'))
     technology_pro5(folder_result)
@@ -47,7 +43,8 @@ def active_recon(domain, folder_result, threads, is_full_range, port_start, port
 
     endpoint_fuzzing_sample = folder_result + f'/passive/endpoint.txt'
     if os.path.exists(endpoint_fuzzing_sample):
-        print(colored('[+] Passive Endpoints And Passive Parameters Fuzzing', 'cyan'))
+        print(
+            colored('[+] Passive Endpoints And Passive Parameters Fuzzing', 'cyan'))
         passive_endpoint_param_fuzzing(threads, folder_result)
 
     print(colored('[+] Port Scanning    ', 'cyan'))

@@ -4,24 +4,37 @@ import dns.resolver
 import os
 import re
 
+unique_IPs = []
 
-def ping_ttl(ip):
-    ip = str(ip)
+def ping_ttl(domain, IP_OS_sample):
+    global unique_IPs
     try:
         result = subprocess.run(
-            ['ping', '-c', '1', '-W', '1', ip], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            ['ping', '-c', '1', '-W', '1', domain], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         if result.returncode == 0:
             ttl_match = re.search(
                 r'ttl=(\d+)', result.stdout.decode('utf-8'))
-            if ttl_match:
+            ip_match = re.search(
+                r'from\s+([\d\.]+)', result.stdout.decode('utf-8'))
+
+            if ttl_match and ip_match:
+                detected_ip = ip_match.group(1)
+                unique_IPs.append(detected_ip)
                 if detect_os(int(ttl_match.group(1))) == 1:
-                    print(f'[Notification] {ip} is active, OS detected: Linux')
+                    with open(IP_OS_sample, 'a') as file:
+                        file.write(
+                            f'Resolved {domain} to IP {detected_ip}: , OS detected: Linux')
                 elif detect_os(int(ttl_match.group(1))) == 2:
-                    print(f'[Notification] {ip} is active, OS detected: Window')
+                    with open(IP_OS_sample, 'a') as file:
+                        file.write(
+                            f'Resolved {domain} to IP {detected_ip}, OS detected: Window')
                 elif detect_os(int(ttl_match.group(1))) == 0:
-                    print(f'[Notification] {ip} is active, OS detected: Unknow')
+                    with open(IP_OS_sample, 'a') as file:
+                        file.write(
+                            f'Resolved {domain} to IP {detected_ip}, OS detected: Unknow')
     except Exception:
-        pass  
+        pass
+
 
 def detect_os(ttl):
     if ttl:
@@ -58,18 +71,16 @@ def dns_ip_query(domain):
 
 
 def ping(domain, folder_sample):
-    ipv4_sample = folder_sample + '/passive/ipv4.txt'
-    ip_lines = []
-    if os.path.exists(ipv4_sample):
-        with open(ipv4_sample, 'r') as file:
-            ip_lines += file.readlines()
+    domain_sample = folder_sample + '/active/subdomain.txt'
+    IP_OS_sample = folder_sample + '/active/IP_OS.txt'
+    unique_IPs_sample = folder_sample + '/active/unique_IPs.txt'
 
-    ip_lines += dns_ip_query(domain)
-    ip_lines = sorted(set(ip_lines))
+    with open(domain_sample, 'r') as file:
+        domains = file.read().splitlines()
 
-    if len(ip_lines) == 0:
-        return True
-    else:
-        for ip in ip_lines:
-            ping_ttl(ip)
-        return False
+    for domain in domains:
+        ping_ttl(domain, IP_OS_sample)
+
+    for ip in unique_IPs:
+        with open(unique_IPs_sample, 'a') as file:
+            file.write(f'{ip}\n')

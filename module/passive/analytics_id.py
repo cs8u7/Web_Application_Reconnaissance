@@ -53,12 +53,6 @@ def domain_by_analytic(domain, folder_sample):
     for ua_id in ua_id_list:
         fetch_hacker_target(ua_id, analytic_sample)
 
-    with open(analytic_sample, 'r') as file:
-        lines = file.readlines()
-    unique_lines = sorted(set(lines))
-    with open(analytic_sample, 'w') as file:
-        file.writelines(unique_lines)
-
     end_time = time.time()
     running = end_time - start_time 
     print(f"[Time]: {running:.2f}s")
