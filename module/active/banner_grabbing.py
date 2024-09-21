@@ -31,13 +31,12 @@ def banner_collector(port, ip, banner_sample, port_range, current_progress):
         pass
 
     with progress_lock:
-        current_progress[0] += 1
-        print(f"[{(current_progress[0] / port_range) * 100:.2f}%][{current_progress[0]}/{port_range}]", end='\r')
+        current_progress += 1
+        print(f"[{(current_progress / port_range) * 100:.2f}%][{current_progress}/{port_range}]", end='\r')
 
 
-def multi_threaded_banner_grabbing(ip_lines, ports, threads, banner_sample):
+def multi_threaded_banner_grabbing(ip_lines, ports, threads, banner_sample, current_progress):
     port_range = len(ports)
-    current_progress = [0]
 
     with ThreadPoolExecutor(max_workers=threads) as executor:
         futures = [
@@ -66,9 +65,10 @@ def banner_grabbing(threads, folder_sample):
         open_port_lists = [port.strip() for port in file.readlines()]
 
     for ip in IPs:
+        current_progress = 0
         print(f'[-] Banner Grabbing On IP {ip}')
         multi_threaded_banner_grabbing(
-            ip, open_port_lists, threads, banner_sample)
+            ip, open_port_lists, threads, banner_sample, current_progress)
 
     end_time = time.time()
     running = end_time - start_time
