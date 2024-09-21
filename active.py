@@ -14,7 +14,7 @@ from module.active.service_probing import service_probing
 from module.active.banner_grabbing import banner_grabbing
 
 
-def active_recon(domain, folder_result, threads, is_full_range, port_start, port_end):
+def active_recon(domain, folder_result, threads, port_start, port_end):
     if os.path.exists(f'{folder_result}/active') and os.path.isdir(f'{folder_result}/active'):
         shutil.rmtree(f'{folder_result}/active')
     os.makedirs(f'{folder_result}/active', exist_ok=True)
