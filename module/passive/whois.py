@@ -48,9 +48,11 @@ def fetch_rapid_api(domain, whois_sample, api_key):
                                 params=querystring).json()
         if 'messages' in response:
             pass
-        else:
+        elif 'rawdata' in response:
             with open(whois_sample, 'w') as file:
                 file.write(f'{response["rawdata"][0]}\n')
+        else:
+            pass
     except (requests.RequestException, json.JSONDecodeError):
         pass
 
