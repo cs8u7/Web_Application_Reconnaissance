@@ -30,8 +30,6 @@ def main():
                         help="Define start port for scanning (default: 1)")
     parser.add_argument('-port_end', type=int, default=10000,
                         help="Define end port for scanning  (default: 10000)")
-    parser.add_argument('-full_range', action='store_true', default=False,
-                        help="Enable full range of open port service probbing and banner grabbing (default: False)")
     args = parser.parse_args()
 
     args_dict = vars(args)
@@ -71,7 +69,7 @@ def main():
 
         if args.a:
             active_recon(domain, folder_result, args.threads,
-                         args.full_range, args.port_start, args.port_end)
+                         args.port_start, args.port_end)
     else:
         print(colored(
             "Error: The url has invalid form. Please provide a valid URL.", "magenta"))

@@ -1,7 +1,6 @@
 import os
 import shutil
 from termcolor import colored
-import sys
 
 from module.active.ping import ping
 from module.active.tech_pro5 import technology_pro5
@@ -48,10 +47,10 @@ def active_recon(domain, folder_result, threads, is_full_range, port_start, port
         passive_endpoint_param_fuzzing(threads, folder_result)
 
     print(colored('[+] Port Scanning    ', 'cyan'))
-    port_scanning(domain, threads, folder_result, port_start, port_end)
+    port_scanning(threads, folder_result, port_start, port_end)
 
     print(colored('[+] Service Probing    ', 'cyan'))
-    service_probing(domain, threads, folder_result, is_full_range)
+    service_probing(threads, folder_result)
 
     print(colored('[+] Banner Grabbing On Port', 'cyan'))
-    banner_grabbing(domain, threads, folder_result, is_full_range)
+    banner_grabbing(threads, folder_result)

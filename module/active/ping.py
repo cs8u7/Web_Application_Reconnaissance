@@ -1,7 +1,6 @@
 import subprocess
-import ipaddress
 import dns.resolver
-import os
+import time
 import re
 
 unique_IPs = []
@@ -71,6 +70,7 @@ def dns_ip_query(domain):
 
 
 def ping(domain, folder_sample):
+    start_time = time.time()
     domain_sample = folder_sample + '/active/subdomain.txt'
     IP_OS_sample = folder_sample + '/active/IP_OS.txt'
     unique_IPs_sample = folder_sample + '/active/unique_IPs.txt'
@@ -84,3 +84,7 @@ def ping(domain, folder_sample):
     for ip in unique_IPs:
         with open(unique_IPs_sample, 'a') as file:
             file.write(f'{ip}\n')
+
+    end_time = time.time()
+    running = end_time - start_time 
+    print(f"[Time]: {running:.2f}s")
