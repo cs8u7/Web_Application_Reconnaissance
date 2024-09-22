@@ -10,8 +10,6 @@ from module.active.subdomain_fuzzing import subdomain_fuzzing
 from module.active.passive_subdomain_fuzzing import passive_subdomain_fuzzing
 from module.active.param_fuzzing import parameter_fuzzing
 from module.active.port_scanning import port_scanning
-from module.active.service_probing import service_probing
-from module.active.banner_grabbing import banner_grabbing
 
 
 def active_recon(domain, folder_result, threads, port_start, port_end):
@@ -49,8 +47,3 @@ def active_recon(domain, folder_result, threads, port_start, port_end):
     print(colored('[+] Port Scanning    ', 'cyan'))
     port_scanning(threads, folder_result, port_start, port_end)
 
-    print(colored('[+] Service Probing    ', 'cyan'))
-    service_probing(threads, folder_result)
-
-    print(colored('[+] Banner Grabbing On Port', 'cyan'))
-    banner_grabbing(threads, folder_result)
