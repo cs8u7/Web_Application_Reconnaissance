@@ -18,19 +18,7 @@ def domain_summary(root_domain, folder_sample):
     with open(domain_sample, 'r') as file:
         domains = file.readlines()
 
-    for domain in analytic_domains:
-        if domain.endswith(f'.{root_domain}') or domain == root_domain:
-            final_subdomain.append(domain)
-
-    for domain in cert_domains:
-        if domain.endswith(f'.{root_domain}') or domain == root_domain:
-            final_subdomain.append(domain)
-
-    for domain in domains:
-        if domain.endswith(f'.{root_domain}') or domain == root_domain:
-            final_subdomain.append(domain)
-
-    final_subdomain = list(set(final_subdomain))
+    final_subdomain = list(set(cert_domains + analytic_domains + domains))
 
     with open(domain_sample, 'w') as file:
         file.writelines([subdomain + '\n' for subdomain in final_subdomain])
