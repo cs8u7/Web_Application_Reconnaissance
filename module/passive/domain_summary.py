@@ -20,8 +20,9 @@ def domain_summary(root_domain, folder_sample):
 
     final_subdomain = list(set(cert_domains + analytic_domains + domains))
 
-    with open(domain_sample, 'w') as file:
-        file.writelines([subdomain + '\n' for subdomain in final_subdomain])
+    for domain in final_subdomain:
+        with open(domain_sample, 'a') as file:
+            file.writelines(f'{domain.strip()}\n')
 
     end_time = time.time()
     running = end_time - start_time
