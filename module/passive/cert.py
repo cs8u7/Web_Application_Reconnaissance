@@ -5,9 +5,11 @@ import os
 from termcolor import colored
 import time
 from datetime import datetime
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 HEADER = {
-    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'}
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'
+}
 
 
 def get_cert_ids(domain):
@@ -56,10 +58,21 @@ def get_subjectaltname(cert_path):
         return subdomains
 
 
+def download_cert_and_extract_subdomains(crtsh_id, cert_folder, cert_sample):
+    cert_path = get_cert(crtsh_id, cert_folder)
+    with open(cert_sample, 'a') as file:
+        for subdomain in get_subjectaltname(cert_path):
+            file.write(f'{subdomain}\n')
+
+
 def get_subdomains_with_cert(domain, cache, folder_sample):
     start_time = time.time()
+    max_threads = 100
     cert_sample = folder_sample + '/passive/cert_domain.txt'
     cert_folder = f'SSL_cert/{domain}'
+
+    if not os.path.exists(cert_folder):
+        os.makedirs(cert_folder)
 
     with open(cert_sample, 'w') as file:
         pass
@@ -74,20 +87,21 @@ def get_subdomains_with_cert(domain, cache, folder_sample):
                         file.write(f'{subdomain}\n')
     else:
         if cache:
-            print(
-                colored(f'[*] Cache of domain {domain} is missing', 'magenta'))
+            print(colored(f'[*] Cache of domain {domain} is missing', 'magenta'))
         print('[-] Download Certificates')
-        count = 0
         crtsh_data = get_cert_ids(domain)
         cert_range = len(crtsh_data)
-        print('[-] Decode Certificates')
-        for crtsh_id in crtsh_data:
-            count += 1
-            print(f"[{(count / cert_range) * 100:.2f}%][{count}/{cert_range}]", end='\r')
-            cert_path = get_cert(crtsh_id, cert_folder)
-            with open(cert_sample, 'a') as file:
-                for subdomain in get_subjectaltname(cert_path):
-                    file.write(f'{subdomain}\n')
+
+        with ThreadPoolExecutor(max_workers=max_threads) as executor:
+            futures = [
+                executor.submit(download_cert_and_extract_subdomains, crtsh_id, cert_folder, cert_sample)
+                for crtsh_id in crtsh_data
+            ]
+
+            count = 0
+            for future in as_completed(futures):
+                count += 1
+                print(f"[{(count / cert_range) * 100:.2f}%][{count}/{cert_range}]", end='\r')
 
     with open(cert_sample, 'r') as file:
         lines = file.readlines()
@@ -96,5 +110,5 @@ def get_subdomains_with_cert(domain, cache, folder_sample):
         file.writelines(unique_lines)
 
     end_time = time.time()
-    running = end_time - start_time 
+    running = end_time - start_time
     print(f"\n[Time]: {running:.2f}s")

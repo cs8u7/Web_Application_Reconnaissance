@@ -18,11 +18,19 @@ def domain_summary(root_domain, folder_sample):
     with open(domain_sample, 'r') as file:
         domains = file.readlines()
 
-    final_subdomain = list(set(cert_domains + analytic_domains + domains))
+    for domain in analytic_domains:
+        if domain.endswith(f'.{root_domain}') or domain == root_domain:
+            final_subdomain.append(domain)
 
-    for domain in final_subdomain:
-        with open(domain_sample, 'a') as file:
-            file.writelines(f'{domain.strip()}\n')
+    for domain in cert_domains:
+        if domain.endswith(f'.{root_domain}') or domain == root_domain:
+            final_subdomain.append(domain)
+
+    final_subdomain += domains
+    final_subdomain = list(set(final_subdomain))
+
+    with open(domain_sample, 'w') as file:
+        file.writelines([subdomain.strip() + '\n' for subdomain in final_subdomain])
 
     end_time = time.time()
     running = end_time - start_time
