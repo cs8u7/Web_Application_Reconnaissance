@@ -34,7 +34,10 @@ def multi_threads_fuzzing(target_url, threads, endpoint_fuzzing_sample):
 
     endpoint_range = len(payloads)
     current_line = [0]
-    with ThreadPoolExecutor(max_workers=threads) as executor:
+    if endpoint_range < threads:
+        max_threads = endpoint_range
+
+    with ThreadPoolExecutor(max_workers=max_threads) as executor:
         futures = [
             executor.submit(
                 fuzz, target_url.format(
