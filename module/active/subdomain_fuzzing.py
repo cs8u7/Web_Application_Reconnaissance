@@ -33,6 +33,8 @@ def multi_threaded_subdomain_fuzzing(base_domain, threads, wordlist_file, subdom
     sub_range = len(subdomains)
     if sub_range < threads:
         max_threads = sub_range
+    else:
+        max_threads= threads
     current_count = [0]
 
     with ThreadPoolExecutor(max_workers=max_threads) as executor:

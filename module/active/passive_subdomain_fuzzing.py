@@ -30,6 +30,8 @@ def multi_threaded_subdomain_fuzzing(threads, wordlist_file, subdomain_sample):
 
     if sub_range < threads:
         max_threads = sub_range
+    else:
+        max_threads= threads
 
     with ThreadPoolExecutor(max_workers=max_threads) as executor:
         futures = {executor.submit(fuzzing_subdomain_with_wordlist, subdomain,

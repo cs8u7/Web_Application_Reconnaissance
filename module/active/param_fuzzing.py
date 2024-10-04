@@ -39,6 +39,8 @@ def multi_threaded_parameter_fuzzing(url, threads, param_sample, baseline_html, 
 
     if total_lines < threads:
         max_threads = total_lines
+    else:
+        max_threads= threads
 
     with ThreadPoolExecutor(max_workers=max_threads) as executor:
         futures = [

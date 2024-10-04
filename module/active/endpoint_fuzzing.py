@@ -36,6 +36,8 @@ def multi_threads_fuzzing(target_url, threads, endpoint_fuzzing_sample):
     current_line = [0]
     if endpoint_range < threads:
         max_threads = endpoint_range
+    else:
+        max_threads= threads
 
     with ThreadPoolExecutor(max_workers=max_threads) as executor:
         futures = [
