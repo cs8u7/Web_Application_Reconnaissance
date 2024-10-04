@@ -53,6 +53,8 @@ def multi_threaded_port_scan(threads, port_range, ip, port_sample):
 
     if total_ports < threads:
         max_threads = total_ports
+    else:
+        max_threads= threads
 
     with ThreadPoolExecutor(max_workers=max_threads) as executor:
         futures = [executor.submit(
