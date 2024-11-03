@@ -11,11 +11,23 @@ pip3 install python-nmap
 ```
 
 ```
+pip3 install python-whois
+```
+
+```
 pip3 install termcolor
 ```
 
 ```
-pip3 install requests
+pip3 install cryptography
+```
+
+```
+pip3 install bs4
+```
+
+```
+pip3 install whois
 ```
 
 ```
@@ -31,7 +43,7 @@ pip3 install ipinfo
 ```
 
 ```
-pip install requests
+pip3 install requests
 ```
 
 ### .env Introduction

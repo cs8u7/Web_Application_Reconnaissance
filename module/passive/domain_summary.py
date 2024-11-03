@@ -1,4 +1,5 @@
 import time
+import os
 
 def domain_summary(root_domain, folder_sample):
     start_time = time.time()
@@ -9,8 +10,11 @@ def domain_summary(root_domain, folder_sample):
     
     final_subdomain = []
 
-    with open(cert_sample, 'r') as file:
-        cert_domains = file.read().splitlines()
+    if os.path.exists(cert_sample):
+        with open(cert_sample, 'r') as file:
+            cert_domains = file.read().splitlines()
+    else: 
+        cert_domains = []
 
     with open(analytic_sample, 'r') as file:
         analytic_domains = file.readlines()

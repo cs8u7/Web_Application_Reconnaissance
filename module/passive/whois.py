@@ -3,7 +3,6 @@ import json
 from dotenv import load_dotenv
 import os
 import whois
-import whois.whois
 import subprocess
 import time
 
